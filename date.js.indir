@@ -1,0 +1,310 @@
+/* date.js - Custom Date methods
+ * addDays
+ * addWeeks
+ * addYears
+ * addMonths
+ * addMonthsTrunc
+ * copy
+ * daysBetween
+ * getCDay
+ * getDayName
+ * getDayOfYear
+ * getCMonth
+ * getMonthName
+ * getWeekDays
+ * addBizDays
+ * lastDay
+ * monthsBetween
+ * yearsBetween
+ * getAge
+ * sameDayEachWeek
+ */
+
+Date.prototype.DAYNAMES = ["Pazar", "Pzartesi", "Sal?", "Çar?amba", "Per?embe", "Cuma", "Cumartesi"];
+Date.prototype.MONTHNAMES = ["Ocak", "?ubat", "Mart", "Nisan", "May?s", "Haziran", "Temmuz", "A?ustos", "Eylül", "Ekim", "Kas?m", "Aral?k"];
+Date.prototype.msPERMIN = 1000 * 60;
+Date.prototype.msPERDAY = 1000 * 60 * 60 * 24;
+
+Date.prototype.addBizDays = function(d) {
+    /* Adds the necessary number of days
+     * to the date to include the required
+     * weekdays.
+     */
+    var day = this.getDay();    //day of week number 0 through 6
+    var wkEnd = 0;              //number of weekends needed
+    var m = d % 5;              //number of weekdays for partial week
+
+    if (d < 0) {
+        wkEnd = Math.ceil(d/5); //Yields a negative number of weekends
+
+        switch (day) {
+        case 6:
+            //If staring day is Sat. one less weekend needed
+            if (m == 0 && wkEnd < 0) wkEnd++;
+            break;
+        case 0:
+            if (m == 0) d++; //decrease - part of weekend
+            else d--;        //increase - part of weekend
+            break;
+        default:
+            if (m <= -day) wkEnd--; //add weekend if not enough days to cover
+        }
+    }
+    else if (d > 0) {
+        wkEnd = Math.floor(d/5);
+
+        switch (day) {
+        case 6:
+            /* If staring day is Sat and
+             * no partial week one less day needed
+             * if partial week one more day needed
+             */
+            if (m == 0) d--;
+            else d++;
+            break;
+        case 0:
+            if (m == 0 && wkEnd > 0) wkEnd--;
+            break;
+        default:
+            if (5 - day < m) wkEnd++;
+        }
+    }
+
+    d += wkEnd * 2; //Add weekends to weekdays needed
+
+    this.addDays(d);
+};
+Date.prototype.addDays = function(d) {
+        /* Adds the number of days to the date */
+        this.setDate( this.getDate() + d );
+    };
+Date.prototype.addWeeks = function(w) {
+        /* Adds the number of weeks to the date */
+        this.setDate(this.getDate() + (w * 7) );
+    };
+Date.prototype.addMonths = function(m) {
+        /* Adds the number of months to date
+         * If starting with a day that is
+         * greater than the number of days
+         * in the new month the new date is
+         * in the next month
+         */
+        this.setMonth( parseInt(this.getMonth()) + parseInt(m));
+    };
+Date.prototype.addMonthsTrunc = function(m) {
+        /* Adds the number of months to date,
+         * but unlike addMonths this method
+         * truncates extra days at end of month
+         * when the start day of month is greater
+         * than the number of days in the target
+         * ending month (js overflows into the following month)
+         */
+         var d = this.getDate();
+         this.setMonth(this.getMonth() + m);
+
+         /* Adjust when original month has more days then new month and overflows */
+         if (this.getDate() < d)
+             this.setDate(0);
+    };
+Date.prototype.addYears = function(y) {
+        /* Adds the number of years to date
+         * If adding to 2/29 and result is not
+         * a leap year the day is set to 28
+         */
+        var m = this.getMonth();
+        this.setFullYear( parseInt(this.getFullYear()) + parseInt(y));
+
+        //Adjust for leap years
+        if (m < this.getMonth()) {
+            this.setDate(0);
+        }
+    };
+Date.prototype.copy = function () {
+        /* Creates a copy of date by value
+         * Normal assignment only creates
+         * a reference to the date, whereas
+         * this creates a new date object
+         */
+        return Date(this.getTime());
+    };
+Date.prototype.daysBetween = function(d) {
+        /*Returns number of days between two dates
+        * including the last day, but not the first.
+        *
+        * This is value can be added
+        * to one date get the other date.
+        */
+	     if (! d instanceof Date) {
+	        try {
+                        d = new Date(d);
+                } catch (e) {
+                    return null;
+                }
+            }
+					
+            var c = this.getTime();
+            var n = d.getTime();
+
+            c = Math.floor(c/this.msPERDAY);
+            n = Math.floor(n/this.msPERDAY);
+            return n - c;
+    };
+
+    Date.prototype.setToFirstDayOfMonth = function() {
+        //Returns first 3 letters in day name
+        this.setDate(1);
+    };
+    
+Date.prototype.getCDay = function() {
+        //Returns first 3 letters in day name
+        return this.getDayName().slice(0,3);
+    };
+Date.prototype.getDayName = function() {
+        //Returns full name of day
+        return this.DAYNAMES[this.getDay()];
+    };
+Date.prototype.getDayOfYear = function() {
+        //Returns day of year 1 through 365 or 366
+        var start = new Date(this.getFullYear(), 0, 0);
+        return this.daysBetween(start) * -1;
+    };
+Date.prototype.getCMonth = function() {
+        //Returns first 3 letters in month name
+        return this.getMonthName().slice(0, 3);
+    };
+Date.prototype.getMonthName = function() {
+        //Returns full name of month
+        return this.MONTHNAMES[this.getMonth()];
+    };
+Date.prototype.getWeekDays = function(d) {
+        /*Returns number of weekdays between two dates
+        * including the last day, but not the first,
+        * if either is a weekday.
+        *
+        * This is the value that can be added
+        * to one date to get the other date
+        * (although because you can use dates
+        * that are weekends, adding back,
+        * which only returns weekdays, may
+        * return a different date than original.
+        */
+        var wkEnds = 0, days = 0;
+        var s = 0, e = 0;
+
+        days = Math.abs(this.daysBetween(d));
+
+        if (days) {
+            wkEnds = Math.floor(days/7);
+
+            s = (d < this) ? d.getDay() : this.getDay() ;
+            e = (d < this) ? this.getDay() : d.getDay();
+
+            if (s != 6 && s > e) wkEnds++;
+            if (s != e && (s == 6 || e == 6) ) days--;
+
+            days -= (wkEnds * 2);
+        }
+        return days;
+    };
+Date.prototype.lastday = function() {
+        //returns number of days in month
+        var d = new Date(this.getFullYear(), this.getMonth() + 1, 0);
+        return d.getDate();
+    };
+Date.prototype.monthsBetween = function(d) {
+        //returns months between dates
+        var d1 = this.getFullYear() * 12 + this.getMonth() + 1;
+        var d2 = d.getFullYear() * 12 + d.getMonth() + 1;
+        return d2 - d1;
+    };
+Date.prototype.monthsBetween2 = function(d) {
+    /* partial month */
+	var sDate,eDate;
+	var lastday = this.lastday();
+
+	if (lastday > d.lastday())
+		lastday = d.lastday();
+	
+	if (this <=  d){
+		sDate = this;
+		eDate = d;
+	} else {
+		sDate = d;
+		eDate = this;
+	}
+
+	var fromDay = sDate.getDate();
+	if (fromDay > lastday)
+		fromDay = lastday;
+
+	var toDay = eDate.getDate();
+	if (toDay > lastday)
+		toDay = lastday;
+	
+	var diff = toDay - fromDay;
+	var percentExtra = 1 + diff/30;
+
+	var d1 = this.getFullYear() * 12 + this.getMonth() + 1;
+	var d2 = d.getFullYear() * 12 + d.getMonth();
+
+	return (d2 - d1) + (percentExtra).toFixed(2) * 1;
+};
+
+Date.prototype.yearsBetweenDiscrete = function(d) {
+        var years = this.monthsBetween2(d)/12;
+        if(years < 1 ) return 0;
+        return years-years%1;
+    };
+    
+Date.prototype.monthsBetweenDiscrete = function(d) {
+        var months = this.monthsBetween2(d);
+        if(months < 1 ) return 0;
+        return months-months%1;
+    };
+
+Date.prototype.yearsBetween = function(d) {
+        //returns years and fraction between dates
+        var months = this.monthsBetween(d);
+        var years = months/12;
+        if (Number.prototype.toFixed)
+            return (years%1) ? years.toFixed(2) : years.toFixed(0);
+        else
+            return (years%1) ? Math.round(years * 100)/100 : Math.round(years);
+    };
+Date.prototype.getAge = function() {
+        var d = new Date();
+        return (this.yearsBetween(d));
+    };
+Date.prototype.sameDayEachWeek = function (d, date) {
+        /* Returns array of dates of same day each week in range */
+        var aDays = new Array();
+        var eDate, nextDate, adj;
+        if (this > date) {
+            eDate = this;
+            nextDate = new Date(date.getTime());
+        } else {
+            eDate = date;
+            nextDate = new Date(this.getTime());
+        }
+        adj = (d - nextDate.getDay() + 7) %7;
+        nextDate.setDate(nextDate.getDate() + adj);
+
+        while (nextDate < eDate) {
+            aDays[aDays.length] = new Date(nextDate.getTime() );
+            nextDate.setDate(nextDate.getDate() + 7);
+        }
+        return aDays;
+    };
+/* Add built-in method to earlier browsers*/
+if (!Date.prototype.toDateString) {
+    Date.prototype.toDateString = function() {
+            return this.toString().replace(/\d\d:\d\d:\d\d\s\w{2,3}\s/, '');
+        };
+}
+if (!Date.prototype.toLocaleDateString) {
+    Date.prototype.toLocaleDateString = function() {
+            return (this.getMonth() + 1) + "/" + this.getDate() + "/" + this.getFullYear();
+        };
+}
+
+    
