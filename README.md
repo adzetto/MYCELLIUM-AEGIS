@@ -262,28 +262,36 @@ Conducted within the **İzmir Institute of Technology (İYTE)** ecosystem.
 
 ## 📂 Repository contents
 
-This repository holds the TÜBİTAK 1812 BİGG application dossier and supporting technical evidence:
+This repository holds the TÜBİTAK 1812 BİGG application dossier and supporting technical evidence, organized into folders:
 
-| File | What it is |
-|:-----|:-----------|
-| `2260401_EK_Miselyum Elektriksel Aktivitesi Araştırması*.pdf` | Scientific evaluation & R&D roadmap (the "why" and the physics) |
-| `2260401_EK_Mantar_Deney_Raporu*.pdf` | Electrophysiology experiments 1 & 2 — hardware, firmware, results |
-| `İş Planı Maliyet Formu*.pdf` | Cost form / 18‑month budget breakdown |
-| `2260401_EK_*Niyet Mektubu*.pdf` | Letters of intent (OGM Regional Directorate, İYTE) |
-| `2260401_EK_*Özgeçmiş*.pdf`, `ozgecmis_*.pdf` | Team CVs |
-| `higgsfield/` | Intro‑video production kit (storyboard + generation commands) |
+```
+docs/
+├── research/           # Scientific evaluation & R&D roadmap (the "why" and the physics)
+├── experiments/        # Electrophysiology experiments 1 & 2 — hardware, firmware, results
+├── business-plan/      # Cost form / 18-month budget breakdown
+├── letters-of-intent/  # Niyet mektupları — OGM Regional Directorate, İYTE
+└── team-cvs/           # Team CVs (özgeçmişler)
+higgsfield/
+└── INTRO_VIDEO.md      # Intro-video kit: setup + storyboard + prompts + commands (all in one)
+archive/
+└── prodis-portal/      # Incidental TÜBİTAK PRODİS portal exports + web assets (not part of the product)
+```
 
-> ℹ️ The loose web assets in the repo root (`*.js.indir`, `TbComponents.css`, `checkbox_*.png`, `belge.gif`, the `PRODİS*.pdf` exports, etc.) are incidental downloads from the TÜBİTAK PRODİS portal and are not part of the product. They can be safely archived into a subfolder or removed.
+| Folder | Contents |
+|:-------|:---------|
+| [`docs/research/`](./docs/research/) | *Miselyum Elektriksel Aktivitesi Araştırması* — science & roadmap |
+| [`docs/experiments/`](./docs/experiments/) | *Mantar Deney Raporu* — electrophysiology experiments 1 & 2 |
+| [`docs/business-plan/`](./docs/business-plan/) | *İş Planı Maliyet Formu* — 18‑month budget |
+| [`docs/letters-of-intent/`](./docs/letters-of-intent/) | Letters of intent (OGM, İYTE) |
+| [`docs/team-cvs/`](./docs/team-cvs/) | Team CVs |
+| [`higgsfield/INTRO_VIDEO.md`](./higgsfield/INTRO_VIDEO.md) | Everything for the intro video, in one file |
+| [`archive/prodis-portal/`](./archive/prodis-portal/) | Incidental PRODİS portal exports (not product) |
 
 ---
 
 ## 🎬 Intro video (Higgsfield)
 
-A cinematic promo of Mycellium‑Aegis is scripted for generation with **[Higgsfield](https://higgsfield.ai)** skills. Everything is prepared under [`higgsfield/`](./higgsfield/):
-
-- **`STORYBOARD.md`** — a 6‑shot, ~36 s cinematic storyboard with per‑shot prompts (Seedance 2.0 video, GPT Image 2 title card, Seed Audio ambience)
-- **`generate_intro.sh`** — the exact, ready‑to‑run `higgsfield generate create` commands
-- **`SETUP.md`** — the three‑step Higgsfield setup
+A cinematic promo of Mycellium‑Aegis is scripted for generation with **[Higgsfield](https://higgsfield.ai)**. Everything — the three‑step setup, model choices, the 6‑shot (~36 s) storyboard, every prompt, the ready‑to‑run commands, and edit notes — lives in a single file: **[`higgsfield/INTRO_VIDEO.md`](./higgsfield/INTRO_VIDEO.md)**.
 
 ```bash
 # 1 — Add the skills (already installed in this repo under .agents/skills/)
@@ -293,8 +301,7 @@ npx skills add higgsfield-ai/skills
 curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
 higgsfield auth login
 
-# 3 — Generate the intro video
-bash higgsfield/generate_intro.sh
+# 3 — Generate: run the commands in higgsfield/INTRO_VIDEO.md (§5)
 ```
 
 ---
