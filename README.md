@@ -117,7 +117,7 @@ Alarm = (dT/dt > β)  AND  (d(ln R)/dt > γ)  AND  (spike_active = TRUE)
 
 Only capillary drying → classified as **drought**. All three at once → **fire onset confirmed**, forwarded to the comms module. Neighbouring nodes' readings are cross‑checked for extra confidence.
 
-> The frequency‑domain shift observed in the lab (dominant band moving from ≈20 Hz at rest to ≈5 Hz under thermal stress, see below) is the physical basis for automating this classification with an **LSTM** time‑series model — targeting a false‑positive rate **< 1 %**.
+> The frequency‑domain shift observed in the lab (dominant band moving from ≈20 Hz at rest to ≈5 Hz under thermal stress, see below) is the physical basis for automating this classification with an **LSTM** time‑series model — targeting a false‑positive rate **< 1 %**. The full machine‑learning approach — data pipeline, model architecture and alternatives, training/evaluation protocol, edge deployment, and MLOps — is written up in APA 7 style in [`docs/ai-plan/`](./docs/ai-plan/).
 
 ---
 
@@ -268,6 +268,7 @@ This repository holds the TÜBİTAK 1812 BİGG application dossier and supportin
 docs/
 ├── research/           # Scientific evaluation & R&D roadmap (the "why" and the physics)
 ├── experiments/        # Electrophysiology experiments 1 & 2 — hardware, firmware, results
+├── ai-plan/            # AI & signal-intelligence plan (APA 7) — LSTM sensor fusion, edge AI
 ├── business-plan/      # Cost form / 18-month budget breakdown
 ├── letters-of-intent/  # Niyet mektupları — OGM Regional Directorate, İYTE
 └── team-cvs/           # Team CVs (özgeçmişler)
@@ -281,6 +282,7 @@ archive/
 |:-------|:---------|
 | [`docs/research/`](./docs/research/) | *Miselyum Elektriksel Aktivitesi Araştırması* — science & roadmap |
 | [`docs/experiments/`](./docs/experiments/) | *Mantar Deney Raporu* — electrophysiology experiments 1 & 2 |
+| [`docs/ai-plan/`](./docs/ai-plan/) | *AI & Signal-Intelligence Plan* (APA 7) — LSTM sensor fusion, edge AI, evaluation & MLOps |
 | [`docs/business-plan/`](./docs/business-plan/) | *İş Planı Maliyet Formu* — 18‑month budget |
 | [`docs/letters-of-intent/`](./docs/letters-of-intent/) | Letters of intent (OGM, İYTE) |
 | [`docs/team-cvs/`](./docs/team-cvs/) | Team CVs |
