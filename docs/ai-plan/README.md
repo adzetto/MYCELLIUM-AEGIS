@@ -8,6 +8,8 @@ single, low-false-alarm fire-onset decision.
 | File | What it is |
 |:-----|:-----------|
 | [`Mycellium-Aegis_AI_Plan_APA7.md`](./Mycellium-Aegis_AI_Plan_APA7.md) | The full plan, written in **APA 7th-edition** academic style (title page, abstract, headings, tables, in-text citations, references, and appendices). |
+| [`Mycellium-Aegis_AI_Plan_Beamer.tex`](./Mycellium-Aegis_AI_Plan_Beamer.tex) | A **LaTeX Beamer** slide presentation of the same plan — 27 frames (16:9), custom forest-green theme, TikZ diagrams, and `booktabs` tables. Self-contained (standard TeX Live packages only). |
+| [`Mycellium-Aegis_AI_Plan_Beamer.pdf`](./Mycellium-Aegis_AI_Plan_Beamer.pdf) | The compiled deck, ready to present. |
 
 ## What the plan covers
 
@@ -21,12 +23,20 @@ single, low-false-alarm fire-onset decision.
 - **MLOps, governance & responsible AI** — versioning, drift monitoring, over-the-air updates, model cards, human oversight.
 - **Risk register & roadmap mapping** — AI-specific risks and how every deliverable maps onto the funded 18-month work packages (WP-2, WP-3, WP-4, WP-5, WP-6).
 
-## Rendering to a formatted APA 7 manuscript
+## Building the deliverables
 
-The Markdown is written to convert cleanly to a Word/PDF APA 7 manuscript. A formatting
-note at the top of the plan lists the exact conventions (running head, heading levels,
-hanging indents, table/figure numbering). For example, with Pandoc:
+**APA 7 manuscript (Word/PDF).** The Markdown is written to convert cleanly; a
+formatting note at the top of the plan lists the conventions (running head, heading
+levels, hanging indents, table/figure numbering). For example, with Pandoc:
 
 ```bash
 pandoc "Mycellium-Aegis_AI_Plan_APA7.md" -o "Mycellium-Aegis_AI_Plan_APA7.docx"
+```
+
+**Beamer slides (PDF).** Compile with any TeX Live install (run twice so the
+section/frame counters settle):
+
+```bash
+pdflatex -interaction=nonstopmode Mycellium-Aegis_AI_Plan_Beamer.tex
+pdflatex -interaction=nonstopmode Mycellium-Aegis_AI_Plan_Beamer.tex
 ```
