@@ -8,8 +8,10 @@ single, low-false-alarm fire-onset decision.
 | File | What it is |
 |:-----|:-----------|
 | [`Mycellium-Aegis_AI_Plan_APA7.md`](./Mycellium-Aegis_AI_Plan_APA7.md) | The full plan, written in **APA 7th-edition** academic style (title page, abstract, headings, tables, in-text citations, references, and appendices). |
-| [`Mycellium-Aegis_AI_Plan_Beamer.tex`](./Mycellium-Aegis_AI_Plan_Beamer.tex) | A **LaTeX Beamer** slide presentation of the same plan — 27 frames (16:9), custom forest-green theme, TikZ diagrams, and `booktabs` tables. Self-contained (standard TeX Live packages only). |
-| [`Mycellium-Aegis_AI_Plan_Beamer.pdf`](./Mycellium-Aegis_AI_Plan_Beamer.pdf) | The compiled deck, ready to present. |
+| [`Mycellium-Aegis_AI_Plan_Beamer.tex`](./Mycellium-Aegis_AI_Plan_Beamer.tex) | A **LaTeX Beamer** slide presentation of the same plan (English) — 27 frames (16:9), custom forest-green theme, TikZ diagrams, and `booktabs` tables. Self-contained (standard TeX Live packages only). |
+| [`Mycellium-Aegis_AI_Plan_Beamer.pdf`](./Mycellium-Aegis_AI_Plan_Beamer.pdf) | The compiled English deck, ready to present. |
+| [`Mycellium-Aegis_YZ_Plani_Sunum_TR.tex`](./Mycellium-Aegis_YZ_Plani_Sunum_TR.tex) | **Türkçe jüri sunumu** — genişletilmiş, ikna odaklı sürüm (39 çerçeve). Ölçek-matematiği ("neden %1"), 7-katmanlı yanlış-alarm savunması, fikri mülkiyet/savunulabilirlik, ekip ve "jüri için hazır cevaplar" slaytlarını içerir. |
+| [`Mycellium-Aegis_YZ_Plani_Sunum_TR.pdf`](./Mycellium-Aegis_YZ_Plani_Sunum_TR.pdf) | Derlenmiş Türkçe deste (sunuma hazır). |
 
 ## What the plan covers
 
@@ -33,10 +35,15 @@ levels, hanging indents, table/figure numbering). For example, with Pandoc:
 pandoc "Mycellium-Aegis_AI_Plan_APA7.md" -o "Mycellium-Aegis_AI_Plan_APA7.docx"
 ```
 
-**Beamer slides (PDF).** Compile with any TeX Live install (run twice so the
+**Beamer slides (PDF).** Compile either deck with any TeX Live install (run twice so the
 section/frame counters settle):
 
 ```bash
+# English deck
 pdflatex -interaction=nonstopmode Mycellium-Aegis_AI_Plan_Beamer.tex
 pdflatex -interaction=nonstopmode Mycellium-Aegis_AI_Plan_Beamer.tex
+
+# Türkçe jüri sunumu (Türkçe karakterler T1 + utf8 + lmodern ile gelir; babel-turkish gerekmez)
+pdflatex -interaction=nonstopmode Mycellium-Aegis_YZ_Plani_Sunum_TR.tex
+pdflatex -interaction=nonstopmode Mycellium-Aegis_YZ_Plani_Sunum_TR.tex
 ```
