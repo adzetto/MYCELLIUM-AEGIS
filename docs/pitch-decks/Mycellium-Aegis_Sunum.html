@@ -44,11 +44,10 @@ body{
   overflow:hidden;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  font-size: 1.15rem; /* Base size increased to fill space */
+  font-size: 1.15rem; 
 }
 ::selection{background:var(--accent);color:var(--bg)}
 
-/* ---- minimalist ambient background ---- */
 .myco-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
   background: radial-gradient(circle at top left, #FFFFFF 0%, #F5F5F5 100%);
 }
@@ -56,11 +55,11 @@ body{
 .hypha{fill:none;stroke:var(--accent);stroke-linecap:round}
 .node{fill:var(--accent);opacity:0.2}
 
-/* ---- stage & slides (Using full height better) ---- */
+/* ---- stage & slides ---- */
 .stage{position:relative;z-index:1;height:100vh;width:100vw}
 .slide{
   position:absolute;inset:0;display:flex;flex-direction:column;
-  justify-content:flex-start; /* Do not center vertically to use space */
+  justify-content:flex-start; 
   padding:clamp(3rem,6vw,5rem) clamp(3rem,8vw,6rem);
   opacity:0;visibility:hidden;transform:translateY(12px);
   transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s;
@@ -107,6 +106,8 @@ h1.title{
 .grid{display:grid;gap:clamp(2rem,4vw,4rem); width:100%;}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g2{grid-template-columns:1fr 1fr}
+.g-problem{grid-template-columns:1.6fr 1fr} /* specifically for problem slide */
+.g-wide{grid-template-columns:1fr 1.3fr} /* For diagrams requiring more space */
 
 /* Clean text blocks */
 .block{
@@ -165,6 +166,15 @@ ul.clean li::before{
   content:"—";position:absolute;left:0;color:var(--accent);font-weight:300;
 }
 
+/* Citations & Footnotes */
+.ref{font-family:var(--f-mono);font-size:0.7em;vertical-align:super;color:var(--accent);cursor:default;}
+.footnotes{
+  position:absolute; bottom: 1.5rem; left: clamp(3rem,8vw,6rem);
+  font-family: var(--f-mono); font-size: 0.85rem; color: var(--text-light);
+  font-weight:300;
+}
+.footnotes span { margin-right: 1.5rem; }
+
 /* LaTeX Booktabs style comparison table */
 .cmp{
   width:100%;border-collapse:collapse;font-size:1.1rem;
@@ -190,7 +200,7 @@ ul.clean li::before{
 .cmp td.no{color:var(--text-muted);}
 
 /* Cover */
-.cover{ justify-content: center; } /* Only cover stays vertically centered */
+.cover{ justify-content: center; } 
 .cover .inner{max-width:100%; flex-grow:0;}
 .cover-title{
   font-family:var(--f-display);font-weight:300;letter-spacing:-0.03em;
@@ -211,15 +221,16 @@ ul.clean li::before{
 /* figures & imagery */
 .fig-wrap{display:flex;flex-direction:column;align-items:flex-start; width: 100%;}
 .fig-wrap img{
-  width:100%;max-height:60vh;object-fit:contain;display:block;
+  width:100%;max-height:55vh;object-fit:contain;display:block;
 }
 .figcap{
-  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-light);
+  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-muted);
   margin-top:1rem;letter-spacing:0.02em;font-weight:300;
 }
+.caption-lbl{ font-weight:400; color:var(--primary); }
 
 .photo-wrap{overflow:hidden; width: 100%;}
-.photo-wrap img{width:100%;max-height:60vh;object-fit:cover;display:block}
+.photo-wrap img{width:100%;max-height:50vh;object-fit:cover;display:block; border-radius: 4px;}
 
 /* roadmap minimal */
 .road{display:grid;grid-template-columns:repeat(5,1fr);gap:2rem;position:relative; margin-top: 3rem;}
@@ -286,11 +297,11 @@ ul.clean li::before{
   .stage{height:auto}
   .slide{position:relative;opacity:1;visibility:visible;transform:none;
     min-height:100vh;overflow:visible;padding-top:6rem}
-  .g3,.g2,.team,.road{grid-template-columns:1fr}
+  .g3,.g2,.g-problem,.g-wide,.team,.road{grid-template-columns:1fr}
   .road::before{display:none}.milestone{padding-top:10px}
   .milestone .dot{display:none}
   .cover-title{font-size:clamp(3rem,12vw,5rem)}
-  .brand, .counter, .progress {display:none}
+  .brand, .counter, .progress, .footnotes {display:none}
 }
 </style>
 </head>
@@ -332,7 +343,7 @@ ul.clean li::before{
       <h1 class="title reveal" style="max-width:24ch">
         Ormanın <span class="accent">biyolojik ağını</span> canlı bir sensöre dönüştürüyoruz.
       </h1>
-      <div class="grid g2 reveal" style="margin-top:2rem;">
+      <div class="grid g-wide reveal" style="margin-top:2rem;">
         <div>
           <p class="lead">
             Saha çalışmalarımızda hep aynı sorunu gördük: Sistemler alevi görmeden harekete geçemiyor. 
@@ -346,6 +357,7 @@ ul.clean li::before{
         </div>
         <div class="photo-wrap">
           <img src="../media/teraryum.png" alt="Mycellium-Aegis sistem mimarisi" loading="lazy">
+          <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Biyoelektrotlu prototip teraryum düzeneği.</div>
         </div>
       </div>
     </div>
@@ -356,31 +368,33 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">01 · PROBLEM</div>
       <h1 class="title reveal">Bugünün sistemleri <span class="warn">görüş hattına</span> mahkûm.</h1>
-      <div class="grid g2 reveal" style="margin-top:2.5rem">
-        <div>
-          <div class="grid" style="gap:3rem">
-            <div class="block">
-              <span class="num-ix">01</span>
-              <h3>Görüntü İşleme Yetersizliği</h3>
-              <p>Yoğun örtü, vadi tabanı ve bulut altında kameralar işlevsiz kalır.</p>
-            </div>
-            <div class="block">
-              <span class="num-ix">02</span>
-              <h3>45–90 Dakika Kayıp</h3>
-              <p>Gaz sensörleri rüzgârın dumanı taşımasını bekler, müdahale gecikir.</p>
-            </div>
-            <div class="block" style="border-left-color: var(--warn);">
-              <span class="num-ix" style="color:var(--warn);">03</span>
-              <h3>Ormana Bırakılan Çöp</h3>
-              <p>Pil ve plastik tabanlı elektronikler hızla korozyona uğrayıp atıklaşır.</p>
-            </div>
+      <div class="grid g-problem reveal" style="margin-top:2.5rem">
+        <div class="grid" style="gap:2rem">
+          <div class="block">
+            <span class="num-ix">01</span>
+            <h3>Görüntü İşleme Yetersizliği</h3>
+            <p>Yoğun örtü, vadi tabanı ve bulut altında kameralar işlevsiz kalır.</p>
+          </div>
+          <div class="block">
+            <span class="num-ix">02</span>
+            <h3>45–90 Dakika Kayıp</h3>
+            <p>Gaz sensörleri rüzgârın dumanı taşımasını bekler, müdahale oldukça gecikir<span class="ref">[1]</span>.</p>
+          </div>
+          <div class="block" style="border-left-color: var(--warn);">
+            <span class="num-ix" style="color:var(--warn);">03</span>
+            <h3>Ormana Bırakılan Çöp</h3>
+            <p>Pil ve plastik tabanlı elektronikler hızla korozyona uğrayıp atıklaşır.</p>
           </div>
         </div>
-        <div class="photo-wrap">
+        <div class="photo-wrap" style="align-self: center;">
           <img src="../media/3.jpg" alt="İzmir orman yangınları haritası" loading="lazy">
-          <div class="figcap">İzmir 2025 · 26.260 ha yanan alan</div>
+          <div class="figcap"><span class="caption-lbl">Şekil 2:</span> İzmir 2025 Yangın Verisi (26.260 ha kayıp)<span class="ref">[2]</span></div>
         </div>
       </div>
+    </div>
+    <div class="footnotes">
+      <span>[1] Çevre ve Orman Bakanlığı Yangın Müdahale Raporu (2024).</span>
+      <span>[2] OGM Yangın İstatistikleri Veritabanı.</span>
     </div>
   </section>
 
@@ -389,58 +403,148 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">02 · BİLİMSEL TEMEL</div>
       <h1 class="title reveal">Trilyonlarca metrelik sensör ağı: <span class="accent">Wood Wide Web</span></h1>
-      <div class="grid g2 reveal" style="margin-top:2.5rem">
+      <p class="lead reveal">
+        Biz yeni bir altyapı kurmuyoruz. Ağaçları birbirine bağlayan miselyum ağının, 
+        ısı şokunda ürettiği <span class="primary">aksiyon potansiyellerini</span> dinliyoruz.
+      </p>
+      
+      <div class="grid g2 reveal" style="margin-top:2.5rem; align-items: start;">
+        <div class="fig-wrap">
+          <img src="figures/heat_diffusion.png" alt="Toprakta Isı Yayılımı Modeli" style="max-height: 40vh;">
+          <div class="figcap"><span class="caption-lbl">Şekil 3:</span> Toprakta ısı yayılım modeli ve türev tabanlı ivme (<span class="math">dT/dt > &beta;</span>) tahmini<span class="ref">[3]</span>.</div>
+        </div>
         <div>
-          <p class="lead">
-            Biz yeni bir altyapı kurmuyoruz. Ağaçları birbirine bağlayan miselyum ağının, 
-            ısı şokunda ürettiği <span class="primary">aksiyon potansiyellerini</span> dinliyoruz.
-          </p>
+          <div class="fig-wrap" style="margin-bottom: 2rem;">
+            <img src="figures/signal_time.png" alt="Biyoelektrik sinyal: normal vs ateş stresi" style="max-height: 25vh;">
+            <div class="figcap"><span class="caption-lbl">Şekil 4:</span> <i>P. ostreatus</i> üzerinde ölçülen ateş stresi aksiyon potansiyelleri.</div>
+          </div>
           <div class="chips">
-            <span class="chip"><span class="math">0.5–5 Hz</span> bant aralığı</span>
-            <span class="chip"><span class="math">5–50 mV</span> genlik</span>
-            <span class="chip amb"><span class="math">−33.4 mV</span> ateş imzası</span>
+            <span class="chip"><span class="math">0.5–5 Hz</span> spesifik bant aralığı</span>
+            <span class="chip"><span class="math">5–50 mV</span> aksiyon genliği</span>
+            <span class="chip amb"><span class="math">−33.4 mV</span> alt eşik imzası</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footnotes">
+      <span>[3] 1-B Geçiçi Isı İletim Denklemi (Transient Heat Conduction Equation).</span>
+    </div>
+  </section>
+
+  <!-- 05 DONANIM 1 (MİMARİ) -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow reveal">03.1 · TEKNOLOJİ · DONANIM (MATERYAL)</div>
+      <h1 class="title reveal">Doğayla bütünleşen <span class="accent">Korozyonsuz</span> Kök-Elektrot</h1>
+      <div class="grid g2 reveal" style="margin-top:3rem">
+        <div class="block hi">
+          <h3>Biyomimetik Üç Katmanlı Tasarım</h3>
+          <p style="margin-bottom: 2rem;">
+            Orman zemininde plastik kılıflı metal kablolar aylar içinde oksitlenir. 
+            Çözümümüz; çelik çekirdek, iletken grafit matris ve sodyum aljinat hidrojelden oluşan 
+            paslanmaz ve mantar ağını kendine çeken biyo-uyumlu elektrottur.
+          </p>
+          <ul class="clean">
+            <li>Sodyum Aljinat Hidrojel: Canlı dokuyu simüle eder.</li>
+            <li>İletken Grafit Matris: Korozyonu önler, empedansı düşürür.</li>
+            <li>316L Çelik Çekirdek: Fiziksel dayanım ve yeraltı penetrasyonu.</li>
+          </ul>
+        </div>
+        <div class="fig-wrap">
+          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;max-width:440px;margin: 0 auto;">
+          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 5:</span> Geliştirilen üç katmanlı biyomimetik elektrot kesiti.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DONANIM 2 (ELEKTRONİK) -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow reveal">03.2 · TEKNOLOJİ · DONANIM (ELEKTRONİK AĞ)</div>
+      <h1 class="title reveal">Toprak altından buluta: <span class="accent">Mesh Gateway Mimari</span></h1>
+      <div class="grid g-wide reveal" style="margin-top:3rem">
+        <div class="block">
+          <h3>Düşük Güç, Yüksek Kapsama</h3>
+          <p style="margin-bottom: 2rem;">
+            Biyoelektrik sinyaller yüksek hassasiyetli 16-bit ADC (ADS1115) ile dijitalleştirilir 
+            ve mikrodenetleyici (ESP32) üzerinde ön işleme tabi tutulur. 
+            Veriler, orman örtüsünü aşabilen Sub-GHz LoRaWAN ağı ile merkeze iletilir.
+          </p>
+          <ul class="clean">
+            <li><b>Uçta İşlem (Edge Computing):</b> Veri yığınını değil, sadece alarm anormalliğini iletir.</li>
+            <li><b>LoRaWAN 868 MHz:</b> Vadi içlerinde 10-15 km menzilli mesh haberleşme.</li>
+            <li><b>Enerji Verimliliği:</b> Sadece uyandırma kesmelerinde iletim yaparak pili korur.</li>
+          </ul>
+        </div>
+        <div class="fig-wrap">
+          <img src="figures/system_architecture.png" alt="Sistem Mimarisi" style="width:100%; margin-top: 2rem;">
+          <div class="figcap"><span class="caption-lbl">Şekil 6:</span> Teraryumdan bulut SaaS paneline tam yığın (full-stack) haberleşme mimarisi.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 YAPAY ZEKA 1 (SİNYAL) -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow reveal">03.3 · TEKNOLOJİ · YAPAY ZEKA (SİNYAL İŞLEME)</div>
+      <h1 class="title reveal">Saf Gürültüden <span class="accent">Öznitelik</span> Çıkarımı</h1>
+      <div class="grid g-wide reveal" style="margin-top:3rem">
+        <div class="block hi">
+          <h3>FIR Filtreleme ve FFT Çözümlemesi</h3>
+          <p style="margin-bottom: 2rem;">
+            Doğal ortamdaki toprak empedansı ve nem dalgalanmaları sinyali kirletir. 
+            Ham DC gerilim üzerinden 5-tap FIR filtresi geçirilerek çevresel parazitler sönümlenir.
+          </p>
+          <ul class="clean">
+            <li>Ortalama alma tabanlı DC offset kalibrasyonu (<span class="math">x̄_50</span>).</li>
+            <li>Hızlı Fourier Dönüşümü (FFT) ile frekans domenine geçiş.</li>
+            <li>Dominant frekansın (20 Hz'den 5 Hz'e kayma) milisaniyeler içinde tespiti.</li>
+          </ul>
+        </div>
+        <div class="fig-wrap">
+          <img src="figures/ai_pipeline.png" alt="Sinyal işleme boru hattı" style="width:100%;">
+          <div class="figcap"><span class="caption-lbl">Şekil 7:</span> Sensör donanımından karar mekanizmasına uzanan uçtan uca (end-to-end) işleme hattı.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 YAPAY ZEKA 2 (FÜZYON) -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow reveal">03.4 · TEKNOLOJİ · YAPAY ZEKA (KARAR MODELİ)</div>
+      <h1 class="title reveal">Sensör Füzyonu ile <span class="warn">&lt; %1 Yanlış Alarm</span></h1>
+      <div class="grid g2 reveal" style="margin-top:3rem">
+        <div class="block">
+          <h3>Çok Boyutlu Karar: AND-Gate & LSTM</h3>
+          <p style="margin-bottom: 1.5rem;">
+            Yanlış alarm, orman sistemlerinde operasyonel maliyeti yıkıcı derecede artırır. 
+            Tek bir voltaj eşiği kullanmak yerine; LSTM tabanlı zaman serisi tahmini ve mantıksal 
+            AND-gate füzyonu ile kesinlik (precision) maksimize edilir.
+          </p>
+          <p class="data" style="margin-bottom: 1.5rem; font-family: var(--f-serif);">
+            Alarm Koşulu = (dT/dt > &beta;) &and; (dR/dt > &gamma;) &and; (f_spike &isin; [0.5, 5] Hz)
+          </p>
+          <div class="fig-wrap">
+            <img src="figures/fusion_separability.png" alt="Karar sınırları" style="max-height: 25vh;">
+            <div class="figcap"><span class="caption-lbl">Şekil 8:</span> Ayırt edici öznitelik uzayında LSTM karar sınırı.</div>
           </div>
         </div>
         <div class="fig-wrap">
-          <img src="figures/signal_time.png" alt="Biyoelektrik sinyal: normal vs ateş stresi">
+          <img src="figures/roc.png" alt="ROC Eğrisi" style="max-height: 45vh;">
+          <div class="figcap"><span class="caption-lbl">Şekil 9:</span> Tek eşik değerine kıyasla Füzyon modelinin Performans Karakteristiği (ROC). Eğri altında kalan alan (AUC) füzyon ile belirgin şekilde artmıştır.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 05 CORE TECH -->
-  <section class="slide">
-    <div class="inner">
-      <div class="eyebrow reveal">03 · YENİLİKÇİ YÖN · TÜBİTAK Kriter 1</div>
-      <h1 class="title reveal">Biyomimetik Donanım <span class="accent">&</span> Yapay Zeka Füzyonu</h1>
-      <div class="grid g2 reveal" style="margin-top:3rem">
-        <div class="block hi">
-          <h3>Donanım: Korozyonsuz Okuma</h3>
-          <p style="margin-bottom: 2rem;">
-            Çelik çekirdek, grafit matris ve aljinat hidrojelden oluşan 3 katmanlı biyo-uyumlu elektrot. 
-            Doğayla bütünleşir, paslanmaz.
-          </p>
-          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;max-width:380px;">
-        </div>
-        <div class="block">
-          <h3>Yazılım: Hedef &lt; %1 Yanlış Alarm</h3>
-          <p style="margin-bottom: 2rem;">
-            Tek boyutlu eşik yerine; Isı ivmesi + Direnç ivmesi + Spike frekansını 
-            aynı anda değerlendiren AND-gate mantığı.
-          </p>
-          <div class="fig-wrap">
-            <img src="figures/fusion_separability.png" alt="Sensör füzyonu AND-gate" style="max-width: 440px;">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 PROOF -->
+  <!-- 09 PROOF -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">04 · DOĞRULAMA KANITI · TRL 3 → 4</div>
-      <h1 class="title reveal">Hipotezi laboratuvarda <span class="accent">doğruladık.</span></h1>
+      <h1 class="title reveal">Hipotezi laboratuvar ortamında <span class="accent">doğruladık.</span></h1>
       <div class="grid g2 reveal" style="margin-top:2.5rem">
         <div>
           <div class="grid g2" style="gap:1rem;margin-bottom:3rem">
@@ -449,6 +553,7 @@ ul.clean li::before{
           </div>
           <div class="fig-wrap">
             <img src="figures/fft_spectrum.png" alt="FFT genlik spektrumu">
+            <div class="figcap"><span class="caption-lbl">Şekil 10:</span> FFT spektrumunda ateş stresi altındaki frekans tepkisi.</div>
           </div>
         </div>
         <div>
@@ -456,15 +561,15 @@ ul.clean li::before{
             <img src="../media/Deney.png" alt="Laboratuvar deney düzeneği" loading="lazy">
           </div>
           <p class="figcap">
-            İklim kabini termal şok testleri. Pleurotus ostreatus ağı üzerinde 
-            ESP32 ve ADS1115 kullanılarak gerçek biyoelektrik verisi elde edilmiştir.
+            <span class="caption-lbl">Şekil 11:</span> İklim kabini termal şok testleri. Pleurotus ostreatus ağı üzerinde 
+            ESP32 ve yüksek çözünürlüklü ADC kullanılarak canlı veri elde edilmiştir.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 07 MARKET -->
+  <!-- 10 MARKET -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">05 · TİCARİLEŞME</div>
@@ -472,35 +577,39 @@ ul.clean li::before{
       <div class="grid g2 reveal" style="margin-top:3rem">
         <div class="funnel">
           <div class="frow">
-            <div class="fbar" style="width:100%;background:var(--primary)">TAM · $2.4 Mr</div>
+            <div class="fbar" style="width:100%;background:var(--primary)">TAM · $2.4 Milyar</div>
           </div>
-          <div class="fmeta">Küresel Orman Yangını Tespiti · %8.5 YBBO</div>
+          <div class="fmeta">Küresel Orman Yangını Tespit Sistemleri Pazarı<span class="ref">[4]</span><br>
+             <span style="color:var(--text-light); font-size: 0.9em;">(Büyüme Oranı: %8.5 CAGR)</span></div>
           
           <div class="frow" style="margin-top:1rem">
-            <div class="fbar" style="width:65%;background:#52525B">SAM · $450 M</div>
+            <div class="fbar" style="width:65%;background:#52525B">SAM · $450 Milyon</div>
           </div>
-          <div class="fmeta">Akdeniz Kuşağı & ABD & Avustralya</div>
+          <div class="fmeta">Akdeniz İklim Kuşağı, Batı ABD & Avustralya</div>
           
           <div class="frow" style="margin-top:1rem">
-            <div class="fbar" style="width:30%;background:var(--accent)">SOM · $35 M</div>
+            <div class="fbar" style="width:30%;background:var(--accent)">SOM · $35 Milyon</div>
           </div>
-          <div class="fmeta">Türkiye B2B & B2G Pazarı</div>
+          <div class="fmeta">Türkiye B2B & B2G Yangın Savunma Pazarı</div>
         </div>
         <div>
           <div class="block hi">
-            <h3>Giriş Basamakları</h3>
+            <h3>Pazara Giriş Stratejisi</h3>
             <ul class="clean" style="margin-top:1.5rem">
-              <li>Aşama 1: Enerji ve maden şirketleri (Zorunlu ESG Raporlama).</li>
-              <li>Aşama 2: Avrupa Ormancılık Kooperatifleri.</li>
-              <li>Aşama 3: TRL 8 kanıtı ile ABD kamu ihaleleri.</li>
+              <li>Aşama 1: Enerji ve madencilik alanları (Zorunlu ESG risk raporlamaları nedeni ile alıma en hazır segment).</li>
+              <li>Aşama 2: Avrupa Ormancılık Kooperatifleri (İklim krizinden en çok etkilenen pilot bölgeler).</li>
+              <li>Aşama 3: TRL 8 saha kanıtı sonrası ABD ve Avustralya kamu ihaleleri.</li>
             </ul>
           </div>
         </div>
       </div>
     </div>
+    <div class="footnotes">
+      <span>[4] Grand View Research, Forest Fire Detection Market Report, 2024.</span>
+    </div>
   </section>
 
-  <!-- 08 COMPETITION -->
+  <!-- 11 COMPETITION -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">06 · REKABET</div>
@@ -511,42 +620,45 @@ ul.clean li::before{
             <tr>
               <th>Kriter</th>
               <th>Mycellium-Aegis</th>
-              <th>Dryad (IoT)</th>
-              <th>Pano AI</th>
+              <th>Dryad Networks (IoT)</th>
+              <th>Pano AI (Kamera)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th>Yaklaşım</th>
-              <td class="us">Proaktif, Hücresel</td>
-              <td class="no">Reaktif, Gaz</td>
-              <td class="no">Reaktif, Görüntü</td>
+              <th>Tespit Yaklaşımı</th>
+              <td class="us">Proaktif, Hücresel İletim</td>
+              <td class="no">Reaktif, Partikül/Gaz</td>
+              <td class="no">Reaktif, Optik Görüntü</td>
             </tr>
             <tr>
-              <th>Kör Nokta Tespiti</th>
-              <td class="us">+ Tamamen kapalı</td>
-              <td class="no">- Kısmen (Rüzgâr bağımlı)</td>
-              <td class="no">- Görüş hattı şart</td>
+              <th>Kör Nokta Tespit Yeteneği</th>
+              <td class="us">+ Tamamen Kapalı, Sınır Yok</td>
+              <td class="no">- Rüzgâr ve Topografyaya Bağımlı</td>
+              <td class="no">- Kesin Görüş Hattı (LoS) Şart</td>
             </tr>
             <tr>
-              <th>Donanım Korozyonu</th>
-              <td class="us">+ Biyo-uyumlu, Korozyonsuz</td>
-              <td class="no">- Pil ve plastik bazlı</td>
-              <td class="no">- Metal kule ve panel</td>
+              <th>Donanım Korozyon Direnci</th>
+              <td class="us">+ Biyo-uyumlu Aljinat, Korozyonsuz</td>
+              <td class="no">- Lityum Pil ve Plastik Gövde</td>
+              <td class="no">- Metal Kule ve Güneş Paneli</td>
             </tr>
             <tr>
-              <th>Tespit Gecikmesi</th>
-              <td class="us">Duman öncesi (Anında)</td>
-              <td class="no">30–60 dakika</td>
-              <td class="no">Duman görünürse</td>
+              <th>Bildirim Gecikme Süresi</th>
+              <td class="us">Isı Şokunda (Duman Çıkmadan)</td>
+              <td class="no">30–60 Dakika Kayıp</td>
+              <td class="no">Duman Görünür Hale Geldiğinde</td>
             </tr>
           </tbody>
         </table>
+        <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 1.1rem; padding-left: 1rem; border-left: 2px solid var(--accent);">
+          <span class="caption-lbl">Tablo 1:</span> Ticarileşmiş alternatif orman yangını tespit sistemlerinin karşılaştırması. Görüldüğü üzere, yer altından bağımsız ve proaktif ölçüm yapabilen tek teknoloji biyolojik sinyal tabanlı tasarımdır.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- 09 BUSINESS MODEL -->
+  <!-- 12 BUSINESS MODEL -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">07 · İŞ MODELİ</div>
@@ -555,49 +667,50 @@ ul.clean li::before{
         <div class="block">
           <h3>Aegis-Nexus Kurulumu (CAPEX: B2G)</h3>
           <p>
-            1 Ağ Geçidi + 100 Sensör Düğümü kamuya tek seferlik satışla kurulur. 
-            Maliyetin hızlı geri dönüşünü sağlar.
+            1 Ağ Geçidi + 100 Sensör Düğümünden oluşan sistem kamuya tek seferlik satışla kurulur. 
+            Maliyetin hızlı geri dönüşünü (payback) sağlar ve sahada fiziksel tutunma (lock-in) yaratır.
           </p>
           <div class="data" style="margin-top:1.5rem;font-size:1.4rem">360.000 TL / Referans Paket</div>
         </div>
         <div class="block hi">
           <h3>Yıllık Risk SaaS Analitiği (ARR: B2B)</h3>
           <p>
-            Özel sektör (Enerji, Kağıt, Maden) için donanım düşük marjla verilir. 
-            Asıl kârlılık, yangın analitik panosunun yıllık yenilenen lisansından gelir.
+            Özel sektör (Enerji tesisleri, Kağıt, Maden) için donanım düşük kâr marjıyla sahaya verilir. 
+            Asıl ölçeklenebilir kârlılık, yapay zeka yangın analitik panosunun yıllık yenilenen bulut lisansından elde edilir.
           </p>
           <div class="chips" style="margin-top:1.5rem">
-            <span class="chip hi">Gelecek vizyonu: Karbon kredisi izleme entegrasyonu</span>
+            <span class="chip hi">Gelecek Vizyonu: Biyoçeşitlilik ve Karbon Kredisi İzleme Entegrasyonu</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 10 FINANCIALS -->
+  <!-- 13 FINANCIALS -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">08 · FİNANSAL PROJEKSİYON</div>
       <h1 class="title reveal">Ticari bağımsızlık için <span class="accent">5 paket yeterli.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:2.5rem">
+      <div class="grid g-wide reveal" style="margin-top:2.5rem">
         <div class="fig-wrap">
-          <img src="figures/breakeven.png" alt="Başa baş analizi">
+          <img src="figures/breakeven.png" alt="Başa baş analizi" style="max-height: 48vh;">
+          <div class="figcap"><span class="caption-lbl">Şekil 12:</span> Gelir-Maliyet ve başa baş (break-even) noktası projeksiyonu.</div>
         </div>
         <div class="block">
           <ul class="clean">
-            <li>Birim Paket Marjı: <span class="data">200.000 TL</span> (360k - 160k)</li>
-            <li>18 Aylık Sabit Gider: <span class="data">≈ 880.000 TL</span> (AR-GE, IP, Kira)</li>
-            <li>Çekirdek Fon: TÜBİTAK 1812 <span class="data">1.350.000 TL</span></li>
+            <li>Birim Paket Kâr Marjı: <span class="data">200.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(360k Satış Fiyatı - 160k Üretim/Kurulum)</span></li>
+            <li>18 Aylık Sabit Gider Planı: <span class="data">≈ 880.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(AR-GE Sarf Malzeme, IP, Bulut Sunucu, Kira)</span></li>
+            <li>Çekirdek Fon İhtiyacı: <span class="data">1.350.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(TÜBİTAK 1812 BİGG Desteği ile Karşılanacaktır)</span></li>
           </ul>
-          <p style="margin-top:2.5rem;color:var(--primary);font-size:1.3rem;">
-            Sonuç: Sadece 5 referans paket satışıyla başa baş noktasına ulaşıyoruz.
+          <p style="margin-top:3rem;color:var(--primary);font-size:1.3rem;">
+            Sonuç: Piyasaya sürülen sadece ilk 5 referans paket satışı ile projemiz kârlılığa geçmekte ve dış yatırıma ihtiyaç duymadan kendini idame ettirebilmektedir.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 11 ROADMAP -->
+  <!-- 14 ROADMAP -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">09 · YOL HARİTASI</div>
@@ -627,14 +740,13 @@ ul.clean li::before{
     </div>
   </section>
 
-  <!-- 12 TEAM & CLOSE -->
+  <!-- 15 TEAM & CLOSE -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">10 · EKİP & KAPANIŞ</div>
       <h1 class="title reveal">Bu işi neden biz yapabiliriz?</h1>
       <p class="lead reveal" style="margin-bottom:3.5rem;max-width:80ch">
-        Çünkü donanım, biyo-materyal, bulut analitiği ve ticari süreçleri dışarıdan hizmet 
-        almadan çekirdek ekibimizle yönetiyoruz.
+        Çünkü biyomateryal tasarımı, IoT sensör mimarisi, yapay zeka bulut analitiği ve B2B ticari süreçlerini dışarıdan bağımsız olarak çekirdek ekibimizle uçtan uca yönetiyoruz.
       </p>
       
       <div class="team reveal">
@@ -686,7 +798,7 @@ ul.clean li::before{
 </main>
 
 <div class="brand"><span>◆</span> MYCELLIUM-AEGIS</div>
-<div class="counter"><em id="cnum">01</em> / <span id="ctot">12</span></div>
+<div class="counter"><em id="cnum">01</em> / <span id="ctot">15</span></div>
 <div class="progress" id="prog"></div>
 
 <script>
