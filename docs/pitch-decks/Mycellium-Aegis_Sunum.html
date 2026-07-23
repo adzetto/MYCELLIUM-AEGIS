@@ -343,21 +343,16 @@ ul.clean li::before{
       <h1 class="title reveal" style="max-width:24ch">
         Ormanın <span class="accent">biyolojik ağını</span> canlı bir sensöre dönüştürüyoruz.
       </h1>
-      <div class="grid g-wide reveal" style="margin-top:2rem;">
-        <div>
-          <p class="lead">
+      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
+        <div style="max-width: 1200px;">
+          <p class="lead" style="text-align: center; margin-bottom: 0;">
             Saha çalışmalarımızda hep aynı sorunu gördük: Sistemler alevi görmeden harekete geçemiyor. 
-            Biz bunu değiştirmek için yola çıktık.
+            Toprak altındaki mantar ağı ısıya anında tepki verir. Bu sinyali duman çıkmadan yakalıyoruz.
           </p>
-          <ul class="clean">
-            <li>Toprak altındaki mantar ağı, ısıya hemen elektriksel tepki verir.</li>
-            <li>Yerin 15 cm altındaki bu sinyali duman çıkmadan yakalıyoruz.</li>
-            <li>Sensör füzyonu ile hangi yönden geldiğini anında bildiriyoruz.</li>
-          </ul>
         </div>
-        <div class="photo-wrap">
-          <img src="../media/teraryum.png" alt="Mycellium-Aegis sistem mimarisi" loading="lazy">
-          <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Biyoelektrotlu prototip teraryum düzeneği.</div>
+        <div class="photo-wrap" style="width: 100%; max-width: 1200px; text-align: center;">
+          <img src="../media/teraryum.png" alt="Mycellium-Aegis sistem mimarisi" loading="lazy" style="max-height: 60vh; object-fit: contain; margin: 0 auto; width: 100%;">
+          <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Biyoelektrotlu prototip teraryum düzeneği ve sistem bileşenleri.</div>
         </div>
       </div>
     </div>
@@ -369,7 +364,7 @@ ul.clean li::before{
       <div class="eyebrow reveal">01 · PROBLEM</div>
       <h1 class="title reveal">Bugünün sistemleri <span class="warn">görüş hattına</span> mahkûm.</h1>
       <div class="grid g-problem reveal" style="margin-top:2.5rem">
-        <div class="grid" style="gap:2rem">
+        <div class="grid" style="gap:3.5rem">
           <div class="block">
             <span class="num-ix">01</span>
             <h3>Görüntü İşleme Yetersizliği</h3>
@@ -451,7 +446,7 @@ ul.clean li::before{
           </ul>
         </div>
         <div class="fig-wrap">
-          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;max-width:440px;margin: 0 auto;">
+          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;margin: 0 auto;">
           <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 5:</span> Geliştirilen üç katmanlı biyomimetik elektrot kesiti.</div>
         </div>
       </div>
@@ -463,23 +458,22 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">03.2 · TEKNOLOJİ · DONANIM (ELEKTRONİK AĞ)</div>
       <h1 class="title reveal">Toprak altından buluta: <span class="accent">Mesh Gateway Mimari</span></h1>
-      <div class="grid g-wide reveal" style="margin-top:3rem">
-        <div class="block">
-          <h3>Düşük Güç, Yüksek Kapsama</h3>
-          <p style="margin-bottom: 2rem;">
+      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+        <div class="block" style="max-width: 1000px;">
+          <p style="margin-bottom: 1.5rem; font-size: 1.2rem; text-align: center;">
             Biyoelektrik sinyaller yüksek hassasiyetli 16-bit ADC (ADS1115) ile dijitalleştirilir 
             ve mikrodenetleyici (ESP32) üzerinde ön işleme tabi tutulur. 
             Veriler, orman örtüsünü aşabilen Sub-GHz LoRaWAN ağı ile merkeze iletilir.
           </p>
-          <ul class="clean">
-            <li><b>Uçta İşlem (Edge Computing):</b> Veri yığınını değil, sadece alarm anormalliğini iletir.</li>
-            <li><b>LoRaWAN 868 MHz:</b> Vadi içlerinde 10-15 km menzilli mesh haberleşme.</li>
-            <li><b>Enerji Verimliliği:</b> Sadece uyandırma kesmelerinde iletim yaparak pili korur.</li>
+          <ul class="clean" style="flex-direction: row; justify-content: center; gap: 3rem;">
+            <li><b>Uçta İşlem (Edge Computing)</b></li>
+            <li><b>LoRaWAN 868 MHz</b></li>
+            <li><b>Enerji Verimliliği</b></li>
           </ul>
         </div>
-        <div class="fig-wrap">
-          <img src="figures/system_architecture.png" alt="Sistem Mimarisi" style="width:100%; margin-top: 2rem;">
-          <div class="figcap"><span class="caption-lbl">Şekil 6:</span> Teraryumdan bulut SaaS paneline tam yığın (full-stack) haberleşme mimarisi.</div>
+        <div class="fig-wrap" style="width: 100%; max-width: 1200px;">
+          <img src="figures/system_architecture.png" alt="Sistem Mimarisi" style="width:100%; max-height: none;">
+          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 6:</span> Teraryumdan bulut SaaS paneline tam yığın (full-stack) haberleşme mimarisi.</div>
         </div>
       </div>
     </div>
@@ -490,22 +484,21 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">03.3 · TEKNOLOJİ · YAPAY ZEKA (SİNYAL İŞLEME)</div>
       <h1 class="title reveal">Saf Gürültüden <span class="accent">Öznitelik</span> Çıkarımı</h1>
-      <div class="grid g-wide reveal" style="margin-top:3rem">
-        <div class="block hi">
-          <h3>FIR Filtreleme ve FFT Çözümlemesi</h3>
-          <p style="margin-bottom: 2rem;">
+      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+        <div class="block hi" style="max-width: 1000px;">
+          <p style="margin-bottom: 1.5rem; font-size: 1.2rem; text-align: center;">
             Doğal ortamdaki toprak empedansı ve nem dalgalanmaları sinyali kirletir. 
             Ham DC gerilim üzerinden 5-tap FIR filtresi geçirilerek çevresel parazitler sönümlenir.
           </p>
-          <ul class="clean">
-            <li>Ortalama alma tabanlı DC offset kalibrasyonu (<span class="math">x̄_50</span>).</li>
-            <li>Hızlı Fourier Dönüşümü (FFT) ile frekans domenine geçiş.</li>
-            <li>Dominant frekansın (20 Hz'den 5 Hz'e kayma) milisaniyeler içinde tespiti.</li>
+          <ul class="clean" style="flex-direction: row; justify-content: center; gap: 3rem;">
+            <li>DC offset kalibrasyonu (<span class="math">x̄_50</span>)</li>
+            <li>FFT ile frekans domeni</li>
+            <li>Dominant frekans tespiti</li>
           </ul>
         </div>
-        <div class="fig-wrap">
-          <img src="figures/ai_pipeline.png" alt="Sinyal işleme boru hattı" style="width:100%;">
-          <div class="figcap"><span class="caption-lbl">Şekil 7:</span> Sensör donanımından karar mekanizmasına uzanan uçtan uca (end-to-end) işleme hattı.</div>
+        <div class="fig-wrap" style="width: 100%; max-width: 1200px;">
+          <img src="figures/ai_pipeline.png" alt="Sinyal işleme boru hattı" style="width:100%; max-height: none;">
+          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 7:</span> Sensör donanımından karar mekanizmasına uzanan uçtan uca (end-to-end) işleme hattı.</div>
         </div>
       </div>
     </div>
@@ -528,8 +521,8 @@ ul.clean li::before{
             Alarm Koşulu = (dT/dt > &beta;) &and; (dR/dt > &gamma;) &and; (f_spike &isin; [0.5, 5] Hz)
           </p>
           <div class="fig-wrap">
-            <img src="figures/fusion_separability.png" alt="Karar sınırları" style="max-height: 25vh;">
-            <div class="figcap"><span class="caption-lbl">Şekil 8:</span> Ayırt edici öznitelik uzayında LSTM karar sınırı.</div>
+            <img src="figures/fusion_separability.png" alt="Karar sınırları" style="max-height: 25vh; margin: 0 auto;">
+            <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 8:</span> Ayırt edici öznitelik uzayında LSTM karar sınırı.</div>
           </div>
         </div>
         <div class="fig-wrap">
@@ -614,14 +607,14 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">06 · REKABET</div>
       <h1 class="title reveal">Onlar rüzgârı bekliyor, <span class="accent">biz ısıyı okuyoruz.</span></h1>
-      <div class="reveal" style="margin-top:3rem">
-        <table class="cmp">
+      <div class="reveal" style="margin-top:2rem">
+        <table class="cmp" style="margin-top: 1.5rem; font-size: 1.2rem;">
           <thead>
             <tr>
-              <th>Kriter</th>
-              <th>Mycellium-Aegis</th>
-              <th>Dryad Networks (IoT)</th>
-              <th>Pano AI (Kamera)</th>
+              <th style="width: 25%;">Kriter</th>
+              <th style="width: 25%;">Mycellium-Aegis</th>
+              <th style="width: 25%;">Dryad Networks (IoT)</th>
+              <th style="width: 25%;">Pano AI (Kamera)</th>
             </tr>
           </thead>
           <tbody>
@@ -633,15 +626,15 @@ ul.clean li::before{
             </tr>
             <tr>
               <th>Kör Nokta Tespit Yeteneği</th>
-              <td class="us">+ Tamamen Kapalı, Sınır Yok</td>
-              <td class="no">- Rüzgâr ve Topografyaya Bağımlı</td>
-              <td class="no">- Kesin Görüş Hattı (LoS) Şart</td>
+              <td class="us">✓ Tamamen Kapalı, Sınır Yok</td>
+              <td class="no">✗ Rüzgâr ve Topografyaya Bağımlı</td>
+              <td class="no">✗ Kesin Görüş Hattı (LoS) Şart</td>
             </tr>
             <tr>
               <th>Donanım Korozyon Direnci</th>
-              <td class="us">+ Biyo-uyumlu Aljinat, Korozyonsuz</td>
-              <td class="no">- Lityum Pil ve Plastik Gövde</td>
-              <td class="no">- Metal Kule ve Güneş Paneli</td>
+              <td class="us">✓ Biyo-uyumlu Aljinat, Korozyonsuz</td>
+              <td class="no">✗ Lityum Pil ve Plastik Gövde</td>
+              <td class="no">✗ Metal Kule ve Güneş Paneli</td>
             </tr>
             <tr>
               <th>Bildirim Gecikme Süresi</th>
@@ -651,9 +644,18 @@ ul.clean li::before{
             </tr>
           </tbody>
         </table>
-        <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 1.1rem; padding-left: 1rem; border-left: 2px solid var(--accent);">
-          <span class="caption-lbl">Tablo 1:</span> Ticarileşmiş alternatif orman yangını tespit sistemlerinin karşılaştırması. Görüldüğü üzere, yer altından bağımsız ve proaktif ölçüm yapabilen tek teknoloji biyolojik sinyal tabanlı tasarımdır.
-        </p>
+        
+        <div class="grid g2" style="margin-top: 3rem; gap: 2rem;">
+          <p style="color: var(--text-muted); font-size: 1.1rem; padding-left: 1.5rem; border-left: 3px solid var(--accent); line-height: 1.6;">
+            <span class="caption-lbl">Tablo 1:</span> Ticarileşmiş alternatif orman yangını tespit sistemlerinin karşılaştırması. Görüldüğü üzere, yer altından bağımsız ve proaktif ölçüm yapabilen tek teknoloji biyolojik sinyal tabanlı tasarımdır.
+          </p>
+          <div class="block hi" style="padding: 1.5rem; background: var(--bg-subtle);">
+            <h4 style="font-family: var(--f-display); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--primary);">Neden Mycellium-Aegis?</h4>
+            <p style="font-size: 1.05rem; color: var(--text-muted);">
+              Rakipler alevi veya dumanı görmeye ihtiyaç duyar, bu nedenle müdahale için kritik süreler kaybedilir. Biz ise ormanın sinir ağlarını kullanarak duman daha oluşmadan reaksiyon verebiliyoruz.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -824,6 +826,8 @@ ul.clean li::before{
     cur=i; update();
     history.replaceState(null,'','#'+(i+1));
   }
+  
+  window.go = go;
   
   const start=parseInt(location.hash.replace('#',''),10);
   if(start>=1&&start<=total){
