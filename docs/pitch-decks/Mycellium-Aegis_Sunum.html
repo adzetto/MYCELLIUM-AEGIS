@@ -6,34 +6,27 @@
 <title>Mycellium-Aegis — TÜBİTAK 1812 BİGG Sunumu</title>
 <style>
 /* ============================================================
-   MYCELLIUM-AEGIS · Pitch Deck (Corporate White Theme)
-   Fonts: IBM Plex (local) + CMU Serif (local)
-   Palette: Clean, minimalist, high-contrast, professional
+   MYCELLIUM-AEGIS · Pitch Deck (Ultra Minimal, Elegant)
+   No Bold Face, LaTeX Booktabs style, Maximum use of space
    ============================================================ */
 @font-face{font-family:'IBM Plex Sans';font-weight:300;src:url('fonts/IBMPlexSans-Light.ttf') format('truetype')}
 @font-face{font-family:'IBM Plex Sans';font-weight:400;src:url('fonts/IBMPlexSans-Regular.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:500;src:url('fonts/IBMPlexSans-Medium.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:600;src:url('fonts/IBMPlexSans-SemiBold.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:700;src:url('fonts/IBMPlexSans-Bold.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Mono';font-weight:300;src:url('fonts/IBMPlexMono-Light.ttf') format('truetype')}
 @font-face{font-family:'IBM Plex Mono';font-weight:400;src:url('fonts/IBMPlexMono-Regular.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Mono';font-weight:700;src:url('fonts/IBMPlexMono-Bold.ttf') format('truetype')}
 @font-face{font-family:'CMU Serif';font-weight:400;src:url('fonts/CMUSerif-Roman.otf') format('opentype')}
-@font-face{font-family:'CMU Serif';font-weight:700;src:url('fonts/CMUSerif-Bold.otf') format('opentype')}
 @font-face{font-family:'CMU Serif';font-weight:400;font-style:italic;src:url('fonts/CMUSerif-Italic.otf') format('opentype')}
 
 :root{
-  --bg: #FFFFFF;
-  --bg-subtle: #F9FAFB;
-  --text: #111827;
-  --text-muted: #4B5563;
-  --text-light: #9CA3AF;
-  --border: #E5E7EB;
+  --bg: #FCFCFC;
+  --bg-subtle: #F4F4F5;
+  --text: #3F3F46;
+  --text-muted: #52525B;
+  --text-light: #A1A1AA;
+  --border: #D4D4D8;
   
-  --primary: #0F2537; /* Deep Corporate Navy */
-  --accent: #00A389;  /* Mycelium Emerald */
-  --accent-soft: rgba(0,163,137,0.08);
-  --warn: #D95D39;    /* Fire/Warning Terracotta */
-  --warn-soft: rgba(217,93,57,0.08);
+  --primary: #27272A; /* Slate/Charcoal */
+  --accent: #0D9488;  /* Elegant Teal */
+  --warn: #D97706;    /* Amber */
 
   --f-display: 'IBM Plex Sans', system-ui, sans-serif;
   --f-body: 'IBM Plex Sans', system-ui, sans-serif;
@@ -45,48 +38,58 @@
 html,body{height:100%}
 body{
   font-family:var(--f-body);
+  font-weight:300;
   background:var(--bg);
   color:var(--text);
   overflow:hidden;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
+  font-size: 1.15rem; /* Base size increased to fill space */
 }
 ::selection{background:var(--accent);color:var(--bg)}
 
 /* ---- minimalist ambient background ---- */
 .myco-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background: radial-gradient(circle at top right, #f4fdfb 0%, #ffffff 60%);
+  background: radial-gradient(circle at top left, #FFFFFF 0%, #F5F5F5 100%);
 }
-.myco-bg svg{position:absolute;inset:0;width:100%;height:100%;opacity:0.3}
+.myco-bg svg{position:absolute;inset:0;width:100%;height:100%;opacity:0.15}
 .hypha{fill:none;stroke:var(--accent);stroke-linecap:round}
 .node{fill:var(--accent);opacity:0.2}
 
-/* ---- stage & slides ---- */
+/* ---- stage & slides (Using full height better) ---- */
 .stage{position:relative;z-index:1;height:100vh;width:100vw}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;
-  justify-content:center;
-  padding:clamp(1.4rem,5vw,4rem) clamp(1.4rem,7vw,5rem);
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:flex-start; /* Do not center vertically to use space */
+  padding:clamp(3rem,6vw,5rem) clamp(3rem,8vw,6rem);
   opacity:0;visibility:hidden;transform:translateY(12px);
   transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s;
-  overflow-y:auto;overflow-x:hidden}
+  overflow-y:auto;overflow-x:hidden;
+}
 .slide.active{opacity:1;visibility:visible;transform:none}
-.inner{width:100%;max-width:1200px;margin:0 auto}
+.inner{width:100%;max-width:1400px;margin:0 auto;flex-grow:1;display:flex;flex-direction:column}
 
-/* ---- typography & chrome ---- */
-.eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.2em;
-  text-transform:uppercase;color:var(--text-light);display:flex;align-items:center;
-  gap:0.75rem;margin-bottom:1.5rem}
-.eyebrow::before{content:"";width:24px;height:2px;background:var(--accent)}
-.eyebrow b{color:var(--primary);font-weight:700}
+/* ---- typography & chrome (No Bolds) ---- */
+.eyebrow{
+  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;
+  gap:0.75rem;margin-bottom:2.5rem; font-weight: 300;
+}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
 
-h1.title{font-family:var(--f-display);font-weight:700;line-height:1.05;
-  letter-spacing:-0.02em;font-size:clamp(2.2rem,4vw,3.6rem);margin-bottom:1rem;color:var(--primary)}
-.lead{font-size:clamp(1.1rem,1.6vw,1.35rem);line-height:1.6;color:var(--text-muted);
-  max-width:65ch;font-weight:400}
+h1.title{
+  font-family:var(--f-display);font-weight:300;line-height:1.1;
+  letter-spacing:-0.01em;font-size:clamp(2.5rem,5vw,4.2rem);
+  margin-bottom:1.5rem;color:var(--primary);
+}
+.lead{
+  font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.6;color:var(--text-muted);
+  max-width:70ch;font-weight:300; margin-bottom: 2rem;
+}
 
 .accent{color:var(--accent)}
 .warn{color:var(--warn)}
-.data{font-family:var(--f-mono);color:var(--primary);font-weight:700}
+.data{font-family:var(--f-mono);color:var(--primary);font-weight:300; font-size:1.1em;}
 .serif{font-family:var(--f-serif)}
 .math{font-family:var(--f-serif);font-style:italic;color:var(--primary)}
 
@@ -100,139 +103,199 @@ h1.title{font-family:var(--f-display);font-weight:700;line-height:1.05;
 .slide.active .reveal:nth-child(5){transition-delay:.45s}
 .slide.active .reveal:nth-child(6){transition-delay:.55s}
 
-/* ---- clean layout (replacing cards) ---- */
-.grid{display:grid;gap:clamp(1.5rem,3vw,2.5rem)}
+/* ---- layout grids ---- */
+.grid{display:grid;gap:clamp(2rem,4vw,4rem); width:100%;}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g2{grid-template-columns:1fr 1fr}
 
-/* Clean text blocks instead of boxes */
-.block{position:relative;padding-left:1.5rem;border-left:2px solid var(--border)}
-.block h3{font-family:var(--f-display);font-weight:600;font-size:1.25rem;
-  margin-bottom:0.5rem;color:var(--primary);letter-spacing:-0.01em}
-.block p{font-size:1rem;line-height:1.6;color:var(--text-muted)}
-.block .ix{font-family:var(--f-mono);font-size:0.75rem;color:var(--accent);
-  letter-spacing:0.15em;margin-bottom:0.6rem;display:block;font-weight:600}
-.block.hi{border-left-color:var(--accent)}
+/* Clean text blocks */
+.block{
+  position:relative;
+  padding-left:1.8rem;
+  border-left:1px solid var(--border);
+}
+.block h3{
+  font-family:var(--f-display);font-weight:300;font-size:1.6rem;
+  margin-bottom:0.8rem;color:var(--primary);letter-spacing:0;
+}
+.block p{
+  font-size:1.2rem;line-height:1.65;color:var(--text-muted);font-weight:300;
+}
 
-.chip{display:inline-flex;align-items:center;gap:0.5rem;
-  font-family:var(--f-mono);font-size:0.8rem;letter-spacing:0.02em;
-  background:var(--bg-subtle);border:1px solid var(--border);
-  color:var(--text-muted);padding:0.4rem 0.8rem;border-radius:6px;font-weight:600}
-.chip.hi{color:var(--accent);border-color:var(--accent-soft);background:var(--accent-soft)}
-.chip.amb{color:var(--warn);border-color:var(--warn-soft);background:var(--warn-soft)}
-.chips{display:flex;flex-wrap:wrap;gap:0.6rem}
+/* Elegant numeric index for Problem slide */
+.num-ix{
+  font-family:var(--f-serif);
+  font-size:3.5rem;
+  color:var(--border);
+  line-height:1;
+  margin-bottom:0.5rem;
+  display:block;
+  font-weight:400;
+}
+.block:hover .num-ix { color: var(--accent); transition: color 0.3s ease; }
+
+.chip{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-family:var(--f-mono);font-size:1rem;letter-spacing:0.02em;
+  background:transparent;border:1px solid var(--border);
+  color:var(--text-muted);padding:0.5rem 1rem;border-radius:4px;font-weight:300;
+}
+.chip.hi{color:var(--accent);border-color:var(--accent);}
+.chip.amb{color:var(--warn);border-color:var(--warn);}
+.chips{display:flex;flex-wrap:wrap;gap:0.8rem; margin-top: 1.5rem;}
 
 /* stat tiles */
-.stat{font-family:var(--f-display);font-weight:700;letter-spacing:-0.03em;
-  line-height:1;font-size:clamp(2rem,3.5vw,3rem);color:var(--primary)}
-.stat .u{font-size:0.45em;color:var(--text-light);font-weight:500;margin-left:0.2em}
-.tile-lbl{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;
-  text-transform:uppercase;color:var(--text-muted);margin-top:0.6rem}
+.stat{
+  font-family:var(--f-display);font-weight:300;letter-spacing:-0.02em;
+  line-height:1;font-size:clamp(2.5rem,4vw,3.8rem);color:var(--primary);
+}
+.stat .u{font-size:0.4em;color:var(--text-light);font-weight:300;margin-left:0.3em}
+.tile-lbl{
+  font-family:var(--f-mono);font-size:0.9rem;letter-spacing:0.05em;
+  text-transform:uppercase;color:var(--text-muted);margin-top:0.8rem;font-weight:300;
+}
 
 /* minimalist lists */
-ul.clean{list-style:none;display:flex;flex-direction:column;gap:1rem}
-ul.clean li{position:relative;padding-left:1.4rem;font-size:1.05rem;
-  line-height:1.5;color:var(--text-muted)}
-ul.clean li::before{content:"—";position:absolute;left:0;color:var(--accent);font-weight:700}
-ul.clean li b{color:var(--primary);font-weight:600}
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:1.2rem}
+ul.clean li{
+  position:relative;padding-left:1.8rem;font-size:1.2rem;
+  line-height:1.6;color:var(--text-muted);font-weight:300;
+}
+ul.clean li::before{
+  content:"—";position:absolute;left:0;color:var(--accent);font-weight:300;
+}
 
-/* modern comparison table */
-.cmp{width:100%;border-collapse:collapse;font-size:0.95rem}
-.cmp th,.cmp td{text-align:left;padding:1rem;border-bottom:1px solid var(--border)}
-.cmp thead th{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;
-  text-transform:uppercase;color:var(--text-light);font-weight:600}
-.cmp thead th.us{color:var(--primary);background:var(--bg-subtle);border-radius:8px 8px 0 0}
-.cmp tbody th{font-weight:600;color:var(--text-muted);font-family:var(--f-body)}
-.cmp td.us{color:var(--primary);background:var(--bg-subtle);font-weight:600}
-.cmp td.no{color:var(--text-light)}
-.cmp .mk{color:var(--accent);font-weight:700;margin-right:4px}
-.cmp .x{color:var(--warn);margin-right:4px}
+/* LaTeX Booktabs style comparison table */
+.cmp{
+  width:100%;border-collapse:collapse;font-size:1.1rem;
+  margin-top: 1rem;
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+.cmp th,.cmp td{
+  text-align:left;padding:1.2rem 1rem;
+}
+.cmp thead th{
+  font-family:var(--f-serif);font-size:1.2rem;
+  color:var(--primary);font-weight:400;
+  border-bottom: 1px solid var(--primary);
+}
+.cmp tbody tr:not(:last-child) td, .cmp tbody tr:not(:last-child) th {
+  border-bottom: 1px solid var(--border);
+}
+.cmp tbody th{
+  font-weight:400;color:var(--primary);font-family:var(--f-body);
+}
+.cmp td.us{color:var(--accent);font-weight:400;}
+.cmp td.no{color:var(--text-muted);}
 
-/* cover */
-.cover .inner{max-width:100%}
-.cover-title{font-family:var(--f-display);font-weight:700;letter-spacing:-0.03em;
-  line-height:1;font-size:clamp(3.5rem,9vw,6.5rem);color:var(--primary)}
-.cover-sub{font-family:var(--f-display);font-weight:400;
-  font-size:clamp(1.2rem,2vw,1.6rem);color:var(--text-muted);margin-top:0.8rem;
-  letter-spacing:-0.01em;max-width:32ch;line-height:1.4}
-.cover-meta{display:flex;flex-wrap:wrap;gap:2rem;margin-top:3rem;
-  font-family:var(--f-mono);font-size:0.8rem;color:var(--text-light)}
-.cover-meta b{color:var(--primary);font-weight:600;display:block;
-  font-family:var(--f-body);margin-top:0.3rem;font-size:1rem}
+/* Cover */
+.cover{ justify-content: center; } /* Only cover stays vertically centered */
+.cover .inner{max-width:100%; flex-grow:0;}
+.cover-title{
+  font-family:var(--f-display);font-weight:300;letter-spacing:-0.03em;
+  line-height:1;font-size:clamp(4rem,10vw,7.5rem);color:var(--primary);
+}
+.cover-sub{
+  font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.5rem,2.5vw,2rem);color:var(--text-muted);margin-top:1.5rem;
+  letter-spacing:-0.01em;max-width:32ch;line-height:1.5;
+}
+.cover-meta{
+  display:flex;flex-wrap:wrap;gap:4rem;margin-top:4rem;
+  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-light);
+}
+.cover-meta span.title{ display:block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em;}
+.cover-meta span.val{ color:var(--primary); font-family:var(--f-body); font-size:1.2rem; font-weight:300;}
 
 /* figures & imagery */
-.fig-wrap{display:flex;flex-direction:column;align-items:flex-start}
-.fig-wrap img{width:100%;max-height:55vh;object-fit:contain;display:block;border-radius:8px}
-.figcap{font-family:var(--f-mono);font-size:0.75rem;color:var(--text-light);
-  margin-top:0.6rem;letter-spacing:0.02em}
+.fig-wrap{display:flex;flex-direction:column;align-items:flex-start; width: 100%;}
+.fig-wrap img{
+  width:100%;max-height:60vh;object-fit:contain;display:block;
+}
+.figcap{
+  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-light);
+  margin-top:1rem;letter-spacing:0.02em;font-weight:300;
+}
 
-.photo-wrap{border-radius:8px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
-.photo-wrap img{width:100%;max-height:55vh;object-fit:cover;display:block}
+.photo-wrap{overflow:hidden; width: 100%;}
+.photo-wrap img{width:100%;max-height:60vh;object-fit:cover;display:block}
 
 /* roadmap minimal */
-.road{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;position:relative}
-.road::before{content:"";position:absolute;left:0;right:0;top:10px;height:1px;
-  background:var(--border)}
-.milestone{position:relative;padding-top:28px}
-.milestone .dot{position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;
-  background:var(--accent)}
-.milestone .ip{font-family:var(--f-mono);font-size:0.75rem;color:var(--primary);font-weight:700}
-.milestone .mo{font-family:var(--f-mono);font-size:0.7rem;color:var(--text-light);margin:0.2rem 0 0.6rem}
-.milestone h4{font-family:var(--f-display);font-size:1rem;font-weight:600;
-  line-height:1.3;margin-bottom:0.5rem;color:var(--primary)}
-.milestone p{font-size:0.85rem;color:var(--text-muted);line-height:1.5}
-.trl{display:inline-block;font-family:var(--f-mono);font-size:0.65rem;
-  color:var(--accent);background:var(--accent-soft);border-radius:4px;
-  padding:0.2rem 0.5rem;margin-top:0.6rem;font-weight:600}
+.road{display:grid;grid-template-columns:repeat(5,1fr);gap:2rem;position:relative; margin-top: 3rem;}
+.road::before{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:var(--border)}
+.milestone{position:relative;padding-top:32px}
+.milestone .dot{position:absolute;top:7px;left:0;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.milestone .ip{font-family:var(--f-serif);font-size:1.2rem;color:var(--primary);font-weight:400;}
+.milestone .mo{font-family:var(--f-mono);font-size:0.85rem;color:var(--text-light);margin:0.4rem 0 1rem; font-weight:300;}
+.milestone h4{font-family:var(--f-display);font-size:1.25rem;font-weight:300;line-height:1.4;margin-bottom:0.8rem;color:var(--primary)}
+.milestone p{font-size:1.05rem;color:var(--text-muted);line-height:1.6; font-weight:300;}
+.trl{
+  display:inline-block;font-family:var(--f-mono);font-size:0.85rem;
+  color:var(--accent);border:1px solid var(--accent);border-radius:2px;
+  padding:0.3rem 0.6rem;margin-top:1rem;font-weight:300;
+}
 
 /* team */
-.team{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
-.member .role{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:0.05em;
-  color:var(--accent);text-transform:uppercase;font-weight:600}
-.member h4{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:0.2rem 0 0.4rem;color:var(--primary)}
-.member p{font-size:0.9rem;color:var(--text-muted);line-height:1.5}
-.member .av{width:80px;height:80px;border-radius:50%;margin-bottom:1rem;
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5rem; margin-top: 2rem;}
+.member .role{
+  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.05em;
+  color:var(--accent);text-transform:uppercase;font-weight:300;
+}
+.member h4{
+  font-family:var(--f-display);font-weight:300;font-size:1.5rem;
+  margin:0.4rem 0 0.8rem;color:var(--primary);
+}
+.member p{font-size:1.1rem;color:var(--text-muted);line-height:1.6;font-weight:300;}
+.member .av{
+  width:100px;height:100px;border-radius:50%;margin-bottom:1.5rem;
   background:var(--bg-subtle);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
-  overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.03)}
-.member .av img{width:100%;height:100%;object-fit:cover}
-.member .av svg{width:32px;height:32px;fill:var(--text-light)} /* placeholder icon */
+  overflow:hidden;
+}
+.member .av svg{width:40px;height:40px;fill:var(--text-light)}
 
 /* funnel minimal */
-.funnel{display:flex;flex-direction:column;gap:0.8rem}
-.frow{display:flex;align-items:center;gap:1rem}
-.fbar{height:40px;display:flex;align-items:center;
-  padding-left:1rem;font-family:var(--f-mono);font-weight:600;color:#fff;
-  font-size:0.85rem;letter-spacing:0.05em}
-.fmeta{font-size:0.9rem;color:var(--text-muted);line-height:1.4;padding-left:2px}
-.fmeta b{color:var(--primary)}
+.funnel{display:flex;flex-direction:column;gap:1.2rem; width: 100%;}
+.frow{display:flex;align-items:center;gap:1.5rem}
+.fbar{
+  height:48px;display:flex;align-items:center;
+  padding-left:1.5rem;font-family:var(--f-mono);font-weight:300;color:var(--bg);
+  font-size:1rem;letter-spacing:0.05em;
+}
+.fmeta{font-size:1.1rem;color:var(--primary);line-height:1.4;padding-left:2px; font-weight:300;}
 
 /* footer chrome */
-.brand{position:fixed;left:clamp(1.5rem,4vw,3rem);bottom:1.5rem;z-index:5;
-  font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;color:var(--primary);font-weight:600}
-.brand b{color:var(--accent);margin-right:4px}
-.counter{position:fixed;right:clamp(1.5rem,4vw,3rem);bottom:1.5rem;z-index:5;
-  font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;color:var(--text-light)}
-.counter em{color:var(--primary);font-style:normal;font-weight:600}
-.progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);
-  z-index:6;transition:width .5s var(--ease);width:0}
+.brand{
+  position:fixed;left:clamp(1.5rem,4vw,3rem);bottom:2rem;z-index:5;
+  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;color:var(--text-light);font-weight:300;
+}
+.brand span{color:var(--accent);margin-right:8px}
+.counter{
+  position:fixed;right:clamp(1.5rem,4vw,3rem);bottom:2rem;z-index:5;
+  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;color:var(--text-light);font-weight:300;
+}
+.counter em{color:var(--primary);font-style:normal;}
+.progress{
+  position:fixed;left:0;top:0;height:2px;background:var(--accent);
+  z-index:6;transition:width .5s var(--ease);width:0;
+}
 
 @media(max-width:820px){
   body{overflow:auto}
   .stage{height:auto}
   .slide{position:relative;opacity:1;visibility:visible;transform:none;
-    min-height:100vh;overflow:visible;padding-top:4rem}
+    min-height:100vh;overflow:visible;padding-top:6rem}
   .g3,.g2,.team,.road{grid-template-columns:1fr}
   .road::before{display:none}.milestone{padding-top:10px}
   .milestone .dot{display:none}
-  .cover-title{font-size:clamp(2.8rem,12vw,4rem)}
+  .cover-title{font-size:clamp(3rem,12vw,5rem)}
   .brand, .counter, .progress {display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ambient network (subtle white theme) -->
 <div class="myco-bg">
   <svg id="myco" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
 </div>
@@ -241,35 +304,44 @@ ul.clean li b{color:var(--primary);font-weight:600}
 
   <!-- 01 COVER -->
   <section class="slide cover active">
-    <div class="inner">
-      <div class="eyebrow reveal">TÜBİTAK 1812 · BİGG · <b>AGY-112 İŞ PLANI</b></div>
+    <div class="inner" style="justify-content:center;">
+      <div class="eyebrow reveal">TÜBİTAK 1812 · BİGG · AGY-112 İŞ PLANI</div>
       <h1 class="cover-title reveal">Mycellium-Aegis</h1>
       <div class="cover-sub reveal">Orman kendi yangınını, daha duman çıkmadan haber versin.</div>
       <div class="cover-meta reveal">
-        <div>ÜRÜN<b>Miselyum tabanlı biyo-hibrit uyarı sistemi</b></div>
-        <div>EKİP<b>Çetin · Yağcıoğlu · Ünal · Göçlü</b></div>
-        <div>EKOSİSTEM<b>İzmir Yüksek Teknoloji Enstitüsü (İYTE)</b></div>
+        <div>
+          <span class="title">Ürün</span>
+          <span class="val">Miselyum tabanlı biyo-hibrit uyarı sistemi</span>
+        </div>
+        <div>
+          <span class="title">Ekip</span>
+          <span class="val">Çetin · Yağcıoğlu · Ünal · Göçlü</span>
+        </div>
+        <div>
+          <span class="title">Ekosistem</span>
+          <span class="val">İzmir Yüksek Teknoloji Enstitüsü</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 02 ELEVATOR (Storytelling focus) -->
+  <!-- 02 ELEVATOR -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">00 · <b>NE YAPIYORUZ</b></div>
+      <div class="eyebrow reveal">00 · NE YAPIYORUZ</div>
       <h1 class="title reveal" style="max-width:24ch">
         Ormanın <span class="accent">biyolojik ağını</span> canlı bir sensöre dönüştürüyoruz.
       </h1>
-      <div class="grid g2 reveal" style="margin-top:1.5rem;align-items:center">
+      <div class="grid g2 reveal" style="margin-top:2rem;">
         <div>
-          <p class="lead" style="margin-bottom:1.5rem">
+          <p class="lead">
             Saha çalışmalarımızda hep aynı sorunu gördük: Sistemler alevi görmeden harekete geçemiyor. 
             Biz bunu değiştirmek için yola çıktık.
           </p>
           <ul class="clean">
-            <li>Toprak altındaki mantar ağı, ısıya <b>hemen elektriksel tepki</b> verir.</li>
-            <li>Yerin 15 cm altındaki bu sinyali <b>duman çıkmadan</b> yakalıyoruz.</li>
-            <li>Sensör füzyonu ile <b>hangi yönden geldiğini</b> anında bildiriyoruz.</li>
+            <li>Toprak altındaki mantar ağı, ısıya hemen elektriksel tepki verir.</li>
+            <li>Yerin 15 cm altındaki bu sinyali duman çıkmadan yakalıyoruz.</li>
+            <li>Sensör füzyonu ile hangi yönden geldiğini anında bildiriyoruz.</li>
           </ul>
         </div>
         <div class="photo-wrap">
@@ -279,26 +351,26 @@ ul.clean li b{color:var(--primary);font-weight:600}
     </div>
   </section>
 
-  <!-- 03 PROBLEM (Rule of three) -->
+  <!-- 03 PROBLEM -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">01 · <b>PROBLEM</b></div>
+      <div class="eyebrow reveal">01 · PROBLEM</div>
       <h1 class="title reveal">Bugünün sistemleri <span class="warn">görüş hattına</span> mahkûm.</h1>
-      <div class="grid g2 reveal" style="align-items:center;margin-top:1.5rem">
+      <div class="grid g2 reveal" style="margin-top:2.5rem">
         <div>
-          <div class="grid" style="gap:2rem">
+          <div class="grid" style="gap:3rem">
             <div class="block">
-              <span class="ix">01 · KÖRLÜK</span>
+              <span class="num-ix">01</span>
               <h3>Görüntü İşleme Yetersizliği</h3>
               <p>Yoğun örtü, vadi tabanı ve bulut altında kameralar işlevsiz kalır.</p>
             </div>
             <div class="block">
-              <span class="ix">02 · GECİKME</span>
+              <span class="num-ix">02</span>
               <h3>45–90 Dakika Kayıp</h3>
               <p>Gaz sensörleri rüzgârın dumanı taşımasını bekler, müdahale gecikir.</p>
             </div>
-            <div class="block warn">
-              <span class="ix" style="color:var(--warn)">03 · E-ATIK</span>
+            <div class="block" style="border-left-color: var(--warn);">
+              <span class="num-ix" style="color:var(--warn);">03</span>
               <h3>Ormana Bırakılan Çöp</h3>
               <p>Pil ve plastik tabanlı elektronikler hızla korozyona uğrayıp atıklaşır.</p>
             </div>
@@ -306,7 +378,7 @@ ul.clean li b{color:var(--primary);font-weight:600}
         </div>
         <div class="photo-wrap">
           <img src="../media/3.jpg" alt="İzmir orman yangınları haritası" loading="lazy">
-          <div class="figcap" style="padding:0.8rem">İzmir 2025 · 26.260 ha yanan alan</div>
+          <div class="figcap">İzmir 2025 · 26.260 ha yanan alan</div>
         </div>
       </div>
     </div>
@@ -315,13 +387,13 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 04 SCIENCE -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">02 · <b>BİLİMSEL TEMEL</b></div>
+      <div class="eyebrow reveal">02 · BİLİMSEL TEMEL</div>
       <h1 class="title reveal">Trilyonlarca metrelik sensör ağı: <span class="accent">Wood Wide Web</span></h1>
-      <div class="grid g2 reveal" style="align-items:center;margin-top:1rem">
+      <div class="grid g2 reveal" style="margin-top:2.5rem">
         <div>
-          <p class="lead" style="margin-bottom:1.5rem">
+          <p class="lead">
             Biz yeni bir altyapı kurmuyoruz. Ağaçları birbirine bağlayan miselyum ağının, 
-            ısı şokunda ürettiği <b class="primary">aksiyon potansiyellerini</b> dinliyoruz.
+            ısı şokunda ürettiği <span class="primary">aksiyon potansiyellerini</span> dinliyoruz.
           </p>
           <div class="chips">
             <span class="chip"><span class="math">0.5–5 Hz</span> bant aralığı</span>
@@ -336,29 +408,29 @@ ul.clean li b{color:var(--primary);font-weight:600}
     </div>
   </section>
 
-  <!-- 05 CORE TECH (Minimalist 2-column) -->
+  <!-- 05 CORE TECH -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">03 · <b>YENİLİKÇİ YÖN</b> · TÜBİTAK Kriter 1</div>
+      <div class="eyebrow reveal">03 · YENİLİKÇİ YÖN · TÜBİTAK Kriter 1</div>
       <h1 class="title reveal">Biyomimetik Donanım <span class="accent">&</span> Yapay Zeka Füzyonu</h1>
-      <div class="grid g2 reveal" style="margin-top:2rem">
+      <div class="grid g2 reveal" style="margin-top:3rem">
         <div class="block hi">
-          <span class="ix">DONANIM: KOROZYONSUZ OKUMA</span>
-          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;max-width:320px;margin-bottom:1rem">
-          <p>
-            Çelik çekirdek, grafit matris ve aljinat hidrojelden oluşan <b>3 katmanlı biyo-uyumlu elektrot</b>. 
+          <h3>Donanım: Korozyonsuz Okuma</h3>
+          <p style="margin-bottom: 2rem;">
+            Çelik çekirdek, grafit matris ve aljinat hidrojelden oluşan 3 katmanlı biyo-uyumlu elektrot. 
             Doğayla bütünleşir, paslanmaz.
           </p>
+          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;max-width:380px;">
         </div>
         <div class="block">
-          <span class="ix">YAZILIM: HEDEF <%1 YANLIŞ ALARM</span>
-          <div class="fig-wrap" style="margin-bottom:1rem">
-            <img src="figures/fusion_separability.png" alt="Sensör füzyonu AND-gate">
-          </div>
-          <p>
-            Tek boyutlu eşik yerine; <b>Isı ivmesi + Direnç ivmesi + Spike frekansını</b> 
+          <h3>Yazılım: Hedef &lt; %1 Yanlış Alarm</h3>
+          <p style="margin-bottom: 2rem;">
+            Tek boyutlu eşik yerine; Isı ivmesi + Direnç ivmesi + Spike frekansını 
             aynı anda değerlendiren AND-gate mantığı.
           </p>
+          <div class="fig-wrap">
+            <img src="figures/fusion_separability.png" alt="Sensör füzyonu AND-gate" style="max-width: 440px;">
+          </div>
         </div>
       </div>
     </div>
@@ -367,12 +439,12 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 06 PROOF -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">04 · <b>DOĞRULAMA KANITI</b> · TRL 3 → 4</div>
+      <div class="eyebrow reveal">04 · DOĞRULAMA KANITI · TRL 3 → 4</div>
       <h1 class="title reveal">Hipotezi laboratuvarda <span class="accent">doğruladık.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:1.5rem">
+      <div class="grid g2 reveal" style="margin-top:2.5rem">
         <div>
-          <div class="grid g2" style="gap:1rem;margin-bottom:2rem">
-            <div><div class="stat">20<span class="u">→ 5Hz</span></div><div class="tile-lbl">Frekans Kayması</div></div>
+          <div class="grid g2" style="gap:1rem;margin-bottom:3rem">
+            <div><div class="stat">20<span class="u">→ 5 Hz</span></div><div class="tile-lbl">Frekans Kayması</div></div>
             <div><div class="stat warn">−33<span class="u">mV</span></div><div class="tile-lbl">Ateş İmzası</div></div>
           </div>
           <div class="fig-wrap">
@@ -384,7 +456,7 @@ ul.clean li b{color:var(--primary);font-weight:600}
             <img src="../media/Deney.png" alt="Laboratuvar deney düzeneği" loading="lazy">
           </div>
           <p class="figcap">
-            İklim kabini termal şok testleri. <i>Pleurotus ostreatus</i> ağı üzerinde 
+            İklim kabini termal şok testleri. Pleurotus ostreatus ağı üzerinde 
             ESP32 ve ADS1115 kullanılarak gerçek biyoelektrik verisi elde edilmiştir.
           </p>
         </div>
@@ -392,35 +464,35 @@ ul.clean li b{color:var(--primary);font-weight:600}
     </div>
   </section>
 
-  <!-- 07 MARKET (Clean Funnel) -->
+  <!-- 07 MARKET -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">05 · <b>TİCARİLEŞME</b></div>
+      <div class="eyebrow reveal">05 · TİCARİLEŞME</div>
       <h1 class="title reveal">Global ihtiyaç, <span class="accent">odaklanmış</span> pazara giriş.</h1>
-      <div class="grid g2 reveal" style="align-items:center;margin-top:1.5rem">
+      <div class="grid g2 reveal" style="margin-top:3rem">
         <div class="funnel">
           <div class="frow">
             <div class="fbar" style="width:100%;background:var(--primary)">TAM · $2.4 Mr</div>
           </div>
-          <div class="fmeta"><b>Küresel Orman Yangını Tespiti</b> · %8.5 YBBO</div>
+          <div class="fmeta">Küresel Orman Yangını Tespiti · %8.5 YBBO</div>
           
-          <div class="frow" style="margin-top:0.5rem">
-            <div class="fbar" style="width:65%;background:#1d4363">SAM · $450 M</div>
+          <div class="frow" style="margin-top:1rem">
+            <div class="fbar" style="width:65%;background:#52525B">SAM · $450 M</div>
           </div>
-          <div class="fmeta"><b>Akdeniz Kuşağı & ABD & Avustralya</b></div>
+          <div class="fmeta">Akdeniz Kuşağı & ABD & Avustralya</div>
           
-          <div class="frow" style="margin-top:0.5rem">
+          <div class="frow" style="margin-top:1rem">
             <div class="fbar" style="width:30%;background:var(--accent)">SOM · $35 M</div>
           </div>
-          <div class="fmeta"><b>Türkiye B2B & B2G Pazarı</b></div>
+          <div class="fmeta">Türkiye B2B & B2G Pazarı</div>
         </div>
         <div>
           <div class="block hi">
             <h3>Giriş Basamakları</h3>
-            <ul class="clean" style="margin-top:1rem">
-              <li><b>1. Aşama:</b> Enerji ve maden şirketleri (Zorunlu ESG Raporlama).</li>
-              <li><b>2. Aşama:</b> Avrupa Ormancılık Kooperatifleri.</li>
-              <li><b>3. Aşama:</b> TRL 8 kanıtı ile ABD kamu ihaleleri.</li>
+            <ul class="clean" style="margin-top:1.5rem">
+              <li>Aşama 1: Enerji ve maden şirketleri (Zorunlu ESG Raporlama).</li>
+              <li>Aşama 2: Avrupa Ormancılık Kooperatifleri.</li>
+              <li>Aşama 3: TRL 8 kanıtı ile ABD kamu ihaleleri.</li>
             </ul>
           </div>
         </div>
@@ -431,18 +503,43 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 08 COMPETITION -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">06 · <b>REKABET</b></div>
+      <div class="eyebrow reveal">06 · REKABET</div>
       <h1 class="title reveal">Onlar rüzgârı bekliyor, <span class="accent">biz ısıyı okuyoruz.</span></h1>
-      <div class="reveal" style="margin-top:2rem">
+      <div class="reveal" style="margin-top:3rem">
         <table class="cmp">
-          <thead><tr>
-            <th>Kriter</th><th class="us">Mycellium-Aegis</th><th>Dryad (IoT)</th><th>Pano AI</th>
-          </tr></thead>
+          <thead>
+            <tr>
+              <th>Kriter</th>
+              <th>Mycellium-Aegis</th>
+              <th>Dryad (IoT)</th>
+              <th>Pano AI</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><th>Yaklaşım</th><td class="us">Proaktif · Hücresel</td><td class="no">Reaktif · Gaz</td><td class="no">Reaktif · Görüntü</td></tr>
-            <tr><th>Kör Nokta Tespiti</th><td class="us"><span class="mk">✓</span> Yer altından tam</td><td class="no"><span class="mk">✓</span> Kısmen</td><td class="no"><span class="x">✕</span> Görüş hattı şart</td></tr>
-            <tr><th>Donanım Korozyonu</th><td class="us"><span class="mk">✓</span> Sıfır (Biyo-uyumlu)</td><td class="no"><span class="x">✕</span> Pil ve plastik</td><td class="no"><span class="x">✕</span> Metal kule</td></tr>
-            <tr><th>Tespit Gecikmesi</th><td class="us"><b>Duman öncesi</b></td><td class="no">30–60 dk</td><td class="no">Duman görünürse</td></tr>
+            <tr>
+              <th>Yaklaşım</th>
+              <td class="us">Proaktif, Hücresel</td>
+              <td class="no">Reaktif, Gaz</td>
+              <td class="no">Reaktif, Görüntü</td>
+            </tr>
+            <tr>
+              <th>Kör Nokta Tespiti</th>
+              <td class="us">+ Tamamen kapalı</td>
+              <td class="no">- Kısmen (Rüzgâr bağımlı)</td>
+              <td class="no">- Görüş hattı şart</td>
+            </tr>
+            <tr>
+              <th>Donanım Korozyonu</th>
+              <td class="us">+ Biyo-uyumlu, Korozyonsuz</td>
+              <td class="no">- Pil ve plastik bazlı</td>
+              <td class="no">- Metal kule ve panel</td>
+            </tr>
+            <tr>
+              <th>Tespit Gecikmesi</th>
+              <td class="us">Duman öncesi (Anında)</td>
+              <td class="no">30–60 dakika</td>
+              <td class="no">Duman görünürse</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -452,27 +549,25 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 09 BUSINESS MODEL -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">07 · <b>İŞ MODELİ</b></div>
+      <div class="eyebrow reveal">07 · İŞ MODELİ</div>
       <h1 class="title reveal">Donanımla gir, <span class="accent">SaaS ile büyü.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:2rem">
+      <div class="grid g2 reveal" style="margin-top:3rem">
         <div class="block">
-          <span class="ix" style="color:var(--primary)">CAPEX: B2G ANAHTAR TESLİM</span>
-          <h3>Aegis-Nexus Kurulumu</h3>
+          <h3>Aegis-Nexus Kurulumu (CAPEX: B2G)</h3>
           <p>
             1 Ağ Geçidi + 100 Sensör Düğümü kamuya tek seferlik satışla kurulur. 
             Maliyetin hızlı geri dönüşünü sağlar.
           </p>
-          <div class="data" style="margin-top:1rem;font-size:1.2rem">360.000 TL / Referans Paket</div>
+          <div class="data" style="margin-top:1.5rem;font-size:1.4rem">360.000 TL / Referans Paket</div>
         </div>
         <div class="block hi">
-          <span class="ix">ARR: B2B ABONELİK</span>
-          <h3>Yıllık Risk SaaS Analitiği</h3>
+          <h3>Yıllık Risk SaaS Analitiği (ARR: B2B)</h3>
           <p>
             Özel sektör (Enerji, Kağıt, Maden) için donanım düşük marjla verilir. 
-            Asıl kârlılık, yangın analitik panosunun <b>yıllık yenilenen lisansından</b> gelir.
+            Asıl kârlılık, yangın analitik panosunun yıllık yenilenen lisansından gelir.
           </p>
-          <div class="chips" style="margin-top:1rem">
-            <span class="chip hi">Gelecek: Karbon kredisi izleme entegrasyonu</span>
+          <div class="chips" style="margin-top:1.5rem">
+            <span class="chip hi">Gelecek vizyonu: Karbon kredisi izleme entegrasyonu</span>
           </div>
         </div>
       </div>
@@ -482,19 +577,19 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 10 FINANCIALS -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">08 · <b>FİNANSAL PROJEKSİYON</b></div>
+      <div class="eyebrow reveal">08 · FİNANSAL PROJEKSİYON</div>
       <h1 class="title reveal">Ticari bağımsızlık için <span class="accent">5 paket yeterli.</span></h1>
-      <div class="grid g2 reveal" style="align-items:center;margin-top:1.5rem">
+      <div class="grid g2 reveal" style="margin-top:2.5rem">
         <div class="fig-wrap">
           <img src="figures/breakeven.png" alt="Başa baş analizi">
         </div>
         <div class="block">
           <ul class="clean">
-            <li><b>Birim Paket Marjı:</b> <span class="data">200.000 TL</span> (360k - 160k)</li>
-            <li><b>18 Aylık Sabit Gider:</b> <span class="data">≈ 880.000 TL</span> (AR-GE, IP, Kira)</li>
-            <li><b>Çekirdek Fon:</b> TÜBİTAK 1812 <span class="data">1.350.000 TL</span></li>
+            <li>Birim Paket Marjı: <span class="data">200.000 TL</span> (360k - 160k)</li>
+            <li>18 Aylık Sabit Gider: <span class="data">≈ 880.000 TL</span> (AR-GE, IP, Kira)</li>
+            <li>Çekirdek Fon: TÜBİTAK 1812 <span class="data">1.350.000 TL</span></li>
           </ul>
-          <p style="margin-top:1.5rem;font-weight:600;color:var(--primary);font-size:1.1rem">
+          <p style="margin-top:2.5rem;color:var(--primary);font-size:1.3rem;">
             Sonuç: Sadece 5 referans paket satışıyla başa baş noktasına ulaşıyoruz.
           </p>
         </div>
@@ -505,9 +600,9 @@ ul.clean li b{color:var(--primary);font-weight:600}
   <!-- 11 ROADMAP -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">09 · <b>YOL HARİTASI</b></div>
+      <div class="eyebrow reveal">09 · YOL HARİTASI</div>
       <h1 class="title reveal">Laboratuvardan satışa: 18 aylık plan.</h1>
-      <div class="road reveal" style="margin-top:2.5rem">
+      <div class="road reveal" style="margin-top:4rem">
         <div class="milestone"><div class="dot"></div>
           <div class="ip">Aşama 1</div><div class="mo">Ay 1–6</div>
           <h4>Biyomimetik Donanım</h4>
@@ -532,19 +627,18 @@ ul.clean li b{color:var(--primary);font-weight:600}
     </div>
   </section>
 
-  <!-- 12 TEAM & CLOSE (Storytelling focus on execution capacity) -->
+  <!-- 12 TEAM & CLOSE -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">10 · <b>EKİP & KAPANIŞ</b></div>
+      <div class="eyebrow reveal">10 · EKİP & KAPANIŞ</div>
       <h1 class="title reveal">Bu işi neden biz yapabiliriz?</h1>
-      <p class="lead reveal" style="margin-bottom:2.5rem;font-size:1rem;max-width:80ch">
+      <p class="lead reveal" style="margin-bottom:3.5rem;max-width:80ch">
         Çünkü donanım, biyo-materyal, bulut analitiği ve ticari süreçleri dışarıdan hizmet 
         almadan çekirdek ekibimizle yönetiyoruz.
       </p>
       
       <div class="team reveal">
         <div class="member">
-          <!-- Placeholder SVG for elegant minimalist look -->
           <div class="av">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
           </div>
@@ -578,11 +672,11 @@ ul.clean li b{color:var(--primary);font-weight:600}
         </div>
       </div>
       
-      <div class="reveal" style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)">
-        <h1 class="title accent" style="font-size:clamp(1.5rem,3vw,2.4rem);margin-bottom:0.5rem">
+      <div class="reveal" style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border)">
+        <h1 class="title accent" style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:0.5rem">
           Orman kendi yangınını haber versin.
         </h1>
-        <p class="mut" style="font-size:0.85rem;font-family:var(--f-mono)">
+        <p style="font-size:1.1rem;font-family:var(--f-mono);color:var(--text-light);font-weight:300;">
           Teknik sorularınız için Yedek Slaytlar'a geçebiliriz. Dinlediğiniz için teşekkürler.
         </p>
       </div>
@@ -591,13 +685,11 @@ ul.clean li b{color:var(--primary);font-weight:600}
 
 </main>
 
-<!-- chrome UI -->
-<div class="brand"><b>◆</b> MYCELLIUM-AEGIS</div>
+<div class="brand"><span>◆</span> MYCELLIUM-AEGIS</div>
 <div class="counter"><em id="cnum">01</em> / <span id="ctot">12</span></div>
 <div class="progress" id="prog"></div>
 
 <script>
-/* ---------- deck navigation (Keyboard & Click) ---------- */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prog=document.getElementById('prog');
@@ -639,7 +731,6 @@ ul.clean li b{color:var(--primary);font-weight:600}
   });
   
   document.addEventListener('click', e => {
-    // simple click on right half goes next, left half goes back
     if(e.clientX > window.innerWidth/2) go(cur+1);
     else go(cur-1);
   });
