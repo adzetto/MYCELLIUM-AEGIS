@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.22)  23 JUL 2026 14:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.22)  23 JUL 2026 14:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1138,12 +1138,12 @@ thkerncmss.
 
 {C:/Users/lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/len
 ovo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
-<figures/electrode_cross_section.png, id=24, 313.7175pt x 293.022pt>
+<figures/electrode_cross_section.png, id=24, 330.7995pt x 317.0025pt>
 File: figures/electrode_cross_section.png Graphic file (type png)
 <use figures/electrode_cross_section.png>
 Package pdftex.def Info: figures/electrode_cross_section.png  used on input lin
 e 112.
-(pdftex.def)             Requested size: 164.91072pt x 154.03557pt.
+(pdftex.def)             Requested size: 164.91072pt x 158.03166pt.
 
 Overfull \vbox (59.75269pt too high) detected at line 112
  []
@@ -1154,13 +1154,13 @@ Overfull \vbox (59.75269pt too high) detected at line 112
 r-ts1.enc} <./figures/electrode_cross_section.png>] [3
 
 ]
-<figures/ai_pipeline.png, id=51, 422.7795pt x 224.037pt>
+<figures/ai_pipeline.png, id=51, 461.871pt x 236.52pt>
 File: figures/ai_pipeline.png Graphic file (type png)
 <use figures/ai_pipeline.png>
 Package pdftex.def Info: figures/ai_pipeline.png  used on input line 173.
-(pdftex.def)             Requested size: 350.5399pt x 185.76605pt.
+(pdftex.def)             Requested size: 350.5399pt x 179.51524pt.
 
-Overfull \vbox (116.12679pt too high) detected at line 173
+Overfull \vbox (109.87598pt too high) detected at line 173
  []
 
 [4
@@ -1191,19 +1191,19 @@ Overfull \hbox (13.23767pt too wide) in paragraph at lines 296--296
 [][] 
  []
 
-<figures/roc.png, id=77, 288.0945pt x 239.4765pt>
+<figures/roc.png, id=77, 318.9735pt x 243.09pt>
 File: figures/roc.png Graphic file (type png)
 <use figures/roc.png>
 Package pdftex.def Info: figures/roc.png  used on input line 296.
-(pdftex.def)             Requested size: 167.30147pt x 139.06454pt.
-<figures/fusion_separability.png, id=78, 293.679pt x 254.5875pt>
+(pdftex.def)             Requested size: 167.30147pt x 127.50174pt.
+<figures/fusion_separability.png, id=78, 335.3985pt x 254.916pt>
 File: figures/fusion_separability.png Graphic file (type png)
 <use figures/fusion_separability.png>
 Package pdftex.def Info: figures/fusion_separability.png  used on input line 29
 6.
-(pdftex.def)             Requested size: 167.30147pt x 145.03479pt.
+(pdftex.def)             Requested size: 167.30147pt x 127.15817pt.
 
-Overfull \vbox (88.15031pt too high) detected at line 296
+Overfull \vbox (70.61726pt too high) detected at line 296
  []
 
 [8
@@ -1223,41 +1223,41 @@ Overfull \vbox (10.80528pt too high) detected at line 377
 [11
 
 ]
-<figures/signal_time.png, id=106, 350.5095pt x 234.549pt>
+<figures/signal_time.png, id=106, 404.055pt x 209.583pt>
 File: figures/signal_time.png Graphic file (type png)
 <use figures/signal_time.png>
 Package pdftex.def Info: figures/signal_time.png  used on input line 403.
-(pdftex.def)             Requested size: 191.20082pt x 127.94655pt.
-<figures/fft_spectrum.png, id=107, 339.669pt x 193.815pt>
+(pdftex.def)             Requested size: 191.20082pt x 99.17558pt.
+<figures/fft_spectrum.png, id=107, 352.809pt x 196.1145pt>
 File: figures/fft_spectrum.png Graphic file (type png)
 <use figures/fft_spectrum.png>
 Package pdftex.def Info: figures/fft_spectrum.png  used on input line 403.
-(pdftex.def)             Requested size: 191.20082pt x 109.10051pt.
-<figures/heat_diffusion.png, id=108, 356.094pt x 274.2975pt>
+(pdftex.def)             Requested size: 191.20082pt x 106.28326pt.
+<figures/heat_diffusion.png, id=108, 467.4555pt x 221.409pt>
 File: figures/heat_diffusion.png Graphic file (type png)
 <use figures/heat_diffusion.png>
 Package pdftex.def Info: figures/heat_diffusion.png  used on input line 403.
-(pdftex.def)             Requested size: 191.20082pt x 147.28554pt.
-<figures/directional.png, id=109, 248.346pt x 270.027pt>
+(pdftex.def)             Requested size: 191.20082pt x 90.55867pt.
+<figures/directional.png, id=109, 273.969pt x 297.2925pt>
 File: figures/directional.png Graphic file (type png)
 <use figures/directional.png>
 Package pdftex.def Info: figures/directional.png  used on input line 403.
-(pdftex.def)             Requested size: 191.20082pt x 207.89258pt.
+(pdftex.def)             Requested size: 191.20082pt x 207.48637pt.
 
-Overfull \vbox (268.70023pt too high) detected at line 403
+Overfull \vbox (211.56715pt too high) detected at line 403
  []
 
 [12
 
  <./figures/signal_time.png> <./figures/fft_spectrum.png> <./figures/heat_diffu
 sion.png> <./figures/directional.png>]
-<figures/breakeven.png, id=119, 331.4565pt x 221.7375pt>
+<figures/breakeven.png, id=119, 356.4225pt x 230.9355pt>
 File: figures/breakeven.png Graphic file (type png)
 <use figures/breakeven.png>
 Package pdftex.def Info: figures/breakeven.png  used on input line 415.
-(pdftex.def)             Requested size: 246.96797pt x 165.21663pt.
+(pdftex.def)             Requested size: 246.96797pt x 160.02222pt.
 
-Overfull \vbox (40.77795pt too high) detected at line 415
+Overfull \vbox (35.58354pt too high) detected at line 415
  []
 
 [13
@@ -1317,7 +1317,7 @@ onts/type1/public/cm-super/sfsx1200.pfb><C:/Users/lenovo/AppData/Local/Programs
 /Programs/MiKTeX/fonts/type1/public/cm-super/sftt0800.pfb><C:/Users/lenovo/AppD
 ata/Local/Programs/MiKTeX/fonts/type1/public/cm-super/sftt0900.pfb><C:/Users/le
 novo/AppData/Local/Programs/MiKTeX/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on Mycellium-Aegis_Yedek_Slaytlar.pdf (13 pages, 1013695 bytes).
+Output written on Mycellium-Aegis_Yedek_Slaytlar.pdf (13 pages, 1056678 bytes).
 
 PDF statistics:
  244 PDF objects out of 1000 (max. 8388607)
