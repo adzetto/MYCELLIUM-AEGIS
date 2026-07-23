@@ -1,0 +1,34 @@
+BİGG Ara Değerlendirme Sunum Metni (5 Dakika)
+[00:00 - 00:30] Giriş ve Kısa Özet
+"Değerli jüri üyeleri, merhabalar. Ben Mehmet Çetin. Bugün sizlere, ekibimle birlikte geliştirdiğimiz 'Mycellium-Aegis' projesini sunacağım.
+Girişimimizi 5 kelimeyle özetlemem gerekirse: 'Biyo-hibrit, hücresel erken uyarı sistemi.'
+Bizler; orman yangınlarını, ekosistemin kendi sinir ağını kullanarak, henüz bir kıvılcım felakete dönüşmeden tespit eden derin teknoloji (Deep Tech) tabanlı bir güvenlik kalkanı inşa ediyoruz."
+
+[00:30 - 01:15] Problem ve Mevcut Durum
+"Bugün ormanlarımızı korumak için kullandığımız teknolojiler maalesef reaktif, yani tepkisel çalışıyor. Uydu sistemleri ve yapay zeka destekli kameralar, yangını fark etmek için alevlerin büyümesini, dumanın topografik engelleri aşıp gökyüzüne ulaşmasını bekliyor. Dumanı gördüğümüzde ise ekolojik tahribat çoktan başlamış oluyor.
+Buna çözüm olarak orman tabanına serpiştirilen klasik IoT sensörleri ise bambaşka bir kabus yaratıyor: Kısa pil ömürleri ve korozyon nedeniyle ormanlarımızda devasa bir elektronik atık, yani lityum ve plastik kirliliği oluşuyor. Kısacası, yangını beklerken ormanı kaybediyor, korumaya çalışırken çöplüğe çeviriyoruz."
+
+[01:15 - 01:45] İhtiyaç, Fırsatlar ve Trendler
+"Sadece Türkiye'de 14 milyon hektar ormanımız birinci derece yangın riski altında. Küresel iklim krizi, AFAD ve OGM gibi otoriteleri veya karbon kredisi şirketlerini 'söndürme' odaklı harcamalardan 'erken uyarı ve proaktif koruma' yatırımlarına zorluyor. Küresel pazarda, topografik kör noktalara takılmayan, sürdürülebilir ve zemin gerçekliğine (Ground-Truth) dayanan yeni nesil bir sisteme devasa bir ihtiyaç var."
+
+[01:45 - 02:30] Çözüm ve Görsel Anlatım
+"İşte Mycellium-Aegis tam bu noktada devreye giriyor. Biz ormana yapay bir sensör ağı kurmuyoruz; doğanın milyonlarca yıllık kendi iletişim ağına, yani 'Wood Wide Web' dediğimiz mikorizal mantar ağlarına entegre oluyoruz.
+(Ekrana işaret ederek) Ekranda gördüğünüz yerleşim planında olduğu gibi, yüksek riskli ağaçların izdüşümüne özel geliştirdiğimiz ve doğada çözünebilen korozyon dirençli biyo-elektrotlar yerleştiriyoruz. Bu elektrotlar, orman tabanındaki hücresel stresin yarattığı biyolojik sinyal anomalilerini okuyor. Toplanan veriler, yine ekosistemle görsel uyum içindeki 'Living-Hub' gözlem kulelerimize, ultra düşük enerjili mesh ağlarla iletiliyor. Sistemin çekirdek algoritmasını burada detaylandırmayacağım ancak özetle; yapay zekamız hücresel paniği çevresel gürültülerden kusursuzca ayıklıyor."
+
+[02:30 - 03:00] Değer Önerisi
+"Bu sistemin müşteriye sunduğu benzersiz değer nedir?
+Birincisi; Duman Öncesi (Pre-Smoke) Tespit. Rakiplerimiz yangını görmek için dumanı beklerken, biz hücresel düzeydeki ısıl stresi hissediyoruz.
+İkincisi; Sıfır E-Atık ve Sıfır Bakım (OPEX). Doğa ile bütünleşik iletken substrat yapımız sayesinde pil değişimi ve korozyon derdini ortadan kaldırıyoruz. Ekosistemde görünmez bir dijital bağışıklık sistemi yaratıyoruz."
+
+[03:00 - 03:40] İş Modeli, Satış Planı ve Hedef Pazar
+"Hedef pazarımızda ilk etapta B2G (Kamu) segmentinde OGM ve AFAD gibi kurumlar var. Ancak asıl sürdürülebilir ölçeklenmemizi B2B pazarındaki stratejik enerji nakil hatları, maden sahaları ve premium turizm tesisleri sağlayacak.
+İş modelimiz hibrit bir yapıya sahip. Altyapı kurulumundan tek seferlik bir donanım ve proje geliri elde ederken; asıl kârlılığımızı 7/24 risk analizi sunduğumuz 'SaaS (Yazılım Aboneliği)' modeliyle, tekrarlayan veri lisanslamasından sağlayacağız."
+
+[03:40 - 04:10] Rakip Analizi
+"Pazardaki rakiplerimiz olan uydular veri gecikmesi ve bulutlanma körlüğü yaşarken, optik kameralar vadi tabanlarını göremiyor. Mycellium-Aegis, rakiplerin aksine dışarıdan izleyen bir 'yabancı göz' değil; ormanın içine yerleşen, topografyadan bağımsız çalışan ve bakım maliyetini sıfıra yaklaştıran tek biyo-hibrit çözümdür."
+
+[04:10 - 05:00] Teknoloji, Ekip ve Gelecek Hedefleri
+"Şu an laboratuvar ortamında konsept ispatı (TRL 3) aşamasındayız. Özgün biyo-sinyal okuma ve korozyon önleme algoritmalarımızı ticari sır ve uluslararası patent (PCT) ile koruma altına alma hazırlığındayız.
+Bu vizyonu hayata geçirecek multidisipliner, güçlü bir ekibimiz var: Stratejik yönetim ve sistem mimarisinde ben, yapay zeka ve biyosinyalde Muhammet, IoT altyapısında Ömer ve iletken substrat kimyasında Mahmut Can yer alıyor.
+Önümüzdeki 18 ay içinde TÜBİTAK bütçesiyle saha pilot testlerimizi tamamlamayı ve ilk B2B abonelik sözleşmemizi imzalayarak yatırım turuna çıkmayı hedefliyoruz.
+Dinlediğiniz için teşekkür ederim. Detaylı teknik altyapımız veya iş modelimiz hakkındaki sorularınızı yanıtlamaktan memnuniyet duyarım."
