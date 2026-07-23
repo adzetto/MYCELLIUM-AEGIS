@@ -1,0 +1,20 @@
+\frametitle{Pre-seed $\to $ Seri-A $\to $ stratejik \c {c}{\i }k{\i }\c {s}}\framesubtitle {Yat{\i }r{\i }m \& \c {C}{\i }k{\i }\c {s}}
+  \begin{center}
+    \begin{tikzpicture}[
+      node distance=0.8cm,
+      bblock/.style={rectangle, rounded corners=4pt, fill=loam,
+                    text=spore, minimum width=2.8cm, minimum height=1.6cm,
+                    font=\footnotesize, align=center, text width=2.6cm},
+      arr/.style={-{Stealth[length=5pt]}, thick, color=sage}
+    ]
+      \node[bblock, draw=myco] (bigg) {\textbf{T\"UB\.ITAK B\.IGG}\\{\tiny 1.35\,M\,TL \c{c}ekirdek}\\{\tiny $\sim$\%3 pay $\cdot$ r\"u\c{s}t ispat{\i}}};
+      \node[bblock, draw=indigo, right=of bigg] (seria) {\textbf{Seri-A $\cdot$ VC}\\{\tiny ClimateTech fonlar{\i}}\\{\tiny Avrupa / K.\,Amerika}};
+      \node[bblock, draw=ember, right=of seria] (exit) {\textbf{M\&A}\\{\tiny Siemens $\cdot$ Bosch}\\{\tiny Ericsson --- stratejik}};
+      \draw[arr] (bigg) -- node[above,font=\tiny,color=sage]{TRL 8/9} (seria);
+      \draw[arr] (seria) -- node[above,font=\tiny,color=sage]{\c{C}{\i}k{\i}\c{s}} (exit);
+    \end{tikzpicture}
+  \end{center}
+  \vskip10pt
+  {\footnotesize\color{sage}
+    UNIDO-GCIP temiz teknoloji ek yat{\i}r{\i}m{\i} da de\u{g}erlendirilecek.\\
+    Alternatif: lisanslama + b\"uy\"ume sermayesiyle ba\u{g}{\i}ms{\i}z \"ol\c{c}eklenme.}
