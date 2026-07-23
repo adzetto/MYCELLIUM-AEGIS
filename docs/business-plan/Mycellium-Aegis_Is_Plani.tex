@@ -1,0 +1,816 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\title{}
+\date{}
+
+\begin{document}
+
+% ============================================================
+% KAPAK SAYFASI
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\large\bfseries TÜBİTAK\par}
+{\large TEKNOLOJİ VE YENİLİK DESTEK PROGRAMLARI BAŞKANLIĞI\par}
+{\large (TEYDEB)\par}
+\vspace{1.5cm}
+{\large\bfseries 1812 -- Yatırım Tabanlı Girişimcilik Destekleme Programı\par}
+{\large\bfseries AGY 112 -- İŞ PLANI\par}
+\vspace{2cm}
+\rule{\linewidth}{0.4pt}
+\vspace{1cm}
+{\Huge\bfseries Mycellium-Aegis\par}
+\vspace{0.8cm}
+{\large\itshape Orman Yangınlarında Miselyum Tabanlı Proaktif\par
+Biyo-Hibrit Erken Uyarı Sistemi\par}
+\vspace{1cm}
+\rule{\linewidth}{0.4pt}
+\vspace{2.5cm}
+{\bfseries Kurucu Ekip\par}
+\vspace{0.5cm}
+Mehmet Çetin (CEO) \qquad Muhammet Yağcıoğlu (CTO)\par
+Ömer Ünal (COO) \qquad Mahmut Can Göçlü (CRO)\par
+\vspace{1.5cm}
+İzmir Yüksek Teknoloji Enstitüsü (İYTE) Ekosistemi
+\vfill
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Pazar Fırsatı}
+
+\subsection{Ürün Tanımı}
+
+Mycellium-Aegis, orman ekosisteminin zemininde doğal olarak bulunan ve bitkiler arası madde alışverişini sağlayan mikorizal ağları (literatürde ''Wood Wide Web'' olarak tanımlanan yapıları) biyolojik bir sensör altyapısına dönüştüren orman yangını erken uyarı sistemidir. Mevcut yangın tespit teknolojileri (uydu tabanlı termal görüntüleme, gözetleme kulelerine entegre optik kameralar ve çevresel gaz sensörleri) reaktif bir prensiple çalışmaktadır. Bu sistemler, tehlikeyi yanma reaksiyonu fiziksel bir aleve dönüştüğünde veya atmosfere partikül (duman) salınımı gerçekleştiğinde algılamaktadır. Bulutlanma, sık ağaç örtüsü ve topografik kısıtlılıklar bu sistemlerde veri gecikmelerine (latency) yol açmaktadır. Geleneksel silikon tabanlı çevresel sensörler ise doğada korozyona uğramaları ve batarya atıkları sebebiyle çevresel sürdürülebilirlik açısından dezavantajlara sahiptir.
+
+Sistemin yenilikçi temeli, mikorizal ağların abiyotik çevresel stres faktörlerine (ısı şoku, nem kaybı) verdiği elektrofizyolojik tepkilere dayanmaktadır. Prof. Andrew Adamatzky'nin fungal elektrofizyoloji alanındaki güncel literatür çalışmaları, miselyum ağlarının hücresel strese karşı tıpkı sinir sistemleri gibi elektriksel aksiyon potansiyelleri (spike) ürettiğini göstermektedir. Araştırmalara göre bu elektriksel sinyaller, 0.5 ile 5 Hz frekans bandında ve 5 ila 50 mV genlik aralığında seyretmektedir. Orman tabanında bir yangın başlangıcını simüle eden 300\,\textdegree C üzeri termal radyasyon 15-20 cm toprak altına ulaştığında, hücre zarı empedansı bozulmakta ve kalsiyum iyon dalgalanmaları tetiklenmektedir. Ürünümüz, toprağın altına yerleştirilen ve Adamatzky'nin metodolojisini temel alan 8 kanallı yönsel yıldız (star-shaped) elektrot dizilimi (Kuzey, Kuzeydoğu, Doğu vb. diferansiyel kanallar) kullanarak bu elektriksel patlamaları (bursts) algılamaktadır. Algılanan bu hücresel veriler, yapay zeka destekli düşük güçlü bir LoRaWAN ağ geçidi üzerinden merkezi sunuculara aktarılır. Bu sayede, yangın henüz duman veya alev aşamasına geçmeden mikroklimatik ve hücresel seviyede tespit edilerek yetkili birimlere bildirilmektedir.
+
+\subsection{Müşteri Tanımı}
+
+Mycellium-Aegis sisteminin birincil hedef müşterisi, orman varlıklarının yönetimi ve afet koordinasyonu süreçlerinden sorumlu olan kamu sektörüdür (B2G -- Business to Government). Bu segmentte, Türkiye orman alanlarının büyük kısmının mülkiyetini ve yangınla mücadele operasyonlarını elinde bulunduran Orman Genel Müdürlüğü (OGM) ile Orman Yangınlarıyla Mücadele Dairesi Başkanlığı yer almaktadır. Ayrıca, orman-kent arakesitindeki (WUI) riskli bölgelerin güvenliğini sağlamakla görevli Büyükşehir Belediyeleri İtfaiye Daire Başkanlıkları ile Afet ve Acil Durum Yönetimi Başkanlığı (AFAD) birincil alıcı konumundadır. B2G satın alma birimleri, bütçe kararlarını verirken sistemin doğa koşullarına dayanıklılığına, uzun işletme ömrüne ve özellikle pil değişimi gibi periyodik operasyonel giderlerin (OPEX) düşük olmasına önem vermektedir. Kamu alımları genellikle yüksek teknoloji hazırlık seviyesine (TRL 8 ve üzeri) sahip ürünleri kapsayan tek seferlik sermaye harcaması (CAPEX) ihaleleri ile gerçekleşmektedir.
+
+İkincil müşteri segmentimiz ise ticari faaliyetleri gereği yüksek yangın riski taşıyan özel sektördür (B2B -- Business to Business). Bu grupta, yüksek gerilim enerji nakil hatlarının operatörleri, açık alan maden işletmeleri, endüstriyel selüloz/kâğıt üreticileri ve orman içi eko-turizm tesisleri bulunmaktadır. B2B müşterilerinin satın alma kararları Çevre, Sağlık ve Güvenlik (HSE) veya Sürdürülebilirlik (CSO) yöneticileri tarafından verilmektedir. Bu yöneticilerin temel motivasyonu, tesis varlıklarını yangın riskinden korumak ve yasal bağlayıcılığı artan Çevresel, Sosyal ve Kurumsal Yönetişim (ESG) raporlama standartlarına uyum sağlamaktır. Ticari işletmeler donanım mülkiyetinden ziyade, tesis sınırlarının durumunu anlık izleyebilecekleri abonelik tabanlı Hizmet Olarak Yazılım (SaaS) çözümlerine yönelmektedir. Orta ve uzun vadeli hedef kitlemiz içerisinde ABD Kaliforniya Ormancılık ve Yangından Korunma Departmanı (Cal Fire) ile uluslararası karbon kredisi derecelendirme kuruluşları yer almaktadır.
+
+\subsection{Müşteri İhtiyaçları}
+
+Kamu sektörü (B2G) müşterilerinin orman yangınlarıyla mücadele operasyonlarındaki en temel problemi, mevcut sistemlerin karşılaştığı algısal kısıtlılıklar ve veri iletim gecikmeleridir. İnsansız hava araçları (İHA), termal uydu sistemleri ve gözetleme kulelerindeki optik donanımlar doğrudan görüş alanına (line-of-sight) bağımlıdır. Yoğun ağaç örtüsü altında, derin vadilerde veya sisli meteorolojik koşullarda başlayan bir zemin yangını, duman sütunu orman örtüsünü aşana kadar tespit edilememektedir. Bu operasyonel gecikme, yangının yayılım alanını artırmakta ve söndürme maliyetlerini yükseltmektedir. Dolayısıyla kamu idarelerinin öncelikli ihtiyacı, erken tespit yeteneği ile itfaiye ve hava araçlarının bölgeye intikali için gerekli olan 45 ile 90 dakikalık operasyonel müdahale süresini (early-warning window) kazanabilmektir.
+
+Özel sektör (B2B) müşterilerinin ihtiyacı ise üretim süreçlerinde yangın kaynaklı duruş (downtime) maliyetlerini en aza indirmek ve Yeşil Mutabakat standartlarına uygun bir izleme altyapısı kurmaktır. Mevcut IoT tabanlı çevresel gaz sensörleri, yangın emisyonlarının cihazın konumuna rüzgâr ile taşınmasını gerektirdiği için aerodinamik gecikmelere sebep olmaktadır. Ayrıca, geniş arazilerde lityum pil içeren plastik donanımların kullanımı işletmelerin sürdürülebilirlik ilkeleri ile çelişmekte ve elektronik atık (e-atık) sorunu oluşturmaktadır. Her iki müşteri grubu da optik görüş alanına veya rüzgâr yönüne bağımlı olmayan, 15-20 cm toprak derinliğinde çalışan, periyodik bakım gerektirmeyen ve biyo-çözünür nitelikte bir erken uyarı teknolojisine ihtiyaç duymaktadır.
+
+\subsection{Pazar Büyüklüğü}
+
+Mycellium-Aegis'in hedeflediği pazar, iklim değişikliği kaynaklı sıcaklık artışları, sivil savunma yatırımlarındaki büyüme ve çevresel IoT donanımlarına getirilen regülatif teşviklerin kesiştiği alanda konumlanmaktadır. Küresel orman yangını algılama teknolojileri ve çevresel sensör ağları pazarının birleşimini ifade eden Toplam Erişilebilir Pazar (TAM), endüstri raporlarına göre yıllık ortalama \%8.5 bileşik büyüme oranı (CAGR) ile \textbf{2.4 milyar dolar} hacme ulaşmıştır. Ormanlık alanların karbon yutağı olarak korunmasının uluslararası anlaşmalarla güvence altına alınması ve işletmelerin ESG bütçelerinin artırılması bu pazarın büyüme dinamiklerini desteklemektedir.
+
+Avrupa Yeşil Mutabakatı fonları ile desteklenen Akdeniz ülkeleri (İspanya, İtalya, Yunanistan, Portekiz) ve iklimsel nedenlerle yüksek yangın riski barındıran ABD (Kaliforniya) ile Avustralya bölgeleri, projenin Ulaşılabilir Pazar (SAM) dilimini oluşturmaktadır. Bu segmentin yatırım hacmi yıllık ortalama \textbf{450 milyon dolar} seviyesindedir. Sistemin ilk saha uygulamalarının gerçekleştirileceği Türkiye pazarında ise birinci derece yangın hassasiyeti taşıyan 14 milyon hektarlık Ege ve Akdeniz orman arazileri Hizmet Verilebilir Pazar (SOM) olarak tanımlanmıştır. Orman Genel Müdürlüğü'nün donanım tedarik bütçeleri ile ulusal maden ve enerji şirketlerinin sivil güvenlik yatırımları dikkate alındığında, kısa vadeli yerel pazar potansiyelimizin hacmi \textbf{35 milyon dolar} olarak öngörülmektedir. Pazar, geri dönüştürülebilir ve karbon negatif özellikteki yeni nesil biyosensör ağları için büyüme potansiyeli taşımaktadır.
+
+\subsection{Rekabet Durumu}
+
+Orman yangını tespiti sektöründe farklı teknolojik altyapılarla hizmet veren uluslararası rakipler bulunmaktadır. Birinci önemli rakip, Almanya merkezli Dryad Networks firmasının geliştirdiği Silvanet sistemidir. Bu sistem, ağaç gövdelerine yerleştirilen güneş enerjili LoRaWAN tabanlı elektronik gaz sensörleri ile hidrojen, karbonmonoksit ve uçucu organik bileşikleri (VOC) ölçmektedir. Sistemin temel kısıtı, sensörün reaktif bir çalışma prensibine sahip olması ve havadaki gazın cihaza ulaşması için belirli bir aerodinamik süreye (rüzgâr hızına bağlı olarak 30-60 dakika) ihtiyaç duymasıdır. Ek olarak, donanım satışı ve yazılım aboneliği modeline dayanan sistemin birim cihaz maliyeti 85 USD ile 100 Euro arasında değişmekte ve ormanlık alanda yoğun plastik donanım kullanımını gerektirmektedir.
+
+İkinci önemli oyuncu, ABD merkezli Pano AI şirketidir. Bu girişim, yüksek kulelere entegre edilen 360 derecelik kameralar ve görüntü işleme algoritmaları ile ufuk çizgisinde duman tespiti yapmaktadır. Yüksek bir yazılım (SaaS) geliri üreten bu sistemin sınırlayıcı yönü, doğrudan görüş alanına (line of sight) bağımlı çalışmasıdır. Kameralar, vadi içlerinde veya yoğun orman örtüsü altında başlayan yangınları, duman sütunu ağaç boyunu aşana kadar tespit edememektedir. Ulusal pazarda ise rekabet genellikle savunma sanayii odaklı firmaların yüksek maliyetli termal görüntüleme sistemleri ve insansız hava aracı filoları etrafında şekillenmektedir. Pazarda, yangın duman ve alev öncesi mikroklimatik düzeyde algılayabilen ticari bir biyo-entegre donanım altyapısı bulunmamaktadır.
+
+\subsection{Rekabet Stratejisi}
+
+Mycellium-Aegis'in rekabet stratejisi, iki temel teknolojik farklılaştırma unsuruna dayanmaktadır: Duman Öncesi Yönsel Algılama ve Düşük İşletme Maliyetli (OPEX) Biyomimetik Altyapı. Optik kameralar görüş kısıtlamalarına, konvansiyonel IoT sensörleri ise gazın taşınma süresine bağımlı iken; ürünümüz yerin 15-20 cm altında oluşan sıcaklık akısını ve kofulların birleşmesiyle ortaya çıkan 0.5-5 Hz'lik aksiyon potansiyeli değişimlerini anlık olarak kaydetmektedir. Prof. Adamatzky'nin Wood Wide Web araştırmalarında literatüre kazandırdığı 8 kanallı yıldız şeklindeki (star-shaped) elektrot dizilimi sayesinde, elektriksel sinyalin geldiği açı hesaplanarak yangının yönsel (directional spiking) tespiti sağlanmaktadır. Rakipler dış mekân şartlarında korozyona uğrayan metal ve plastik bileşenler kullanırken, kompostlanabilir PLA/PHA biyo-kasalarımız ve sodyum aljinat kaplı elektrotlarımız sayesinde donanım ömrü uzatılmakta ve periyodik bakım maliyetleri düşürülerek fiyat avantajı elde edilmektedir.
+
+Pazara giriş yol haritamız aşamalı olarak tasarlanmıştır. İlk aşamada, uzun ihale süreçlerine sahip olan kamu (B2G) kanalına paralel olarak, Türkiye pazarında faaliyet gösteren enerji nakil ve maden şirketleriyle (B2B) ESG uyumluluğu çerçevesinde ilk pilot kurulumlar (PoC) ve SaaS sözleşmeleri gerçekleştirilecektir. Elde edilecek TRL 8 saha başarı verileri ile özel ormancılık kooperatiflerinin pazar payının yüksek olduğu Avrupa B2B pazarına giriş sağlanacaktır. Yeterli donanım performansı ve finansal doğrulama sağlandıktan sonra, Avrupa Yeşil Mutabakatı fonlarının destekleriyle teknik akreditasyon süreçleri tamamlanarak ABD Kaliforniya Orman İdaresi (Cal Fire) gibi küresel kamu alıcılarına ulaşılması hedeflenmektedir.
+
+\subsection{Engelleyici Faktörler}
+
+Geliştirilen sensör donanımının laboratuvar ortamından saha uygulamalarına (in-vivo) taşınmasında karşılaşılabilecek öncelikli engel, çevresel faktörlerin (kuraklık, meteorolojik olaylar, vahşi yaşam etkileşimi) miselyum ağlarında elektriksel anomali oluşturarak ''Yanlış Alarm'' (False Positive) üretme riskidir. Bu engelin aşılması için literatürdeki elektrofizyolojik verilere dayanan Dinamik Sensör Füzyonu ve Türevsel Eşik Değer Analizi algoritması geliştirilmiştir. Sistem, doğrusal eşik değerleri yerine diferansiyel denklemlere ve 5 Hz harmonik analizine dayalı bir mantık kapısı (AND gate) kullanmaktadır:
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item \textbf{Sıcaklık İvmesi Türevi ($\frac{dT}{dt}$):} Yüzeydeki ısı kaynağının iletim yoluyla toprağı ısıtma ivmesinin, normal meteorolojik ısınma eğrisini aşarak belirlenen şok eşiğine ($\beta_{threshold}$) ulaşması.
+  \item \textbf{Direnç Türevi ($\frac{dR}{dt}$):} Termal baskının topraktaki kapiler suyu ani buharlaşmaya zorlaması sonucu oluşan keskin elektriksel iletkenlik kaybı ivmesinin ($\gamma_{threshold}$) aşılması.
+  \item \textbf{Fungal Ateşleme Frekansı ($f_{spike}$):} Normal şartlarda ortalama $-2.9$~mV seviyesinde olan biyoelektrik verinin, hücre içi iyon akışıyla $-33.4$~mV genliğine inmesi ve 8 kanallı yıldız elektrot diziliminden okunan 0.5-5 Hz aralığındaki aksiyon potansiyelinin spesifik yönsel (directional burst) frekans sınırını aşması.
+\end{itemize}
+
+Bu üç parametrenin eşzamanlı onayı, çevresel gürültülerin yanlış uyarı oluşturmasını engeller. İkincil risk, toprak altındaki asidik ortamın metal elektrotları oksitleyerek pasivasyona uğratması ve sinyal iletimini durdurmasıdır. Bu duruma karşı Plan A, paslanmaz çelik çekirdek, iletken grafit matris ve organik tutunmayı destekleyen sodyum aljinat hidrojeli içeren biyomimetik bir kaplama kullanılmasıdır. Toprak mikrobiyomunun bu jeli beklenenden hızlı bozundurması ihtimaline karşı Plan B, iletken polimer (PEDOT:PSS) tabanlı transistörler (OECT) veya Elektroaktif Mikroorganizma (EAM) biyofilm köprülerinin kullanımıdır. Üçüncü (idari) engel, OGM arazilerindeki saha test izinlerinin uzama ihtimalidir; bu durum testlerin üniversite Ar-Ge alanlarında veya B2B müşterilere ait özel orman arazilerinde yürütülmesiyle yönetilecektir.
+
+\subsection{Sosyal Fayda}
+
+Mycellium-Aegis, sağladığı ekonomik korumanın yanı sıra çevresel sürdürülebilirlik alanında ölçülebilir katkılar sunmaktadır. Orman yangınlarının duman öncesi (pre-smoke) başlangıç fazında tespit edilmesi; orman tabanındaki mikrobiyal yaşamın, bitki örtüsünün ve fauna popülasyonlarının tahribatını minimize etmekte ve atmosfere yoğun karbon emisyonlarının salınımını sınırlandırmaktadır. Geleneksel sensör üreticileri ormanlık alanlara ağır metal, sentetik plastik ve lityum piller içeren donanımlar yerleştirirken, geliştirilen ürün PLA/PHA biyopolimerleri ve silika kompozit malzemeler kullanılarak doğada çözünebilir özellikte tasarlanmış olup Sıfır Elektronik Atık (Zero E-Waste) hedefine uygunluk göstermektedir.
+
+Buna ek olarak, 15-20 cm toprak derinliğine gömülen sensör kasaları, yüksek sıcaklıklara dirençli pirofilik (ateşcil) mantar türlerinin (örneğin \textit{Pyronema domesticum}) uyku halindeki sporlarını içermektedir. Cihaz kasası, silika katkısı sayesinde belirli bir sıcaklığa (yaklaşık 200.5\,\textdegree C) kadar direnç göstererek karbonize bir koruma bariyeri oluşturur. İç kısımdaki pirofilik sporlar bu ısı şoku (35-45\,\textdegree C) ile aktive olarak, yangın sonrası toprak yüzeyindeki karbonize biyokütleyi (PyOM) parçalamaya başlar ve ekolojik onarım sürecini hızlandırır. Bu özellikler doğrultusunda proje, BM Sürdürülebilir Kalkınma Amaçlarından İklim Eylemi (SKA 13), Karasal Yaşam (SKA 15) ve Sanayi, Yenilikçilik ve Altyapı (SKA 9) ilkeleri ile doğrudan uyumludur ve kırsal alanlardaki yangın kaynaklı ekonomik kayıpları azaltarak toplumsal direnci desteklemektedir.
+
+% ============================================================
+\section{Ürün ve Teknoloji}
+
+\subsection{Değer Önerisi}
+
+Mycellium-Aegis'in orman idareleri (B2G) ve özel endüstri (B2B) müşterilerine sunduğu ana değer önerisi; orman alanlarını çevresel kısıtlamalara tabi olan pasif izleme yöntemlerinden çıkararak, mikroklimatik stres faktörlerini tehlike büyümeden önce dijital verilere dönüştüren biyolojik bir sensör ağı altyapısı sağlamaktır. Sistem, erken müdahale kapasitesini artırarak itfaiye ve yangın söndürme ekiplerinin operasyonel hazırlık süresini genişletmekte ve bu sayede yangın yayılım alanının, söndürme maliyetlerinin ve olası tazminat yüklerinin azaltılmasına olanak tanımaktadır.
+
+Geliştirilen teknolojinin bilimsel temeli, literatürde Wood Wide Web konseptiyle incelenen mikorizal ağların hücresel stres yanıtlarına dayanmaktadır. Sistem; mantar hücre zarlarının ısı şoku altında gösterdiği iyon geçirgenliği değişimlerini, saniyede 0.5 ile 5 Hz frekans aralığında ve 5 ila 50 mV genliğe ulaşan elektriksel aksiyon potansiyelleri (spike) olarak izlemektedir. Isıl radyasyonun kapiler suyu buharlaştırması sonucu oluşan $-33.4$~mV seviyesine inen spesifik elektriksel osilasyonlar, toprak altında 24-bit hassasiyetle analog-dijital dönüştürücüler ile analiz edilmektedir. Bu yapı, işletmelerin Kurumsal Sürdürülebilirlik Raporlaması (ESG) kriterlerine uygun, lityum atığı üretmeyen, karbon negatif ve operasyonel bakım gereksinimi asgari seviyede olan bir erken uyarı donanım modeli sunmaktadır.
+
+\subsection{Teknolojik Rekabet}
+
+Mevcut pazar rakiplerinin nesnelerin interneti (IoT) donanımları ile Mycellium-Aegis arasındaki teknik farklılaşma, biyolojik entegrasyon kapasitesi ve hücresel sinyal işleme hassasiyeti üzerinden gerçekleşmektedir. Endüstri standardı olarak kullanılan Ag/AgCl elektrotlar veya çıplak paslanmaz çelik problar, nemli ve asidik orman toprağına yerleştirildiğinde korozyona uğrayarak oksidasyon tabakası (pasivasyon) oluşturmaktadır. Ayrıca, inorganik ve pürüzsüz yüzeyli metaller mantar hifleri tarafından yabancı madde olarak tanımlandığından, hücreler elektrot yüzeyinden uzaklaşmakta ve elektriksel veri iletimi kesintiye uğramaktadır. Rakiplerin kullandığı duman algılama odaklı sensörler ise ormana bırakılan sentetik polimer (PVC) ve batarya atıkları ile ekolojik standartların gerisinde kalmaktadır.
+
+Mycellium-Aegis donanım mimarisinde, veri iletim sürekliliğini sağlamak amacıyla Üç Katmanlı Biyomimetik Kök-Elektrot tasarımı geliştirilmiştir. Bu yapının merkezinde paslanmaz çelik tel bulunmakta, korozyonu önlemek amacıyla orta katmanda iletken grafit matris kullanılmaktadır. En dış arayüzde ise, su tutma kapasitesi yüksek olan biyo-uyumlu Sodyum Aljinat hidrojeli yer almaktadır. Prof. Adamatzky'nin laboratuvar metodolojileri ışığında, miselyum hücreleri aljinat kaplı yüzeyi biyolojik bir substrat olarak algılayıp kolonize etmektedir. Bu entegrasyon elektriksel empedansı düşürmekte, korozyonu önlemekte ve 0.5-5 Hz bandında oluşan 5-50 mV düzeyindeki zayıf ısıl-şok aksiyon potansiyellerinin mikrodenetleyiciye kayıpsız iletilmesini sağlamaktadır. Elde edilen veriler $\frac{dT}{dt}$, $\frac{dR}{dt}$ ve $f_{spike}$ eşik değer mantık kapılarında analiz edilerek operasyonel güvenilirlik artırılmaktadır.
+
+\subsection{Ürün Fiyatı}
+
+Fiyatlandırma stratejisi, IoT donanım pazarında sürdürülebilirlik sağlayan Tek Seferlik Donanım/Proje Satışı (CAPEX) ve Abonelik Bazlı Hizmet Olarak Yazılım (SaaS / OPEX) hibrit iş modeli üzerine kurgulanmıştır. Devlet ihaleleri (B2G) ve özel sektör bütçelerine (B2B) yönelik tekliflendirmeler, satın alma birimlerinin yatırım ve operasyon gideri tercihlerine göre uyarlanacaktır.
+
+Kamu alımları ve OGM ihale şartnameleri için sistem, Sermaye Harcaması (CAPEX) kalemine uygun biçimde anahtar teslim olarak projelendirilmektedir. Güneş enerjisi modüllü 1 adet Aegis-Nexus Ana Ağ Geçidi (Gateway), orman zeminine 15-20 cm derinlikte yerleştirilen sodyum aljinat kaplı 100 adet 8 kanallı yönsel biyomimetik sensör düğümü ve veri izleme paneli için 1 yıllık analitik SaaS bulut lisansından oluşan standart referans paketin hedef satış fiyatı \textbf{360.000 TL} olarak öngörülmektedir. B2B endüstri müşterileri için ise, donanım tedariki ilk yatırım maliyeti olarak düşük kar marjı ile sunulacak; temel gelir kalemi, yapay zeka tarafından işlenen verilerin tesis yönetim paneline risk analitiği (Dashboard) olarak aktarılmasını sağlayan İşletme Gideri (OPEX) niteliğindeki yıllık SaaS yenileme lisanslarından elde edilecektir. Rakiplerin gaz sensörü donanımlarının yüksek birim maliyetleri ve periyodik pil değişimi zorunlulukları göz önünde bulundurulduğunda, sistem fiyat ve işletme maliyeti rekabetinde avantaj sağlamaktadır.
+
+\subsection{Ürün Maliyeti}
+
+Cihaz tasarımı ve üretim süreçleri, maliyet bileşenlerini optimize etmek üzere Yalın Üretim metodolojisi ve geri dönüştürülebilir malzeme ilkelerine göre tasarlanmıştır. Yüksek maliyetli termal donanımlar, alüminyum/metal şasi yapıları ve lityum polimer bataryalar yerine kompostlanabilir PLA/PHA biyo-plastik kasalar ve düşük enerjili iletim kartları kullanılması parça maliyetlerini azaltmaktadır. Araştırma ve prototipleme işçilikleri dahil edildiğinde, 100 adet sensör düğümü ve 1 adet Ana Dağıtıcı (Gateway) içeren standart referans paketin işletmeye olan toplam üretim ve lojistik maliyeti \textbf{160.000 TL} seviyesindedir.
+
+Üretim maliyetlerinin temel malzeme listesi (BOM); analog sinyalleri işleyen 24-bit okuyucu çipler (ADC), özel tasarımlı baskılı devre kartları (PCB), uyku modu (deep sleep) yeteneğine sahip ESP32 mikrodenetleyicileri ve LoRaWAN RF iletişim (868 MHz) donanımlarından oluşmaktadır. Ek maliyet unsurları; PLA/PHA granüllerinden 3D basım dış kasalar, elektrot bileşenleri olan sodyum aljinat, iletken grafit ve paslanmaz tel, veri aktarımı için bulut (AWS) sunucu barındırma hizmetleri ile saha montaj nakliye işlemleridir. Seri üretime ve teknolojik olgunluğa (TRL 9) geçiş ile birlikte, yarı iletken ve biyo-polimer hammadde tedarikinde uygulanacak yığın (bulk) alım optimizasyonları sayesinde birim cihaz değişken maliyetinin düşürülmesi planlanmaktadır.
+
+\subsection{Tekniğin Bilinen Durumu}
+
+Biyo-elektronik sensör altyapısının mevcut literatür ve patent veri tabanlarındaki kavramlardan farklılıkları ve spesifik teknik nitelikleri Tablo~\ref{tab:tekniginbilinendurumu} ile detaylandırılmıştır.
+
+\begin{longtable}{p{3.1cm}p{2.6cm}p{4.3cm}p{4.7cm}}
+\caption{Tekniğin Bilinen Durumu Karşılaştırması (Patent \& Literatür Analizi)}\label{tab:tekniginbilinendurumu}\\
+\toprule
+\textbf{Buluş / Referans Başlığı} & \textbf{Başvuru Numarası} & \textbf{Buluşun Proje Çıktıları ile Genel İlişkisi} & \textbf{Mycellium-Aegis Proje Çıktısının Özgün Farkları}\\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\textit{Tablo~\ref{tab:tekniginbilinendurumu} -- önceki sayfadan devam}}\\
+\toprule
+\textbf{Buluş / Referans Başlığı} & \textbf{Başvuru Numarası} & \textbf{Buluşun Proje Çıktıları ile Genel İlişkisi} & \textbf{Mycellium-Aegis Proje Çıktısının Özgün Farkları}\\
+\midrule
+\endhead
+Fungal Biosensor and Assay for Detection of Chemical Agents & Patent: WO2004076685A2 & Mantar hücrelerinin toksin analizi amacıyla biyolojik bir sensör platformu olarak genel kullanımını savunmaktadır. & İlgili patent, tespit operasyonları için sisteme kimyasal belirteçler veya floresan reaktifler eklenmesine ve genetik modifikasyonlara ihtiyaç duymaktadır. Girişimimiz ise endemik orman miselyumunun ürettiği doğal aksiyon potansiyellerini ($-33.4$~mV genliği ve 0.5-5 Hz bandındaki yönsel sinyalleri), dışarıdan kimyasal uyarım olmaksızın korozyon önleyici Aljinat-Grafit arayüzü ile ölçen yenilikçi bir donanımdır.\\
+\addlinespace
+Fungal Building Materials (H2020 FUNGAR) & AB Ufuk (Horizon) Projesi & Mantar miselyumunu ve besiyerlerini, sürdürülebilir inşaat sektöründe çevreci bir yapı malzemesi alternatifi olarak ele almaktadır. & FUNGAR projesi, mantar dokusunu statik bir inşaat malzemesi olarak kullanmaktadır. Mycellium-Aegis ise miselyumu fiziksel bir blok olarak değil; toprağın 15-20 cm altında yaşayan, $\frac{dT}{dt}$ ısıl şok ivmesini diferansiyel hesaplarla analiz eden ve 8 kanallı yönsel veriyi LoRaWAN ile sunucuya ileten dinamik bir Uç Bilişim (Edge Computing) algılayıcısı olarak yapılandırmaktadır.\\
+\addlinespace
+Forest fire monitoring system based on IOT & Patent: CN202472841U & Orman arazilerine yerleştirilen duman kameraları ve Zigbee sensörleri üzerinden yangın izleme ağı (IoT) kurulmasını önermektedir. & Bu patent inorganik tabanlı, reaktif elektronik sensörlere ve atık oluşturan bataryalara dayanmaktadır. Ürünümüz ise ısı direncine sahip silika kompozit yüzeylere sahip, hücresel ısıl stresteki değişimleri duman yayılımı öncesinde algılayan proaktif ve biyo-hibrit bir mimari sunmaktadır.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Fikri Mülkiyet Hakları}
+
+Projenin fikri mülkiyet (IP) stratejisi, geliştirilen teknolojinin korunması, teknoloji pazarında kopyalanabilirliğinin önüne geçilmesi ve şirket değerlemesinin rasyonel argümanlarla desteklenmesi amacıyla dört katmanlı olarak planlanmıştır. Donanım ömrünü sınırlandıran elektrot korozyonunu önleyen ve miselyumun hücre düzeyinde entegrasyonunu sağlayan paslanmaz çelik çekirdek, grafit matris ve Sodyum Aljinat biyo-hidrojelinden oluşan ''Çok Katmanlı Biyomimetik Elektrot'' mimarisi için, şirket kuruluş evraklarının onaylanmasını takiben TÜRKPATENT nezdinde Faydalı Model / Ulusal Patent başvurusu gerçekleştirilecektir.
+
+İkinci IP koruma katmanında, çevresel peyzaj ile bütünleşik, kullanım ömrünü tamamladığında kompostlanabilen (PLA/PHA) ve yangın halinde dış yüzeyinde karbon kömürü (char layer) oluşturan Aegis-Nexus veri toplayıcı ünitelerinin ve düğüm kasalarının tasarımları Endüstriyel Tasarım olarak tescil edilecektir. Üçüncü katmanda ise, 8 kanallı yönsel (star-shaped) elektrotlardan toplanan 5 Hz frekans aralığındaki harmonik verileri işleyen; mekanik çevresel gürültüleri Sensör Füzyonu yöntemiyle termal sinyallerden ayırt eden $\frac{dT}{dt}$ (sıcaklık ivmesi), $\frac{dR}{dt}$ (direnç ivmesi) ile $f_{spike}$ (5 Hz harmonik ateşleme) algoritmalarını kodlayan PyTorch / LSTM Derin Öğrenme modelleri, Ticari Sır (Trade Secret) ve yazılım telifi mevzuatı ile işletme bünyesinde korunacaktır. Son aşamada ticari konumlandırma faaliyetleri için Mycellium-Aegis kurumsal marka ve logolarının tescil işlemleri tamamlanacaktır. Söz konusu fikri ve sınai varlıklar, Mükemmeliyet Mührü sonrası tescil edilecek anonim şirkete aynı sermaye prosedürü ile devredilecektir.
+
+\subsection{Regülasyonlar}
+
+Donanım tasarımı, prototipleme operasyonları ve orman sahası entegrasyon faaliyetleri yasal mevzuat uyumluluk standartlarına tabidir. Orman tabanına sensör modüllerinin yerleştirilmesi ve termal okumaların doğrulanması amacıyla gerçekleştirilecek küçük ölçekli Ar-Ge ısıtma ve test süreçleri, 6831 sayılı Orman Kanunu gereğince Tarım ve Orman Bakanlığı OGM Ar-Ge birimlerinden ve ilgili idarelerden test alanı tahsis protokolleri ile yürütülecektir.
+
+Veri haberleşme donanımlarına ilişkin regülasyonlar kapsamında, ağ geçidi ile düğümler arasında radyo dalgası iletimini sağlayan LoRaWAN modüllerinin, yasal lisanssız iletişim bant spektrumlarına (868 MHz ISM bandı) uygunluğu için Bilgi Teknolojileri ve İletişim Kurumu (BTK) regülasyon süreçlerine ve teknik test prosedürlerine riayet edilecektir. Ayrıca ürünlerin ihraç standartlarına uygunluğu açısından, donanım kartlarında ve kasa malzemelerinde CE işareti gereklilikleri ile RoHS direktifleri (tehlikeli maddelerin sınırlandırılması) sağlanacaktır. Biyogüvenlik prensipleri gereği, proje kapsamında dış arazide genetiği değiştirilmiş (GDO) veya ekosisteme yabancı istilacı mantar sporlarının kullanımından kaçınılacaktır. Donanım yüzeylerinde yalnızca yerel flora ile uyumlu ve yangın sonrasında aktivasyon gösteren endemik pirofilik mantar türleri (\textit{Pyronema domesticum} veya \textit{Rhizina undulata}) tercih edilecek olup, gerekli çevresel uyum dokümanları Tarım ve Orman Bakanlığı birimlerinden temin edilecektir.
+
+% ============================================================
+\section{Ekip}
+
+\subsection{Ekip ve Deneyim}
+
+Mycellium-Aegis projesinin çekirdek kadrosu, İzmir Yüksek Teknoloji Enstitüsü (İYTE) ekosistemi ve laboratuvarlarında akademik çalışmalar yürüten, mimari tasarım, gömülü sistem mühendisliği (IoT), veri bilimi (Yapay Zeka) ve biyomateryal kimyası disiplinlerini entegre eden dört kurucu girişimciden oluşmaktadır:
+
+\begin{itemize}[leftmargin=1cm]
+  \item \textbf{Mehmet Çetin (CEO -- Kurucu \& Sistem Mimarı):} Mimarlık ve sürdürülebilir tasarım disiplinlerindeki akademik tecrübesiyle Aegis-Nexus toplayıcı veri kulelerinin orman peyzajına uygun endüstriyel form tasarımlarını yürütmektedir. CEO sorumluluğu kapsamında kamu (OGM) ihale stratejilerini, B2B kurumsal satış sunumlarını ve teknoloji yatırım fonları ile gerçekleştirilecek müzakereleri idare etmektedir. Laboratuvar ölçeğinde, Mahmut Can Göçlü ile birlikte sodyum aljinat-grafit kompozit biyomimetik elektrot kılıfının döküm ve mekanik tasarım Ar-Ge süreçlerini koordine etmektedir.
+  \item \textbf{Muhammet Yağcıoğlu (CTO -- Kurucu Ortak):} Analog biyosinyallerin gerçek zamanlı işlenmesi (DSP) ve yazılım mimarisi alanında çalışmalar yapmaktadır. Toprak altındaki hiflerin ürettiği 0.5-5 Hz bandındaki düşük voltajlı (mV) elektriksel şok (spike) dalgalarını, çevresel mekanik parazitlerden ayıran Derin Öğrenme (PyTorch) ve zaman serisi (LSTM) modellerinin programlanmasını sağlamaktadır. Sensör füzyonu analizlerindeki $\frac{dT}{dt}$ ve $\frac{dR}{dt}$ diferansiyel hesaplamalarından ve merkezi bulut veri tabanının (SaaS Dashboard) işletilmesinden sorumludur.
+  \item \textbf{Ömer Ünal (COO -- Kurucu Ortak):} Açık alan (Outdoor) doğa koşullarına uygun gömülü IoT donanım ağlarının fiziksel ve elektriksel tasarımını yönetmektedir. 8 kanallı yönsel (star-shaped) elektrotlardan gelen verileri işleyen, düşük güç tüketimi (deep-sleep) destekli mikrodenetleyicilerin PCB tasarımlarını yapmakta, 24-bit ADC bileşenlerinin entegrasyonunu sağlamakta ve orman içi LoRaWAN (Mesh) haberleşme ağ topolojisinin veri iletim optimizasyonlarını denetlemektedir.
+  \item \textbf{Mahmut Can Göçlü (CRO -- Kurucu Ortak):} Biyomateryal kimyası alanındaki uzmanlığıyla canlı biyolojik materyal ile inorganik sensör bileşenlerinin entegrasyonu üzerine çalışmaktadır. Sodyum aljinat ve iletken grafit karışımlarının optimum viskozite ve elektriksel iletkenlik analizlerini yürütmekte, silika bazlı kompozit yüzeylerin ısı direnç testlerini gerçekleştirmekte ve canlı miselyum hücrelerinin elektrot yapısına organik olarak tutunma (kolonizasyon) durumunu optik analizlerle belgelemektedir.
+\end{itemize}
+
+Karar alma süreçlerinde, ticari stratejiler ve lansman takvimleri kurucu ortakların genel çoğunluk esasına dayanırken, spesifik Ar-Ge ve mühendislik tercihlerinde ilgili disiplinin teknik uzmanının değerlendirmeleri esas alınmaktadır.
+
+\subsection{Ortaklık Yapısı}
+
+TÜBİTAK 1812 Programı kapsamında sağlanması planlanan ''Tohum Öncesi Çekirdek Yatırım Fonu'' (1.350.000 TL) haricinde kurulacak olan Mycellium-Aegis Anonim Şirketi'nin ortaklık ve sermaye yapısı, kurucu üyelerin Ar-Ge katkıları, üstlenilen idari/ticari sorumlulukları ve fikri mülkiyet geliştirmedeki rolleri dikkate alınarak rasyonel bir dağılımla belirlenmiştir.
+
+Şirket ana sözleşmesi çerçevesinde kurucu ortaklık payları; ticari operasyonları yürüten Mehmet Çetin (CEO) \%55, donanım mimarisinden sorumlu Ömer Ünal (COO) \%15, yapay zeka modellemesini tasarlayan Muhammet Yağcıoğlu (CTO) \%15 ve biyomateryal entegrasyonunu yöneten Mahmut Can Göçlü (CRO) \%15 olarak tescil edilecektir. Kurucu ortakların tamamı, girişimin ticarileşme adımlarında başka bir ticari bağımlılık olmaksızın kilit personel olarak tam zamanlı görev alacaktır. Girişimin BİGG yatırım panelleri değerlendirmelerinde Mükemmeliyet Mührü alması durumunda, Yatırım ve Pay Sahipleri Sözleşmesi hükümleri gereğince TÜBİTAK BİGG Fonu, ilgili yatırım tutarı karşılığında şirkete yatırımcı ortak olarak katılacaktır. Bu süreç, kurucu ortakların paylarının ücretsiz devri yöntemiyle değil, yeni pay ihracı mekanizmasıyla ortaklık oranlarının seyrelmesi (dilution) şeklinde gerçekleşecek ve fonun şirketteki temsili yaklaşık \%3 seviyesinde olacaktır. Ayrıca, projenin orman yangınları kaynaklı karbon emisyonlarını engellemeye yönelik iklim dostu konsepti doğrultusunda, UNIDO-GCIP temiz teknoloji yatırım opsiyonlarının da değerlendirilmesi planlanmaktadır.
+
+\subsection{İş Paylaşımı}
+
+Kurucu ekip, şirketin resmi kuruluş aşamasından itibaren öngörülen 18 aylık laboratuvar araştırma (TRL 4'ten TRL 8'e ilerleme), saha validasyonları ve B2B/B2G müşteri lansmanı süreçlerinde girişime tam zamanlı olarak tahsis edilecek olup operasyonel yönetim kurulu görevlerini sürdürecektir.
+
+İş paketi ve operasyon planına göre departman görev dağılımları şu şekilde belirlenmiştir:
+
+\begin{itemize}[leftmargin=1cm]
+  \item \textbf{Mehmet Çetin (CEO):} Şirketin hukuki ve idari temsilini sağlayarak OGM kamu ihale dosyalarının hazırlanması, maden ve enerji şirketleriyle pilot (PoC -- Proof of Concept) satış sözleşmelerinin yürütülmesi ve girişim sermayesi (Series-A VC) yatırım turlarının sunum faaliyetlerini üstlenecektir. Ek olarak, laboratuvarda sodyum aljinat/grafit karışımlı biyomimetik elektrot kaplamalarının ve PLA/PHA Aegis-Nexus dış muhafazalarının döküm ve tasarım optimizasyonu süreçlerine teknik katkı sunacaktır.
+  \item \textbf{Muhammet Yağcıoğlu (CTO):} Sensör düğümlerindeki 24-bit ADC donanımlarından iletken analog gürültü verilerinin işlenebilir dizilere dönüştürülmesini sağlayacaktır. Sensör füzyonu karar analizinde yer alan $\frac{dT}{dt}$ ve $\frac{dR}{dt}$ diferansiyel denklemleri ile 8 kanallı yönsel elektrotlardan sağlanan 5 Hz bandındaki elektriksel hücre zarı spike frekanslarını entegre edecektir. Rüzgar ve çevresel gürültüyü termal şoktan izole eden LSTM zaman serisi derin öğrenme algoritmalarını kodlayarak sistemin hatalı bildirim toleransını kontrol edecektir.
+  \item \textbf{Ömer Ünal (COO):} Açık alan (IP67) kısıtlamalarına tabi donanım ağlarının fiziksel montaj, PCB dizgi (SMD) ve kablolama işlemlerini sürdürecektir. Mikrodenetleyicilerde batarya sarfiyatını minimize eden uyku modu (deep sleep) konfigürasyonlarını uygulayacak, orman topolojisi içerisindeki Mesh mimarisinin Sinyal/Gürültü Oranı (SNR) optimizasyonlarını gerçekleştirecek ve LoRaWAN radyo sinyal iletim kayıplarının önlenmesini sağlayacaktır.
+  \item \textbf{Mahmut Can Göçlü (CRO):} İYTE biyomateryal laboratuvarlarında termal tolerans testleri ile \textit{Pyronema domesticum} miselyum suşlarının izolasyon çalışmalarını yürütecek, aljinat ve grafit oranlarının optimum elektriksel viskozite parametrelerini belirleyecektir. Aegis-Nexus muhafazalarının silika kompozit analizlerini kalibre ederek miselyum hücrelerinin inorganik elektrot yapıya hücresel düzeyde entegre olma durumunu optik tekniklerle dokümante edecektir.
+\end{itemize}
+
+\subsection{İşbirlikleri}
+
+Sistemin teknolojik altyapısı, mikoloji bilimi ile IoT donanımı ve derin öğrenme algoritmalarının entegrasyonunu gerektiren çok disiplinli bir Ar-Ge doğasına sahiptir. Bu yapısal riskleri laboratuvar şartlarında optimize etmek maksadıyla ulusal bilim kuruluşları ile ortak araştırmalar planlanmaktadır. Miselyum hücre kültürü uygulamaları, biyomimetik kaplamaların elektriksel empedans analizleri ve donanımların sıcaklık-nem iklimlendirme odalarındaki (Climatic Chamber) dayanım testleri, İzmir Yüksek Teknoloji Enstitüsü (İYTE) fiziksel altyapısında koordine edilecektir. Toprak-hidrojel arayüzü kalibrasyonu ve hücresel kolonizasyon incelemeleri konularında İYTE Moleküler Biyoloji ve Genetik ile Malzeme Bilimi ve Mühendisliği anabilim dallarındaki uzman akademisyenlerden danışmanlık hizmeti alınarak kurum ile ''know-how aktarım'' protokolü tesis edilecektir.
+
+Şirket anonim tescil süreçlerinin yönetimi, iş modeli doğrulama uygulamaları, yatırımcı ağları ile gerçekleştirilecek B2B eşleştirme (matchmaking) toplantıları ve ''Üç Katmanlı Biyomimetik Elektrot'' patent ve koruma süreçleri, İYTE Teknopark İzmir Kuluçka Merkezi ve Atmosfer TTO hızlandırma (Accelerator) programları bünyesinde desteklenecektir. Arazide uygulanan donanımın TRL 7 ve TRL 8 açık hava (field-trial) doğrulamalarının yasal düzenlemelere uygun şekilde yürütülebilmesi için, Orman Genel Müdürlüğü (OGM) Ar-Ge Bölge Müdürlükleri ve Ege Orman Vakfı gibi kurumlarla saha kullanım protokolü imzalanacaktır. Radyo frekansı modüllerinin regülasyon uyumluluğu, emisyon testleri ve CE güvenlik akreditasyon sertifikasyonları bağımsız akredite laboratuvarlardan hizmet alımı yoluyla tamamlanacaktır.
+
+\subsection{Ekibin Misyonu ve Değerleri}
+
+\textbf{Ekibimizin Kurumsal Misyonu:} Küresel karbon salınımının artmasına ve orman yutak ekosistemlerinin tahribatına neden olan yangın risklerine karşı; geleneksel elektronik sensörlerin neden olduğu ağır metal ve plastik atık sorununu ortadan kaldıran sürdürülebilir bir teknoloji altyapısı geliştirmektir. Orman tabanında doğal olarak bulunan ve bitkiler arası etkileşimi sağlayan mikorizal iletişim ağlarını, IoT uç bilişim işlemcileri ve zaman serisi yapay zeka analizleriyle entegre ederek Döngüsel Ekonomi ilkelerine uyumlu, çevreye zarar vermeyen bir biyolojik erken uyarı sistemi inşa etmektir. Üretilen bu yenilikçi donanımın, uluslararası B2G/B2B derin teknoloji ve iklim pazarında operasyonel bir standart olarak ticarileştirilmesi hedeflenmektedir.
+
+\textbf{Ortak Kurumsal ve Bilimsel Değerlerimiz:}
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textit{Kanıta Dayalı Mühendislik Yaklaşımı:} Yatırım ve paydaş iletişiminde spekülatif anlatımlardan ve kanıtsız bilim dışı varsayımlardan kaçınmaktayız. Erken uyarı sensör modelimiz ve teknolojik tasarım argümanlarımız, sodyum aljinat sensörlerden elde edilen 0.5 - 5 Hz bandındaki nicel elektriksel osilasyonlara, 8 kanallı yönsel (star-shaped) dizilimlerden kaydedilen $-33.4$~mV düşüşlü aksiyon potansiyeli genliklerine ve diferansiyel eşik türev ($\frac{dT}{dt}$ ile $\frac{dR}{dt}$) hesaplama metriklerine dayanmaktadır.
+  \item \textit{Ekosistem Entegrasyonu ve Karbon Negatif Sürdürülebilirlik:} Üretilen Aegis-Nexus toplayıcı ünite kılıflarının ve toprak altı biyomimetik elektrotlarının; görev periyotları tamamlandığında çevresel atık oluşturmak yerine kompostlanabilir (biodegradable formda) çözünmesini sağlamaktadır. Sistem, içerdiği pirofilik mantar sporlarının ısıyı algılamasıyla aktif hale gelerek orman restorasyon döngüsünü desteklemeyi temel tasarım ilkesi olarak kabul eder.
+  \item \textit{Disiplinlerarası Şeffaflık ve Hesap Verebilirlik:} Sinyal analiz yazılımından elektronik PCB tasarımına ve mikoloji entegrasyonundan endüstriyel üretime kadar farklı bilimsel disiplinleri yöneten çekirdek ekibimiz; devlet kurumlarına, yatırımcılara ve paydaşlara karşı test başarı istatistiklerini raporladığı gibi, saha uygulamalarındaki iletişim sorunları veya laboratuvar iyileştirme gerekliliklerini de şeffaf bir veri paylaşım kültürü ile aktarmayı iş etiği standartlarının merkezinde tutmaktadır.
+\end{enumerate}
+
+% ============================================================
+\section{İş Modeli ve Finansal Öngörüler}
+
+\subsection{İş Modeli}
+
+Mycellium-Aegis'in gelir oluşturma mimarisi, teknoloji donanım start-upları tarafından sürdürülebilirliği kanıtlanmış ''Tek Seferlik Proje/Donanım Kurulum Satışı (CAPEX) ve Abonelik Bazlı Yenilenen Hizmet Olarak Yazılım (SaaS / OPEX)'' stratejik iş modeli üzerine kurulmuştur. Bu çift yönlü kanal stratejisi, şirketimize kamu ihalelerinde donanım kurulumları üzerinden yüksek hacimli operasyonel nakit akışı sağlarken, paralelinde B2B tarafında elde edilen yenilenebilir yıllık gelir (ARR -- Annual Recurring Revenue) kalemi üzerinden düzenli bir ciro tabanı sunmaktadır.
+
+Birinci gelir kanalımız, devlet kamu ihalelerine odaklanan \textbf{B2G (Sermaye Harcaması / CAPEX Yatırım Bütçesinden Proje Satışı)} operasyonlarıdır. Bu segmentte; Orman Bölge Müdürlükleri ve yerel afet koordinasyon daireleri için hedef orman alanlarına kurulacak Aegis-Nexus veri iletim ağ geçidi (Gateway) üniteleri ve toprak altı sensörlerinin sahaya montajı, anahtar teslim proje ihalesi usulüyle faturalandırılacaktır.
+
+İkinci temel gelir sütunumuz ise \textbf{B2B (İşletme Gideri / OPEX Bütçesinden Hizmet Satışı)} stratejisidir. Linyit madeni işletmeleri, enerji nakil firmaları ve ESG standartlarına uyum zorunluluğu bulunan kağıt/selüloz sanayi tesislerine, donanım tedariki düşük bir kar marjıyla tahsis edilerek giriş bariyeri düşürülecektir. Ana ticari kar, bu biyolojik algılayıcılardan sürekli akan hücresel stres verilerini bulut sunucularında analiz eden ve tesis yönetim ekranlarına risk uyarısı olarak ileten otonom uyarı analiz panelinin yıllık SaaS yenileme abonelik lisansları üzerinden elde edilecektir. Bu yenilenen abonelik modeli, kurumları sadık birer müşteri portföyüne dönüştürecektir. Gelişim evrelerinde sistemden alınan iklim verilerinin toplanmasıyla, şirketlere sunulacak Karbon Kredisi Entegrasyonu sertifikasyon hizmetleri, ek katma değerli hizmet (upsell) olarak faaliyet alanına eklenecektir.
+
+\subsection{Müşteriye Erişim}
+
+Yenilikçi biyosensör donanımlarının pazar lansmanı; tüketici odaklı pazarlama kanalları yerine, B2G kamu mekanizmalarının satın alma reflekslerine ve B2B kurumsal güven inşasına dayalı kanıta dayalı bir iletişim planıyla yürütülecektir. Erişim stratejimiz operasyonel gerekliliklere göre üç temel aşamadan oluşmaktadır:
+
+\begin{itemize}[leftmargin=1cm]
+  \item \textbf{B2G (Kamu OGM İhaleleri) Erişim Kanalı:} Kamu satın alma komisyonları, yazılı ürün özelliklerinden ziyade açık arazide yüksek sıcaklık ve yağış koşullarında kesintisiz veri aktarımı sağlayan operasyonel Pilot Saha Referanslarını (Proof of Concept -- PoC) dikkate almaktadır. Hedefimiz; TÜBİTAK bütçesi üzerinden fonlanmış ilk ticari TRL 7 ve TRL 8 ürün prototiplerimizi, OGM idaresindeki veya Ege Orman Vakfı tahsisli yüksek riskli bölgelere bedelsiz pilot test donanımı olarak kurmaktır. Kontrollü mikro test alanlarında alınacak ''tehlikenin duman yayılımı öncesinde tespit edildiğine'' dair kamu raporları, kamu idarelerinin hazırlayacağı donanım ihalesi teknik şartnamelerinin referansı olarak kullanılacak ve şirketimizin alımlara katılımını kolaylaştıracaktır.
+  \item \textbf{B2B (Özel Sektör Kurumsal) Erişim Kanalı:} Özel sektör kuruluşlarına (enerji, selüloz ve açık alan maden işletmeleri) erişim sağlamak amacıyla; Enerji Sendikaları sektörel toplantıları, İş Sağlığı ve Güvenliği (İSG) zirveleri ve kurumsal Sürdürülebilirlik (Yeşil Mutabakat ve ESG) panelleri değerlendirilecektir. Tanıtım operasyonlarında ürünümüzün Sıfır Elektronik Atık içeren yapısının kurumsal sürdürülebilirlik raporlamalarına (OPEX kalemleri üzerinden) sağladığı katkı öne çıkarılacak; firmaların Çevre Görevlilerine (CSO) yönelik planlanan kurumsal satış sunumları (B2B Pitching) ile yıllık hizmet sözleşmeleri hedeflenecektir.
+  \item \textbf{Uluslararası Açılım Kanalı:} Türkiye operasyonlarında ticari güvenilirliğini ispatlayan teknolojimizin, orman yönetimlerinin çoğunlukla özel ormancılık kooperatiflerine ait olduğu Orta ve Kuzey Avrupa pazarındaki kereste endüstrisine ulaştırılması planlanmaktadır. Bu kapsamda, AB Ufuk (Horizon Europe) hibe programları ve temiz teknoloji (Cleantech) girişim dış pazar eşleştirme platformları (matchmaking ağları) aracılığıyla iletişim sağlanacak, devamında ABD Kaliforniya Yangın ve Orman İdaresi (Cal Fire) gibi küresel pazarın referans kurumlarının donanım test akreditasyon süreçlerine katılım sağlanacaktır.
+\end{itemize}
+
+\subsection{Kritik İş Adımları}
+
+TÜBİTAK 1812 Programı faaliyet başlangıcından itibaren, donanımsal Ar-Ge evrelerini, laboratuvar optimizasyonlarını, Fikri Mülkiyet koruma tescillerini, regülasyonlarını ve B2B/B2G lansman kilometre taşlarını barındıran 18 aylık proje takvimi Tablo~\ref{tab:kritikisadimlari} formatında oluşturulmuştur.
+
+\begin{longtable}{p{4.3cm}p{2.1cm}p{7.8cm}}
+\caption{Proje Kritik İş Adımları (Kilometre Taşları, Ar-Ge ve Doğrulama Ölçütleri)}\label{tab:kritikisadimlari}\\
+\toprule
+\textbf{İş Paketi Tanımı} & \textbf{Öngörülen Gerçekleşme Tarihi} & \textbf{Doğrulanabilir Başarım Ölçütleri ve B Planları}\\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\textit{Tablo~\ref{tab:kritikisadimlari} -- önceki sayfadan devam}}\\
+\toprule
+\textbf{İş Paketi Tanımı} & \textbf{Öngörülen Gerçekleşme Tarihi} & \textbf{Doğrulanabilir Başarım Ölçütleri ve B Planları}\\
+\midrule
+\endhead
+\textbf{İP-1: Biyomimetik Aljinat-Grafit Elektrot Üretimi ve Laboratuvar Termal-Şok Doğrulaması:} İYTE laboratuvarlarında sodyum aljinat hidrojeline iletken matris eklenerek yıldız şekilli elektrot basımının yapılması. Miselyumun, iklim kabininde 35-50\,\textdegree C ısıl şoka maruz bırakılması. & Ay 1 -- Ay 6 (2026) & Analog donanım ADC çıkışından ölçülen bazal $-2.9$~mV verinin aniden $-33.4$~mV seviyesine inmesi ve 0.5-5 Hz bandında FFT frekans düzleminde belirgin hücresel ısıl-şok spike frekansının kaydedilmesi (TRL 3'ten TRL 4'e yükseliş).\\
+\addlinespace
+\textbf{İP-2: Yanlış Alarm YZ Sinyal Eğitiminin ve Sensör Füzyonu Çaprazlamasının Tamamlanması:} Arazideki rüzgar ve mekanik titreşimi ısıl-şok elektriğinden izole edecek $\frac{dT}{dt}$, $\frac{dR}{dt}$ ve $f_{spike}$ eşik değer mantık kapılarının Derin Öğrenme algoritmalarıyla entegrasyonu. & Ay 6 -- Ay 9 & Modelin çevresel gürültüleri gerçek ısıl şoktan \%99 güvenlik oranıyla izole etmesi. (Teknik B Planı: Algoritmik tolerans hedeflenen limitleri aşarsa, düğümlere ucuz maliyetli optik termistör donanımı entegre edilerek donanımsal doğrulama eklenecektir.)\\
+\addlinespace
+\textbf{İP-3: Pilot Arazide Açık Hava Toprak Korozyon Direnci ve İletişim (Mesh) Zayıflama Testleri:} Elektrot dizilimlerinin orman zeminine 15-20 cm derinlikte kurulması. & Ay 9 -- Ay 12 & Toprak altında sodyum aljinat kaplı sensörün 3 ay boyunca donanım veya pil arızası vermeden açık hava fırtınalarına korozyonsuz dayanarak merkeze veri aktarması; kaplı elektrotun çıplak metale karşı korozyon üstünlüğü. (TRL 5'ten TRL 6'ya sıçrama).\\
+\addlinespace
+\textbf{İP-4: TÜRKPATENT Biyomimetik Başvurusu ile Tasarım Tescili ve Bürokrasi OGM Kamu İzin Protokolü Tesisi:} Çok katmanlı elektrot tasarımının Ulusal Patent / Faydalı Model başvuru işlemlerinin yönetilmesi. & Ay 12 -- Ay 15 & TÜRKPATENT resmi başvuru belge numarasının işletme adına alınarak fikri mülkiyet güvencesinin sağlanması. OGM teknik müdürlükleriyle saha kullanım protokolünün imzalanması.\\
+\addlinespace
+\textbf{İP-5: Ticari MVP'nin Görücüye Çıkışı ve B2B Özel Sektör / B2G Kamu İlk Satış Faturalandırması Entegrasyonu:} TRL 8 saha başarı raporunun edinilmesi. & Ay 15 -- Ay 18 & Kurumsal (Enerji/Maden) müşteriye donanım hizmet ve SaaS sözleşmesi karşılığında fatura kesilmesi, sistemin teknik doğrulamasına ilişkin imzalı validasyon (TRL 8 saha raporunun) edinilmesi.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Başa Baş Noktası Analizi}
+
+Mycellium-Aegis şirketinin finansal sürdürülebilirlik öngörüsünü barındıran Başa Baş Noktası (Break-even) hesaplama metrikleri, B2B/B2G ticari operasyonları için standart satış modeli olarak değerlendirilen ''1 Adet Aegis-Nexus Ana Toplayıcı Kule Direği + Toprağa Yayılmış 100 Adet Biyomimetik Elektrot Sensör Düğümü Sistemi + 1 Yıllık YZ Analitik Bulut (SaaS) Veri Arayüzü'' paketine dayandırılarak oluşturulmuştur. Pahalı endüstriyel metal muhafazalar yerine kompostlanabilir PLA/PHA 3D basım biyoplastik kullanımı birim cihaz maliyetlerini optimize etmiştir.
+
+\textit{(Not: Analiz, işletme kuruluşundan itibaren ilk 18 ile 24 aylık Ar-Ge ve ticarileşme döngüsü için öngörülen tahmini ve rasyonel maliyet-gelir fizibilite taslağını yansıtmaktadır.)}
+
+\begin{table}[h]
+\centering
+\caption{Gelirler (Satış Projeksiyonu Analizi)}
+\begin{tabular}{p{9.5cm}p{4.5cm}}
+\toprule
+\textbf{Kalem} & \textbf{Değer / Hesaplama}\\
+\midrule
+Satılan ürün adedi (Standart paket bazında kurumsal bir sanayi tesisine veya kamu teşkilatına ilk pilot satışı kapsayan hacim öngörüsü) & 5 Adet Paket (Toplam 500 donanım IoT sensörü modülü)\\
+Birim satış fiyatı (Anahtar Teslim Tek Seferlik Standart Referans Paket CAPEX Bedeli) & 360.000 TL\\
+Satış gelirleri (Donanım/SaaS dahil Tek Seferlik Kurulum Tahsilatı Ciro tahmini: 5 Paket $\times$ 360.000 TL) & 1.800.000 TL\\
+Diğer gelirler (İlk faaliyet döngüsü tahmini için tabloya eklenmemiştir; ileriki yıllarda B2B müşterilerin ödeyeceği OPEX abonelikleri ve lisans yenileme ücretleri bu kalemde yer alacaktır) & 0,00 TL\\
+\midrule
+\textbf{Toplam Tahmini Gelirler (Ciro Tutarımız)} & \textbf{1.800.000 TL}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Değişken Maliyetler (Tek Bir Standart Paketin Doğrudan Üretim Gideri)}
+\begin{tabular}{p{9.5cm}p{4.5cm}}
+\toprule
+\textbf{Kalem} & \textbf{Değer / Hesaplama}\\
+\midrule
+Personel maliyeti (Donanım lehimleme, biyo-elektrot basımı, kalibrasyon, test kontrolü uzman işçilik bedeli) & $\approx$ 30.000 TL\\
+Malzeme maliyeti (100 Adet PCB anakart, LoRaWAN yongaları, Güneş panelleri, PLA biyopolimer rulo, sodyum aljinat ve iletken grafit ham madde maliyeti) & $\approx$ 115.000 TL\\
+Enerji maliyeti (Laboratuvar iklimlendirme, 3D Printer çalışmaları ve test işlemleri güç harcaması) & $\approx$ 3.000 TL\\
+Dağıtım / Kurulum maliyeti (Ürünlerin hedef araziye ulaştırılması, toprağa entegrasyonu ve saha lojistik kiralama) & $\approx$ 10.000 TL\\
+Diğer değişken maliyet (Büyük veri YZ Derin Öğrenme AWS Bulut sunucu maliyetleri ve Gateway M2M hücresel veri hat giderleri) & $\approx$ 2.000 TL\\
+\midrule
+\textbf{Birim Ürün Toplam Maliyeti (1 Referans Paket Üretim Toplam Gideri)} & \textbf{$\approx$ 160.000 TL}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Sabit Maliyetler (Kuruluş Fazı 18 Ay ve Ar-Ge Kurulum Donanım Kümülatifi)}
+\begin{tabular}{p{9.5cm}p{4.5cm}}
+\toprule
+\textbf{Kalem} & \textbf{Değer / Hesaplama}\\
+\midrule
+Makine ve teçhizat yatırımları (Termal/Nem iklimlendirme analiz dolapları, 24-bit hassas okuyucular, endüstriyel mikser cihazları, 3D üretim ve SMD sıcak hava makine parkuru) & $\approx$ 350.000 TL\\
+Bina amortisman giderleri (Proje süresince ofis kira yapısı esas alındığından amortisman bedeli yoktur) & $\approx$ 0,00 TL\\
+Kira giderleri (İYTE Teknopark Kuluçka Merkezi laboratuvarı ve şirket ofis kira aidat gideri tavan öngörüsü) & $\approx$ 180.000 TL\\
+Diğer sabit maliyetler (Şirket yasal kuruluş tescil bedelleri, hukuki hizmetler, TÜRKPATENT IP koruma süreç harçları, CE emisyon/RoHS ve BTK akreditasyon belgelendirme ödemeleri) & $\approx$ 350.000 TL\\
+\midrule
+\textbf{Toplam Sabit Genel İşletme Kurulum Yatırım Maliyeti} & \textbf{$\approx$ 880.000 TL}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Başa Baş (Break-Even) Kurtarma Analizi Sonuçları}
+\begin{tabular}{p{9.5cm}p{4.5cm}}
+\toprule
+\textbf{Kalem} & \textbf{Değer / Hesaplama}\\
+\midrule
+Kâr marjı (Paket Birim Net Kârı) (Birim Tahmini Satış Bedeli 360.000 TL -- Standart Paket Cihaz Üretim Maliyeti 160.000 TL) & 200.000 TL\\
+Toplam Sabit Maliyet (Ar-Ge laboratuvar kuruluş giderleri toplamı) & 880.000 TL\\
+Satılan Ürün Adedi Olarak İşletme Başa Baş Kurtarma Noktası (Toplam Sabit Maliyet 880.000 TL $\div$ Paket Başı Elde Edilen Birim Kâr Marjı 200.000 TL) & $\approx$ 5 Referans Paket Satışı Barajı\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textit{Finansal Öngörü Özeti:} Ampirik maliyet analizleri doğrultusunda Mycellium-Aegis şirketinin; patent harçları, sertifikasyon onay masrafları ve makine teçhizat gibi başlangıç sabit yatırım (880.000 TL) maliyetlerini amorte ederek operasyonel kârlılığa (işletme başa baş noktasına) ulaşması için, faaliyetin başından itibaren ''5 Paketlik'' (5 Ağ Geçidi Merkezi ve 500 adet sensör düğümü) bölgesel OGM veya endüstri ihaleleri satış işlemini gerçekleştirmesi yeterlidir. B2B endüstriyel tesislerin güvenlik ihalesi gereksinimleri dikkate alındığında, hedeflenen hacimde yapılacak bir ilk ölçekli satış işlemi, girişimin makine yatırım maliyetlerini dengeleyecek ve işletmenin pozitif nakit akışına geçmesini hızlandıracaktır.
+
+\subsection{Yatırımcı İlişkileri}
+
+Şirket kuruluş finansmanını sağlayacak olan TÜBİTAK 1812 Yatırım BİGG Programı desteği; işletme faaliyetleri için yalnızca donanım giderlerini finanse eden teknik bir hibe olarak değerlendirilmemektedir. TÜBİTAK iştiraki, şirketin tescil edildiği açılış piyasa değerlemesini belirleyen ve potansiyel girişim sermayesi fonlarına referans oluşturan kurumsal bir ''Tohum Öncesi (Pre-Seed) Hissedar ve Rüşt İspat Kaldıracı'' niteliğindedir. Mükemmeliyet Mührü Yatırım Sözleşmesi kapsamında, şirket hisselerinin \%3'lük dilimi yatırımcı BİGG fonlarına yasal olarak aktarılacak ve bu yapılandırılmış kurumsal katılım güvence olarak konumlandırılacaktır. İlaveten, projenin karbon emisyonunu engelleyen ve çevresel geri dönüşümü sağlayan donanım yapısı gereği, BİGG çağrı yönergelerinde tanımlandığı üzere UNIDO-GCIP (Küresel Temiz Teknoloji İnovasyon Programı) kapsamındaki uluslararası ek yatırım seçenekleri değerlendirilecek ve bu yatırım araçları yönetim panellerinde işletme stratejisi olarak kullanılacaktır.
+
+Girişim Sermayesi (VC) yatırımcıları ile oluşturulacak paydaş iletişim yapısı; rasyonel büyüme projeksiyonları ve işletme performansı (KPI) denetimleri odaklı planlanmıştır. Şirket kuruluşunu müteakip orman sahasından alınan donanım korozyon dayanım verileri, yanlış alarm (false-positive) üreten $\frac{dT}{dt}$ ve $f_{spike}$ füzyonu izolasyon başarı grafikleri ile kamu ihale hattına giren OGM satış süreçlerinin ihtimaliyet analizleri mali periyotlarda elektronik veri raporlarıyla ortaklara bildirilecektir.
+
+Türkiye'deki yerel pilot operasyonların kârlılığa (TRL 8/9 satış cirolarına) ulaşıp teknolojik validasyonunu (kanıtını) tamamlamasının akabinde; büyük bütçeli Amerika Birleşik Devletleri Kaliforniya orman departmanına (Cal Fire idaresi) ve Avrupa pazar kooperatiflerine yönelik donanım/SaaS hizmet ihracatını genişletmek amacıyla Seri-A (Series-A) Girişim Sermayesi (VC) yatırım turu planlanmıştır. Bu turda, öncelikle iklim teknolojilerine (ClimateTech) odaklı Avrupa ve Kuzey Amerika merkezli teknoloji fonlarına yönelik sunumlar gerçekleştirilecektir.
+
+İş planının uzun vadeli yatırım dönüş (Exit) stratejisi; 15-20 cm toprak derinliğinden elde edilen hücresel ısı aksiyon potansiyeli spesifik veri seti ile uluslararası alanda tescillenecek ''Biyomimetik Yönsel Elektrot Arayüzü'' donanım patentinin, küresel IoT/Yapay Zeka veya endüstriyel elektronik altyapısı pazar payına sahip teknoloji şirketleri (örn. Siemens, Bosch SensorTech, Ericsson vb.) tarafından, stratejik hisse devri veya satın alma (M\&A -- Mergers and Acquisitions) yöntemiyle işletme portföyüne dahil edilmesidir. Operasyon ölçeğinin büyümesi halinde, işletmenin yapılandırılmış fon büyümesiyle (Private Equity) desteklenerek teknoloji pazarında organik kapasitesinin genişletilmesi opsiyonu her daim ikincil büyüme planı olarak elde tutulacaktır.
+
+% ============================================================
+\section{Risk Yönetimi}
+
+\subsection{Projenin Yürütülmesi Sırasında Karşılaşılabilecek Riskler ve Alınacak Önlemler}
+
+Donanım tasarımı, gömülü YZ algoritma sistemleri ve biyo-materyal entegrasyonu bileşenlerinden oluşan iklim teknolojisi projeleri; kontrollü laboratuvar koşullarından dış ortam dinamiklerine sahip açık orman sahalarına (in-vivo) geçiş aşamalarında çeşitli teknik, operasyonel ve idari riskler taşımaktadır. Her bir mühendislik veya pazar entegrasyonu belirsizliği için geliştirilmiş alternatif müdahale yöntemleri Tablo~\ref{tab:riskmatrisi} matrisinde analiz edilmiştir.
+
+\begin{longtable}{p{3.4cm}p{3.6cm}p{1.4cm}p{1.4cm}p{4.7cm}}
+\caption{Risk Yönetimi Analiz Matrisi, Olasılıklar ve İkincil Teknik Revizyon Planları}\label{tab:riskmatrisi}\\
+\toprule
+\textbf{Teknik / Bilimsel / İdari Risk Tanımı} & \textbf{Ana Önlemler (Plan A)} & \textbf{Olasılık} & \textbf{Etki} & \textbf{İkincil Çapraz Teknik Doğrulama (B Planı)}\\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\textit{Tablo~\ref{tab:riskmatrisi} -- önceki sayfadan devam}}\\
+\toprule
+\textbf{Teknik / Bilimsel / İdari Risk Tanımı} & \textbf{Ana Önlemler (Plan A)} & \textbf{Olasılık} & \textbf{Etki} & \textbf{İkincil Çapraz Teknik Doğrulama (B Planı)}\\
+\midrule
+\endhead
+\textbf{Teknik Risk (Hatalı Uyarı Üretimi -- False Positives):} Donanım ağına entegre edilen mantar hücrelerinin; aşırı kuraklık iklim döngülerini, elektromanyetik aktivite artışını (fırtınaları) veya büyük orman canlılarının donanımın konumlandığı toprağı ezmesini elektriksel stres üretimi olarak algılaması; sistemin bu gürültüyü yangın anomalisi şeklinde değerlendirerek merkezi veri tabanına yanlış alarm iletmesi. & Donanım kartlarındaki analog gürültü eleyici filtreleme birimleri ile miselyumun ısı neticesindeki koful tepkimelerine ait sismik elektrofizyolojik frekans profilini işleyen Derin Öğrenme / LSTM (Zaman Serisi Sınıflandırma) algoritmalarının veri analizlerinde operasyonel biçimde kullanılması. & Yüksek & Yüksek & ''Dinamik Sensör Füzyonu / Türevsel Eşik Değer Çaprazlaması'' (Donanımsal Koruma). Mantık kapısı analizi (AND gate) aynı anda şu koşulları arar: (1) Doğal ısınma eğrisini aşan anormal ısı türevi ($\frac{dT}{dt}$) eşiğinin geçilmesi; (2) Termal transferin yarattığı elektriksel direnç artışı ivmesinin ($\frac{dR}{dt}$) şok sınırını aşması; (3) Biyoelektrik verinin $-33.4$~mV değerine inmesi ve 0.5-5 Hz frekansındaki elektriksel patlama ($f_{spike}$) verisinin eşiği kırması. Tolerans düşerse düğümlere maliyet-etkin konvansiyonel sıcaklık termistörleri donanım onay sigortası olarak eklenecektir.\\
+\addlinespace
+\textbf{Bilimsel Doğrulama Kısıtı:} Orman yangını yüzeydeki 300\,\textdegree C sıcaklıktan sönümlenerek 15-20 cm toprak derinliği sensör yatağı bölgesine ulaştığında (30-50\,\textdegree C aralığı), mikroklimatik ısı transferinin mantar hücre ağlarında ayırt edilebilir kuvvetlilikte ve elektriksel gürültünün üzerinde (mV genliği) bir frekans (spike amplitüd) yanıtı oluşturamaması riski. & Araştırma evresinde, İYTE fizik laboratuvarlarındaki Climatic Chamber ünitelerinde gerçekleştirilecek ''yeraltı yüzey radyant ısıtma'' simülasyonları ve okuyucu çip donanımlarıyla 5-50 mV aralığındaki analog tespit eşik değer frekanslarının laboratuvar koşullarında hassas olarak kalibre edilmesi. & Orta & Orta & Sistemin yazılım mimarisinin, yalnızca yeraltı mutlak sıcaklığındaki kademeli artışın izlenmesi yerine; termal baskının yarattığı Ani Su Kaybı ve Elektriksel Direnç İvmesi ($\frac{dR}{dt}$) ile ısınma iletim hızı ($\frac{dT}{dt}$) arasındaki fiziksel bağı korelasyon olarak incelemesi, hücresel eşik karar sınırını zayıf uyarı genliklerini dahi analiz edebilecek şekilde algoritma tolerans limitlerine uyarlaması.\\
+\addlinespace
+\textbf{Operasyonel Risk (Korozyon Etkisi ve Hücresel Kopma):} Açık alan test sahalarındaki toprağın nem yapısı ve mikrobiyolojik özellikleri neticesinde, sensör ünitelerinin çelik elektrot arayüzlerinin oksitlenmesi veya bitki dokusunun bu pürüzsüz metali yapısal olarak reddedederek elektriksel okuma hassasiyetini zayıflatması. & Paslanmaz çelik elektrot oksidasyonunu yalıtarak engelleyen iletken sıvı grafit katmanı ve organik miselyum hiflerinin yüzey tutunmasını kolonize olmaya teşvik eden su tutucu özelliğe sahip Sodyum Aljinat Hidrojeli zırh kompozit kaplamasının kullanılması. & Orta & Yüksek & Orman zeminindeki yabani faunanın ve toprak organizmalarının, Sodyum Aljinat koruyucu jel katmanını biyolojik olarak öngörülenden hızlı tüketmesi durumunda oluşturulan ikincil donanım müdahalesi; elektrot kılıflarının iletken polimer (PEDOT:PSS tabanlı) organik elektrokimyasal transistör (OECT) arayüzleriyle takviye edilmesi veya zorlu iklim koşullarına iletken köprü sağlayan Elektroaktif Mikroorganizma (EAM) biyofilm katmanlarının sisteme dahil edilmesidir.\\
+\addlinespace
+\textbf{İdari ve Hukuki Hüküm Riskleri (Arazi Tahsisi ve İzin Onaylarının Gecikmesi):} Test operasyon alanlarının yasal otoritesi konumunda bulunan kamu kuruluşlarından (OGM birimlerinden) talep edilecek sensör kurulum ve küçük ölçekli kontrollü yakma (prescribed burn) faaliyet belgelerinin, idari işleyişlerden dolayı gecikerek işletme 18 aylık fon sözleşme takvimi programına aksaklık oluşturması. & Proje tescil işleminin başlatılması ile eş zamanlı olarak; kamu yönetimi inisiyatifinden ziyade üniversite araştırma izinlerinin geçerli olduğu İYTE Teknopark teknoloji alanları veya STK statüsündeki Ege Orman Vakfı'nın kullanım protokolleri (Memorandum of Understanding) ile test onayı müzakerelerinin yürütülmesi. & Düşük & Düşük & Test süreçleri ve veri doğrulama aşamaları için idari prosedürlerin uzaması durumunda; işletme ticarileşme hedeflerindeki TRL 7 ve TRL 8 açık arazi referans cihaz lansmanlarının, satın alma idaresi doğrudan kurumsal yetkililere ait olan enerji şirketleri nakil hattı şeritlerinde veya maden/kağıt işletmesi (B2B pazar paydaşlarına) sanayi orman bölgelerinde, özel ticari faturalandırma prosedürleri üzerinden tamamlanması.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+% ============================================================
+\appendix
+\section*{EK: Mantar Elektrofizyoloji Deneyleri Raporu}
+\addcontentsline{toc}{section}{EK: Mantar Elektrofizyoloji Deneyleri Raporu}
+
+\begin{center}
+\textbf{TÜBİTAK 1812 BİGG Programı --- Mycellium-Aegis Projesi}\\[0.3cm]
+{\Large\bfseries Mantar Elektrofizyoloji Deneyleri Raporu}\\[0.2cm]
+\textit{Deney 1 \& Deney 2 --- Birleşik Teknik Belge}
+\end{center}
+
+\vspace{0.5cm}
+\begin{tabular}{ll}
+\textbf{Konu:} & Miselyum Biyoelektrik Sinyallerinin Ölçümü\\
+\textbf{Deney 1:} & \textit{Pleurotus ostreatus} (Tek Mantar)\\
+\textbf{Deney 2:} & Miselyum Ağı (Terrarium Ortamı, 2 Diferansiyel Kanal)\\
+\textbf{Ekip:} & Mehmet Çetin (CEO), Muhammet Yağcıoğlu (CTO), Ömer Ünal (COO), Mahmut Can Göçlü (CRO)\\
+\textbf{Kurum:} & İzmir Yüksek Teknoloji Enstitüsü (İYTE)\\
+\textbf{Tarih:} & Mayıs 2026\\
+\end{tabular}
+
+\subsection*{1. Giriş ve Proje Bağlamı}
+\addcontentsline{toc}{subsection}{1. Giriş ve Proje Bağlamı}
+
+Mycellium-Aegis, orman tabanındaki mantar miselyumunu canlı bir biyosensör ağı olarak kullanan proaktif bir biyo-hibrit erken uyarı sistemidir. Projenin bilimsel temeli, mantar miselyumunun abiyotik çevresel strese ---özellikle ısıl şoka--- verdiği ölçülebilir elektrofizyolojik tepkiye dayanmaktadır. Literatürde Prof. Andrew Adamatzky tarafından tanımlanan hücresel ısıl-stres yanıtına göre, ani ısı artışı kofulların birleşmesini ve kalsiyum iyon dalgalarını tetikleyerek mV mertebesinde ölçülebilen elektriksel aksiyon potansiyellerine (spike) dönüşmektedir.
+
+Bu belge, söz konusu biyoelektrik sinyallerin iki ayrı deney düzeneğiyle ölçülmesini kapsamaktadır:
+\begin{itemize}[leftmargin=1cm]
+  \item \textbf{Deney 1:} Tek bir \textit{Pleurotus ostreatus} (istiridye mantarı) örneği üzerinde, MCP6022 op-amp ön kuvvetlendirici destekli 1 diferansiyel ADC kanalıyla biyoelektrik sinyal ölçümü ve ateş stresi tepkisinin incelenmesi.
+  \item \textbf{Deney 2:} Toprak, kaya ve organik materyal içeren bir terrarium ortamına yerleştirilmiş miselyum ağı üzerinde, 2 diferansiyel ADC kanalıyla çok noktalı ölçüm; FIR filtreleme ve otomatik ofset kalibrasyonu iyileştirmeleriyle donanım ve yazılım geliştirmesinin doğrulanması.
+\end{itemize}
+
+\textbf{TRL Hedefi:} Bu deneylerin amacı, iş planının Kritik İş Adımları tablosundaki ''Aljinat/grafit elektrot lab üretimi + miselyum ısıl-şok doğrulama testleri (Ay 1--6, TRL 3--4)'' kilometre taşına kanıt sağlamaktır. Her iki deney, sahadaki gerçek miselyum ağlarında uygulanacak tam ölçekli sistemin öncüsü niteliğindedir.
+
+\subsection*{2. Sistem Mimarisi ve Donanım}
+\addcontentsline{toc}{subsection}{2. Sistem Mimarisi ve Donanım}
+
+\subsubsection*{2.1 Ortak Donanım Bileşenleri}
+
+Her iki deneyde de temel ölçüm zinciri aşağıdaki bileşenlerden oluşmaktadır:
+
+\begin{table}[h]
+\centering
+\caption{Ortak Donanım Bileşenleri}
+\begin{tabular}{p{2.2cm}p{7.5cm}p{3cm}}
+\toprule
+\textbf{Bileşen} & \textbf{Açıklama} & \textbf{Bağlantı}\\
+\midrule
+ESP32 & Xtensa LX6 çift çekirdek, 240 MHz, Wi-Fi/BLE & Ana MCU\\
+ADS1115 & 16-bit, 4 kanallı $\Sigma$-$\Delta$ ADC, programlanabilir kazanç & I2C (0x48)\\
+MCP6022 & Düşük gürültülü, çift kanallı op-amp ön kuvvetlendirici & Elektrot arayüzü\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{2.2 Ölçüm Zinciri Açıklaması}
+
+Mantar dokusu / miselyum ağından alınan ham biyoelektrik sinyal (mV mertebesinde) önce MCP6022 op-amp devresiyle ön kuvvetlendirilir, ardından ADS1115 üzerinden dijital ortama aktarılır. ADS1115'in programlanabilir kazanç amplifikatörü (PGA) farklı voltaj aralıkları için yapılandırılabilmekte; bu durum iki deney arasındaki en önemli donanım farklılıklarından birini oluşturmaktadır.
+
+\subsection*{3. Deney 1: Pleurotus ostreatus Tek Mantar Ölçümü}
+\addcontentsline{toc}{subsection}{3. Deney 1: Pleurotus ostreatus Tek Mantar Ölçümü}
+
+\subsubsection*{3.1 Deney Amacı ve Kapsamı}
+
+Bu deneyin amacı, \textit{Pleurotus ostreatus} (istiridye mantarı) dokusundan ölçülebilir biyoelektrik sinyallerin elde edilip edilemeyeceğini doğrulamak; dinlenim (normal) ve ateş stresi koşullarında sinyal karakteristiklerini karşılaştırmaktır. Deney, projenin temel bilimsel hipotezinin ---miselyumun abiyotik ısıl strese mV mertebesinde ölçülebilir elektriksel aksiyon potansiyelleriyle yanıt verdiği--- laboratuvar ortamında ilk doğrulamasıdır.
+
+\subsubsection*{3.2 Deney Düzeneği}
+
+Deney 1 donanım kurulumu: \textit{Pleurotus ostreatus} mantarına yerleştirilen ince elektrotlar, breadboard üzerindeki ESP32, ADS1115 ADC modülü ve MCP6022 op-amp devresiyle birlikte görülmektedir. Sistem dizüstü bilgisayar USB portundan beslenmektedir.
+
+\begin{table}[h]
+\centering
+\caption{Deney 1 Teknik Parametreler}
+\begin{tabular}{p{4.5cm}p{8.2cm}}
+\toprule
+\textbf{Parametre} & \textbf{Değer / Açıklama}\\
+\midrule
+Deney özneği & \textit{Pleurotus ostreatus} (tek mantar dokusu)\\
+Mikrodenetleyici & ESP32 (Xtensa LX6, 240 MHz)\\
+ADC & ADS1115 -- 16-bit, diferansiyel giriş (AIN0--AIN1)\\
+Op-Amp & MCP6022 -- düşük gürültülü, çift kanallı ön kuvvetlendirici\\
+PGA Kazancı & \texttt{GAIN\_SIXTEEN} -- $\pm 0.256$ V tam skala\\
+LSB Çözünürlüğü & 7.8125 $\mu$V/bit\\
+Örnekleme Hızı & $\approx$45 Hz (20 ms gecikme + I2C gecikmesi)\\
+İletişim & UART, 115200 baud, CSV formatı\\
+Ölçüm noktası sayısı & 1 diferansiyel kanal (AIN0--AIN1)\\
+Filtreleme & Yok (ham sinyal kaydı)\\
+Ofset kalibrasyonu & Yok\\
+Çıktı formatı & \texttt{Millis, RawValue, Voltage\_mV}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{3.3 Firmware Kodu (Deney 1)}
+
+\begin{verbatim}
+#include <Wire.h>
+#include <Adafruit_ADS1X15.h>
+
+Adafruit_ADS1115 ads;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  Wire.setClock(100000);
+
+  if (!ads.begin()) {
+    Serial.println("ADS1115 bulunamadi!");
+    while (1);
+  }
+
+  // GAIN_SIXTEEN: +/-0.256V tam skala, LSB = 7.8125 uV
+  ads.setGain(GAIN_SIXTEEN);
+  Serial.println("Millis,RawValue,Voltage_mV");
+}
+
+void loop() {
+  // Diferansiyel olcum: AIN0 - AIN1
+  int16_t rawValue = ads.readADC_Differential_0_1();
+  float voltage_mV = rawValue * 0.0078125;  // 7.8125 uV/bit
+
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.print(rawValue);
+  Serial.print(",");
+  Serial.println(voltage_mV, 4);
+
+  delay(20);
+}
+\end{verbatim}
+\textit{Listing 1: Deney 1 ESP32 Firmware --- mantar\_esp32.ino}
+
+\subsubsection*{3.4 Ölçüm Sonuçları}
+
+\textbf{Normal Durum (Dinlenim) Sinyalleri:} Sinyal $-29.4$~mV ile $+0.1$~mV aralığında seyretmekte, ortalama $-2.9$~mV olarak ölçülmüştür ($N=1048$ örnek). FFT frekans spektrumunda baskın frekans $\approx$20 Hz olarak belirlenmekte; 5 Hz civarında periyodik negatif pik yapıları gözlemlenmektedir.
+
+\begin{itemize}[leftmargin=1cm]
+  \item Voltaj aralığı: $-29.4$~mV -- $+0.1$~mV
+  \item Ortalama voltaj: $-2.9$~mV
+  \item Örnek sayısı: $N = 1048$
+  \item Örnekleme frekansı: $f_s = 45.0$~Hz
+  \item Baskın frekans bileşeni: $\approx$20 Hz (FFT)
+  \item 5 Hz harmoniklerinde periyodik negatif pik yapıları gözlemlenmektedir.
+\end{itemize}
+
+\textbf{Ateş Stresi Sinyalleri:} Minimum değer $-33.4$~mV'a düşmüş; sinyal genliği belirgin biçimde artmıştır ($N=1085$ örnek). FFT'de baskın frekans $\approx$4.98 Hz'e kaymış; 5 Hz harmoniklerinin genliği önemli ölçüde yükselmiştir. Bu durum ısı stresinin iyon kanalı aktivitesini artırdığına işaret etmektedir.
+
+\begin{itemize}[leftmargin=1cm]
+  \item Minimum voltaj: $-33.4$~mV (normal durumda $-29.4$~mV; $\Delta = -4.0$~mV)
+  \item Ortalama voltaj: $-2.94$~mV (normal durumdan hafif negatif yönde kayma)
+  \item Örnek sayısı: $N = 1085$
+  \item Baskın frekans bileşeni: $\approx$4.98 Hz (normal durumda $\approx$20 Hz)
+  \item 5 Hz harmoniklerinde belirgin genlik artışı gözlemlenmektedir.
+  \item Normal duruma kıyasla sinyal genliği ve 5 Hz bileşeni önemli ölçüde farklılaşmaktadır.
+\end{itemize}
+
+\subsubsection*{3.5 Python Veri Kayıt ve Analiz Kodu (Deney 1)}
+
+\begin{verbatim}
+import serial
+import csv
+import os
+import time
+from datetime import datetime
+
+PORT = "COM9"          # Windows: COM3, Linux: /dev/ttyUSB0
+BAUD_RATE = 115200
+OUTPUT_FILE = "mantar_elektrofizyoloji.csv"
+TIMEOUT = 2
+
+def main():
+    ser = serial.Serial(PORT, BAUD_RATE, timeout=TIMEOUT)
+    time.sleep(2)  # ESP32 reset sonrasi boot suresi
+
+    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["PC_Timestamp", "ESP_Millis", "RawValue", "Voltage_mV"])
+        ser.readline()  # ilk satiri atla
+
+        while True:
+            line = ser.readline().decode("utf-8", errors="replace").strip()
+            if not line or line.startswith("Millis"):
+                continue
+
+            parts = line.split(",")
+            if len(parts) != 3:
+                continue
+
+            pc_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+            writer.writerow([pc_timestamp] + parts)
+            # Her satirdan sonra diske yaz (veri kaybi onleme)
+            csvfile.flush()
+            os.fsync(csvfile.fileno())
+
+if __name__ == "__main__":
+    main()
+\end{verbatim}
+\textit{Listing 2: Deney 1 Python veri kayıt betiği --- mantar\_elektrofizyoloji.py}
+
+\subsubsection*{3.6 Deney 1 Değerlendirmesi}
+
+Deney 1, \textit{Pleurotus ostreatus} mantar dokusunun ısıl strese yanıt olarak ölçülebilir biyoelektrik değişiklikler ürettiğini başarıyla doğrulamıştır. Temel bulgular şu şekilde özetlenebilir:
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Hipotez doğrulandı:} Miselyum/mantar dokusundan mV mertebesinde biyoelektrik sinyal ölçülmüştür. Bu, Mycellium-Aegis'in temel bilimsel iddiasını laboratuvar düzeyinde kanıtlamaktadır.
+  \item \textbf{Stres imzası tespit edildi:} Ateş stresi uygulandığında hem genlik ($-4$~mV) hem de frekans domeninde (5 Hz harmonik yükselimi) istatistiksel olarak anlamlı farklılaşma gözlemlendi.
+  \item \textbf{Kısıtlar belirlendi:} Tek kanallı ölçüm, gürültü filtreleme eksikliği ve ofset kalibrasyonunun yokluğu bu deneyin iyileştirilmesi gereken yönleri olarak not edilmiştir. Bu kısıtlar Deney 2'de ele alınmıştır.
+\end{enumerate}
+
+\subsection*{4. Deney 2: Miselyum Ağı Terrarium Ortamı, 2 Diferansiyel Kanal}
+\addcontentsline{toc}{subsection}{4. Deney 2: Miselyum Ağı Terrarium Ortamı, 2 Diferansiyel Kanal}
+
+\subsubsection*{4.1 Deney Amacı ve Motivasyon}
+
+Deney 2, Deney 1'den elde edilen deneyimi gerçek saha koşullarına daha yakın bir ortama taşıma amacıyla tasarlanmıştır. Tek bir mantar örneği yerine, toprak, kaya, kuru ot ve organik artıkların bulunduğu cam bir terrarium içinde büyüyen aktif miselyum ağından ölçüm alınmıştır. Bu geçiş iki önemli soruyu hedeflemektedir:
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Doğal toprak ortamındaki miselyum ağı da ısıl strese yanıt üretir mi?
+  \item Birden fazla ölçüm noktası (2 diferansiyel kanal) kullanıldığında ağın farklı konumlarından tutarlı ve ayırt edilebilir sinyaller alınabilir mi?
+\end{enumerate}
+
+\subsubsection*{4.2 Deney Düzeneği ve Kurulum}
+
+Deney, cam bir akvaryum içine inşa edilen doğal orman tabanı benzetim düzeneğiyle gerçekleştirilmiştir. Düzenek içinde tabandan yukarıya doğru; drenaj katmanı (iri çakıl), organik toprak karışımı, çürümekte olan odun, kuru bitki artıkları, yosun ve canlı küçük bitkiler bulunmaktadır. Bu katmanlı yapı, gerçek bir orman tabanı kesitini temsil etmekte ve miselyumun doğal gelişim ortamını simüle etmektedir. Sol elektrot çifti (sarı/beyaz): Kanal A; sağ elektrot çifti (mavi/turuncu): Kanal B.
+
+\subsubsection*{4.3 Donanım Değişiklikleri}
+
+Deney 2'de elektronik donanımın temel bileşenleri aynı kalmakla birlikte, miselyum ağı ve toprak ortamının farklı elektriksel karakteristiklerine uyum sağlamak için kritik değişiklikler yapılmıştır:
+
+\begin{table}[h]
+\centering
+\caption{Deney 1 vs. Deney 2 Donanım Karşılaştırması}
+\begin{tabular}{p{3cm}p{5cm}p{5cm}}
+\toprule
+\textbf{Parametre} & \textbf{Deney 1} & \textbf{Deney 2}\\
+\midrule
+Deney özneği & \textit{P. ostreatus} tek mantar & Toprak/miselyum ağı (terrarium)\\
+Ölçüm noktası sayısı & 1 diferansiyel kanal (AIN0--AIN1) & 2 diferansiyel kanal\\
+PGA Kazancı & \texttt{GAIN\_SIXTEEN} ($\pm0.256$ V) & \texttt{GAIN\_TWOTHIRDS} ($\pm6.144$ V)\\
+LSB çözünürlüğü & 7.8125 $\mu$V/bit & 187.5 $\mu$V/bit\\
+Örnekleme hızı & $\approx$45 Hz (20 ms gecikme) & $\approx$100 Hz (10 ms gecikme)\\
+FIR filtre & Yok & 5-tap, $[0.1, 0.2, 0.4, 0.2, 0.1]$\\
+Ofset kalibrasyonu & Yok & Var (50-örnek ortalama, başlangıçta)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{4.3.1 PGA Kazanç Değişikliğinin Gerekçesi}
+
+Deney 1'de kullanılan \texttt{GAIN\_SIXTEEN} ($\pm 0.256$ V, LSB = 7.8125 $\mu$V), tek bir mantar dokusuyla doğrudan temas eden elektrotlar için idealdir. Ancak toprak/miselyum ortamında iki kritik sorun ortaya çıkmıştır:
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Saturasyon sorunu:} Toprak-elektrot arayüz direnci ve miselyum ağının dağıtılmış empedansı, ADC girişine daha geniş voltaj dalgalanmaları aktarmakta; bu durum \texttt{GAIN\_SIXTEEN} ile ADC'nin sıklıkla doyuma ulaşmasına neden olmaktadır.
+  \item \textbf{DC ofset baskınlığı:} Toprak kimyası ve elektrot polarizasyonu nedeniyle oluşan DC bileşeni, $\pm 0.256$~V aralığında çalışmanın önünde ciddi bir engel teşkil etmektedir.
+\end{enumerate}
+
+\texttt{GAIN\_TWOTHIRDS} ($\pm 6.144$ V) kullanılarak voltaj aralığı $24\times$ genişletilmiş; böylece DC ofset ve sinyal dalgalanmalarının tamamı temsil edilebilir hale getirilmiştir. Çözünürlük kaybı ($7.8~\mu$V/bit $\rightarrow 187.5~\mu$V/bit) miselyum sinyalinin mV mertebesinde olduğu göz önüne alındığında sistem açısından kabul edilebilir düzeydedir.
+
+\subsubsection*{4.4 Firmware Kodu (Deney 2)}
+
+\begin{verbatim}
+#include <Wire.h>
+#include <Adafruit_ADS1X15.h>
+Adafruit_ADS1115 ads;
+
+// --- FIR Filtre Ayarlari ---
+#define FILTER_TAPS 5
+// Dusuk geciren filtre katsayilari (Toplam = 1.0)
+float fir_coeffs[FILTER_TAPS] = {0.1, 0.2, 0.4, 0.2, 0.1};
+float buffer[FILTER_TAPS] = {0};
+int buffer_index = 0;
+
+// --- Ofset Ayarlari ---
+float voltage_offset = 0.0;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(21, 22);  // SDA=21, SCL=22
+
+  if (!ads.begin(0x48)) {
+    Serial.println("ADS1115 bulunamadi!");
+    while (1);
+  }
+
+  // GAIN_TWOTHIRDS: +/-6.144V - genis aralik, DC ofset toleransi
+  ads.setGain(GAIN_TWOTHIRDS);
+
+  calibrateOffset();  // Baslangicta otomatik ofset kalibrasyonu
+}
+
+void loop() {
+  // Single-ended A0 okuma (2 diferansiyel kanal icin
+  // benzer blok A2 icin tekrarlanir)
+  int16_t adc0 = ads.readADC_SingleEnded(0);
+  float raw_voltage = ads.computeVolts(adc0);
+  float calibrated_voltage = raw_voltage - voltage_offset;
+  float filtered_voltage = applyFIRFilter(calibrated_voltage);
+
+  // Serial Plotter formatinda cikti:
+  // ham sinyal, FIR filtreli sinyal
+  Serial.print(raw_voltage, 4);
+  Serial.print(",");
+  Serial.println(filtered_voltage, 4);
+
+  delay(10);  // 100 Hz ornekleme
+}
+
+// --- Ofset Kalibrasyon Fonksiyonu ---
+void calibrateOffset() {
+  Serial.println("Ofset kalibrasyonu basliyor...");
+  delay(3000);
+
+  long sum = 0;
+  const int num_samples = 50;
+  for (int i = 0; i < num_samples; i++) {
+    sum += ads.readADC_SingleEnded(0);
+    delay(10);
+  }
+
+  float avg_adc = sum / (float)num_samples;
+  voltage_offset = ads.computeVolts(avg_adc);
+
+  Serial.print("Ofset: ");
+  Serial.print(voltage_offset, 4);
+  Serial.println(" V");
+}
+
+// --- 5-Tap FIR Filtre ---
+float applyFIRFilter(float new_val) {
+  buffer[buffer_index] = new_val;
+  float filtered_val = 0.0;
+
+  for (int i = 0; i < FILTER_TAPS; i++) {
+    int idx = (buffer_index - i + FILTER_TAPS) % FILTER_TAPS;
+    filtered_val += buffer[idx] * fir_coeffs[i];
+  }
+
+  buffer_index = (buffer_index + 1) % FILTER_TAPS;
+  return filtered_val;
+}
+\end{verbatim}
+\textit{Listing 3: Deney 2 ESP32 Firmware --- memet.ino}
+
+\subsubsection*{4.5 Yazılım Geliştirmeleri: Deney 1 $\rightarrow$ Deney 2}
+
+Deney 2 firmware'inde Deney 1'e kıyasla üç temel geliştirme yapılmıştır:
+
+\textbf{1. Otomatik Ofset Kalibrasyonu:} Toprak ortamında elektrot-substrat arayüzü belirgin bir DC ofset bileşeni oluşturur. Bu bileşen fark edilmeden bırakıldığında hem sinyalin doğru yorumlanmasını engeller hem de ADC dinamik aralığını israf eder. Deney 2'de eklenen \texttt{calibrateOffset} fonksiyonu, başlangıçta 50 örnek ortalaması alarak sistem ofsetini hesaplar ve bu değeri ölçümlerden çıkarır:
+$$V_{\text{kalibre}} = V_{\text{ham}} - \frac{1}{50}\sum_{i=1}^{50} V_i$$
+
+\textbf{2. Donanımsal 5-Tap FIR Düşük Geçiren Filtre:} Tek mantar dokusunun aksine, toprak-miselyum sistemi daha yüksek gürültülü bir ölçüm ortamı sunmaktadır. Çevresel titreşimler, elektromanyetik parazitler ve elektrot hareket gürültüsü yüksek frekans bileşenlerinde birikmektedir. Bu bileşenleri bastırmak için simetrik katsayılara sahip 5-tap FIR filtresi uygulanmıştır:
+$$y[n] = 0.1 \cdot x[n-4] + 0.2 \cdot x[n-3] + 0.4 \cdot x[n-2] + 0.2 \cdot x[n-1] + 0.1 \cdot x[n]$$
+Bu simetrik pencere ($\sum h_k = 1.0$) DC kazancı birliğe eşit olan doğrusal fazlı bir filtredir; dolayısıyla biyoelektrik sinyalin faz yapısını bozmaz. Dairesel tampon (circular buffer) yapısıyla etkin bellek kullanımı sağlanmıştır.
+
+\textbf{3. Arttırılmış Örnekleme Hızı:} Gecikme süresi 20 ms'den 10 ms'ye düşürülmüş; böylece efektif örnekleme hızı $\approx$45 Hz'den $\approx$100 Hz'e yükseltilmiştir. Bu değişiklik, Nyquist kriteri gereği 50 Hz'e kadar olan frekans bileşenlerinin kayıpsız temsil edilmesine olanak tanımaktadır.
+
+\subsubsection*{4.6 İki Diferansiyel Kanal Mimarisi}
+
+Deney 2'nin temel yeniliği, miselyum ağının iki farklı konumundan eş zamanlı diferansiyel ölçüm yapılmasıdır. ADS1115'in dört single-ended girişi (AIN0--AIN3), iki diferansiyel çift olarak yapılandırılmıştır:
+\begin{itemize}[leftmargin=1cm]
+  \item \textbf{Kanal A (Diferansiyel 1):} Terrariumun sol bölgesine yerleştirilen sarı/beyaz elektrot çifti (AIN0--AIN1)
+  \item \textbf{Kanal B (Diferansiyel 2):} Terrariumun sağ bölgesine yerleştirilen mavi/turuncu elektrot çifti (AIN2--AIN3)
+\end{itemize}
+
+Bu çift kanallı yapı, ilk kez ağın farklı konumlarındaki elektriksel aktivitenin karşılaştırılmasına imkân tanıyarak proaktif erken uyarı sisteminin temel operasyon modunu doğrulama imkânı sunmaktadır: tek bir noktadaki değişiklik yerine ağ genelindeki ısıl-stres yayılımının izlenmesi.
+
+\textit{Yazılım Notu: Paylaşılan firmware (memet.ino) tek bir single-ended kanalı (A0) işlemektedir. Tam 2-kanallı diferansiyel okuma için \texttt{readADC\_Differential\_0\_1} ve \texttt{readADC\_Differential\_2\_3()} çağrıları loop içinde sırayla çalıştırılmalıdır. Donanım olarak iki kanallı kurulum gerçekleştirilmiş; yazılım geliştirme iterasyonu devam etmektedir.}
+
+\subsection*{5. Deneyler Arası Kapsamlı Karşılaştırma}
+\addcontentsline{toc}{subsection}{5. Deneyler Arası Kapsamlı Karşılaştırma}
+
+\begin{table}[h]
+\centering
+\caption{Deney 1 ve Deney 2 Kapsamlı Karşılaştırma}
+\begin{tabular}{p{2.8cm}p{5cm}p{5cm}}
+\toprule
+\textbf{Boyut} & \textbf{Deney 1} & \textbf{Deney 2}\\
+\midrule
+Biyolojik özne & Tek \textit{P. ostreatus} mantar dokusu & Aktif miselyum ağı (terrarium)\\
+Ortam & Hava / doğrudan doku teması & Toprak, organik materyal, kaya\\
+PGA kazancı & \texttt{GAIN\_SIXTEEN} ($\pm0.256$ V), LSB: 7.8 $\mu$V/bit & \texttt{GAIN\_TWOTHIRDS} ($\pm6.144$ V), LSB: 187.5 $\mu$V/bit\\
+Örnekleme hızı & $\approx$45 Hz & $\approx$100 Hz\\
+Ölçüm kanalı & 1 diferansiyel (AIN0-AIN1) & 2 diferansiyel (Kanal A + B)\\
+Filtreleme & Ham sinyal (filtre yok) & 5-tap FIR düşük geçiren filtre\\
+Ofset kalibrasyonu & Manuel / yok & Otomatik (50-örnek, başlangıçta)\\
+Çıktı formatı & CSV: Millis, Raw, mV & Serial Plotter: ham voltaj, filtreli voltaj\\
+Temel amaç & Biyoelektrik sinyalin varlığını kanıtlama (TRL 2-3) & Çok noktalı ağ ölçümü, sinyal iyileştirme (TRL 3-4)\\
+Ana bulgu & Normal/stres ayrımı başarıyla gösterildi & Ağ ölçümü altyapısı kuruldu; FIR gürültü baskılaması doğrulandı\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{5.1 Teknik Evrim Özeti}
+
+İki deney arasındaki teknik ilerleme, Mycellium-Aegis ürününün iş planında tanımlanan ''laboratuvar doğrulama'' $\rightarrow$ ''saha prototipi'' yolculuğunun ilk adımlarını yansıtmaktadır:
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Sinyal Kalitesi:} FIR filtreleme ile SNR iyileştirilmiş, toprak ortamının doğrusal-olmayan gürültüsü bastırılmıştır. Bu bileşen, sahada rüzgâr/nem kaynaklı parazitlerin giderilmesi için kritiktir ve Savitzky-Golay tabanlı donanımsal filtresiyle entegre edilmesi planlanmaktadır.
+  \item \textbf{Ölçüm Ağı:} Tek noktadan iki noktaya geçiş, ağ genelinde ısıl-stres yayılımının haritalanmasının mümkün olduğunu ortaya koymaktadır.
+  \item \textbf{Kalibrasyon:} Otomatik ofset kalibrasyonu, saha koşullarında (değişken toprak nemi, sıcaklık) güvenilir ölçüm için ön koşuldur.
+  \item \textbf{Bant Genişliği:} 100 Hz örnekleme, literatürdeki 5 Hz miselyum aksiyon potansiyellerini ve harmoniklerini tam olarak temsil etmek için yeterlidir (Nyquist: $f_s/2 = 50$ Hz).
+\end{enumerate}
+
+\subsection*{6. Sonuç ve Gelecek Çalışmalar}
+\addcontentsline{toc}{subsection}{6. Sonuç ve Gelecek Çalışmalar}
+
+\subsubsection*{6.1 Sonuç}
+
+Bu raporda sunulan iki deney, Mycellium-Aegis projesinin temel bilimsel hipotezini aşamalı olarak doğrulamaktadır:
+
+\textbf{Temel Doğrulama:} Mantar miselyumu, ısıl strese yanıt olarak frekans ve genlik boyutlarında ölçülebilir ve ayırt edilebilir biyoelektrik sinyaller üretmektedir.
+\begin{itemize}[leftmargin=1cm]
+  \item Normal durum baskın frekansı: $\approx$20 Hz
+  \item Ateş stresi baskın frekansı: $\approx$5 Hz (harmonik yükselimi)
+  \item Genlik değişimi: $\Delta V_{\min} \approx -4$~mV (yönelim: daha negatif)
+\end{itemize}
+Bu ayrımın LSTM tabanlı zaman serisi sınıflandırma modeliyle otomatize edilmesi, projenin Ay 6--9 kilometre taşında hedeflenmektedir.
+
+\subsubsection*{6.2 Gelecek Çalışmalar}
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Ay 1--6 (TRL 3--4):} Terrariumda kontrollü sıcaklık artışı protokolleri ($dT/dt$ kontrolü), aljinat-grafit biyomimetik elektrotlarla ölçüm kalitesinin karşılaştırılması.
+  \item \textbf{Ay 6--9 (TRL 4--5):} Deney 1 \& 2 verilerinin birleştirilmesiyle PyTorch/LSTM modeli eğitimi; false positive oranının \%1'e indirilmesi.
+  \item \textbf{Ay 9--12 (TRL 5-6):} Açık havada terrarium ile pilot saha testi, Savitzky-Golay donanımsal filtresi entegrasyonu, LoRaWAN haberleşme katmanının eklenmesi.
+  \item \textbf{Ay 12--15:} TURKPATENT başvurusu (biyomimetik elektrot kaplama), OGM protokolü.
+  \item \textbf{Ay 15--18 (TRL 6--7):} İlk B2B/B2G ticari MVP sahası ve referans verisi.
+\end{enumerate}
+
+\bigskip
+\noindent\rule{\linewidth}{0.4pt}
+
+\medskip
+\noindent\textit{Bu belge, Mycellium-Aegis ekibi (Mehmet Çetin, Muhammet Yağcıoğlu, Ömer Ünal, Mahmut Can Göçlü) tarafından TÜBİTAK 1812 BİGG başvurusu kapsamında hazırlanmıştır. İzmir Yüksek Teknoloji Enstitüsü (İYTE) ekosistemi dahilinde yürütülen deneysel çalışmalara dayanmaktadır. Mayıs 2026.}
+
+\end{document}
