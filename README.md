@@ -28,6 +28,7 @@ Detecting a wildfire **before the first flame** — by listening to the electric
 - [How the system works](#-how-the-system-works)
 - [The detection algorithm](#-the-detection-algorithm-sensor-fusion)
 - [Hardware & measurement chain](#-hardware--measurement-chain)
+- [Interactive digital twin](#-interactive-digital-twin)
 - [Laboratory validation (Experiments 1 & 2)](#-laboratory-validation)
 - [Pyrophilic fungi & biodegradable housing](#-pyrophilic-fungi--biodegradable-housing)
 - [Communication & power](#-communication--power)
@@ -125,14 +126,79 @@ Only capillary drying → classified as **drought**. All three at once → **fir
 
 The raw mycelial signal is millivolt‑scale, so the chain is built for low‑noise, high‑resolution differential measurement:
 
+The hardware exists in **two generations** — do not conflate them:
+
+**Rev A — laboratory bench (May 2026)** · used for Experiments 1 & 2
+
 | Component | Role | Detail |
 |:----------|:-----|:-------|
-| **ESP32** (Xtensa LX6, 240 MHz) | Main MCU | Wi‑Fi/BLE, deep‑sleep, edge DSP |
+| **ESP32** (Xtensa LX6, 240 MHz) | Bench MCU | USB‑powered, UART 115200 to a laptop |
 | **ADS1115** | 16‑bit ΣΔ ADC | 4‑channel, programmable gain (PGA), I²C `0x48` |
 | **MCP6022** | Low‑noise op‑amp | Dual‑channel electrode preamplifier |
-| **Biomimetic electrodes** | Signal pickup | Stainless core + graphite matrix + sodium‑alginate hydrogel coating |
-| **LoRa 868 MHz** | Comms | LoRaWAN P2P mesh transceiver |
-| **Solar 5 W + LiFePO₄** | Power | Self‑powered, maintenance‑free operation |
+
+**Rev B — field hardware (July 2026)** · [full report + independent verification](./docs/hardware/)
+
+| Component | Role | Detail | Alternative considered |
+|:----------|:-----|:-------|:-----------------------|
+| **STM32L4** (L412 / L452) | Main MCU | Cortex‑M4F 80 MHz · Stop2 ≈ 1.3 µA · carries no unused radio | ESP32‑S3, STM32U5 |
+| **OPA333** | Preamplifier | Zero‑drift buffer; does not load the high‑impedance source | OPA2333 |
+| **ADS1115** | 16‑bit ΣΔ ADC | 4‑channel, PGA, I²C `0x48` — two channels still free | ADS131M0x |
+| **BME280** | Ambient sensor | Temperature / humidity / pressure cross‑check | BME688 |
+| **Biomimetic electrodes** | Signal pickup | 316L core + graphite/PPy + alginate‑glycerol‑nanocarbon | needle / Ag‑AgCl disc |
+| **MAX3485 ×2** | Buried ↔ surface link | RS485 differential, 3.3 V | THVD1450 / THVD2450 |
+| **EBYTE E220‑900T22D** | Comms | LLCC68 · 868 MHz · 22 dBm | AI‑Thinker RA‑09H |
+| **5 W solar + BQ24650 + LiFePO₄ 32700** | Power | MPPT charge, thermally stable chemistry | polycrystalline / Li‑ion |
+| **TPS63020** | Regulator | Buck‑boost, constant 3.3 V from 3.65 V–2.0 V | — |
+| **RAK2287 + Raspberry Pi 4 + SIM7600G‑H** | Gateway | LoRa concentrator, 4G/LTE backhaul | RAK5146 / CM4 |
+
+> **Why STM32L4 over ESP32‑S3:** in the field architecture all communication goes
+> over wired RS485 and a separate LoRa module, so the ESP32‑S3's internal
+> Wi‑Fi/BT radio is never used. The STM32L4 costs less and draws ~1.3 µA in
+> Stop2. STM32U5 is markedly more efficient in run mode (≈16 vs ≈100 µA/MHz) and
+> should be revisited if multi‑channel (star‑array) sensing is adopted.
+
+**Measured power budget** (50 % duty cycle, datasheet values):
+buried node 4.49 mA · surface node 0.28 mA · **total 4.77 mA** →
+7.5 weeks (ideal) / 6.1 weeks (conservative) on one 6000 mAh cell.
+At 10 % duty cycle the same system runs 27–34 weeks.
+
+**Unit cost:** one measurement point (buried + surface node pair) ≈ **$103.8**
+(≈ 4,910 TL); one gateway ≈ **$260** (≈ 12,300 TL), July 2026 prices.
+
+---
+
+## 🖥️ Interactive digital twin
+
+A single‑screen, physically coupled simulation of the whole system lives in
+**[`docs/digital-twin/`](./docs/digital-twin/)** — open `index.html` in a browser,
+no build step and no network access required.
+
+It solves four coupled models live and drives a PBR 3‑D soil‑profile render from
+the results:
+
+1. **Transient heat conduction** — 1‑D explicit finite difference, 61 nodes,
+   Δz = 1 cm, moisture‑dependent diffusivity α(θ) ∈ [1.8, 5.5]×10⁻⁷ m²/s
+2. **Soil moisture** — baseline evapotranspiration plus a thermally driven
+   drying front that runs ahead of the conduction front (vapour transport)
+3. **Electrode resistance** — Archie's law, R = R_ref·(θ/θ_ref)^(−n), n = 2
+4. **Bioelectric signal** — 100 Hz synthesis whose amplitude and frequency
+   targets are Experiment 1's *measured* values (20 Hz / −29.4 mV at rest →
+   4.98 Hz / −33.4 mV under heat stress), with a live 512‑point FFT
+
+The power‑budget and cost models reproduce the hardware report's published
+figures exactly (4.49 / 0.28 / 4.77 mA and 7.5 / 6.1 weeks at 50 % duty cycle;
+$103.8 per node pair).
+
+> **What the twin found.** With the temperature/resistance probe at 18 cm — where
+> every document currently places it — the thermal front reaches that depth
+> *after* surface ignition, so the `dT/dt > β` condition never fires in the
+> pre‑ignition scenario. **15–20 cm is the mycelium's survival depth, not heat's
+> detection depth.** Keeping the bioelectrode at 18 cm but moving the T/R probe
+> to 5–8 cm on the same cable pulls the alarm ~25 minutes *ahead* of ignition and
+> still raises no false alarm in the drought scenario. Two of the ADS1115's four
+> channels are already free; the added cost is one thermistor and one electrode
+> pair (< $3). Full table and reasoning in
+> [`docs/hardware/README.md`](./docs/hardware/README.md).
 
 ---
 
@@ -192,7 +258,7 @@ Mycellium‑Aegis is designed to **survive the fire and heal the soil afterward*
 
 Forest RF is harsh; Wi‑Fi and GSM lose signal under canopy and drain batteries. Mycellium‑Aegis uses **LoRa (868 MHz ISM)**:
 
-- 24‑bit ADC readings → ESP32‑LoRa nodes in insulated buried enclosures
+- 16‑bit ADS1115 readings → STM32L4 nodes in insulated buried enclosures
 - **P2P mesh** with **1.5 km – 15 km** error‑free range even in dense forest
 - Nodes relay to an **Aegis‑Nexus gateway** → GSM/satellite → early‑warning servers
 - **Energy harvesting** (5 W solar + LiFePO₄, with thermoelectric/piezoelectric options) for long‑term, maintenance‑free operation
@@ -206,7 +272,7 @@ From "Month 0" (Excellence Seal obtained after the BİGG Stage‑1 accelerator),
 | Work package | Focus | Window | Output / TRL |
 |:-------------|:------|:-------|:-------------|
 | **WP‑1** Biocomposite & culture | Rice‑husk/silica matrix; *Pyronema domesticum* inoculation; mould biodegradable housing | M1–3 | 100 integrated‑electrode housings · TRL 3→4 |
-| **WP‑2** Climate chamber & thresholds | 15–20 cm soil simulation; radiant heat shock; log `dT/dt`, `dR/dt` on 24‑bit ADC | M4–7 | β, γ coefficients fixed at 98 % confidence · TRL 4→5 |
+| **WP‑2** Climate chamber & thresholds | 15–20 cm soil simulation; radiant heat shock; log `dT/dt`, `dR/dt` on the 16‑bit ADS1115 | M4–7 | β, γ coefficients fixed at 98 % confidence · TRL 4→5 |
 | **WP‑3** Signal processing & LoRa | Spike de‑noising; event‑driven MCU code; P2P LoRaWAN; energy‑harvest tuning; PCB | M6–9 | Low‑latency anomaly relay; PCB done · TRL 5→6 |
 | **WP‑4** Field prototype | Sensors buried in an authorized forest plot; small controlled burn with synchronous logging | M9–11 | Pre‑flame detection to server; durability · TRL 6→7 |
 | **WP‑5** AI & patent | LSTM classifier (FP < 1 %); TÜRKPATENT filing; follow‑on investment talks | M11–15 | Patent application; tender‑compliance docs |
@@ -266,8 +332,11 @@ This repository holds the TÜBİTAK 1812 BİGG application dossier and supportin
 
 ```
 docs/
+├── hardware/           # Rev B hardware report + independent verification of its numbers
+├── digital-twin/       # Interactive single-screen digital twin (open index.html)
 ├── research/           # Scientific evaluation & R&D roadmap (the "why" and the physics)
 ├── experiments/        # Electrophysiology experiments 1 & 2 — hardware, firmware, results
+├── pitch-decks/        # TÜBİTAK BiGG presentation, backup slides, Q&A
 ├── business-plan/      # Cost form / 18-month budget breakdown
 ├── letters-of-intent/  # Niyet mektupları — OGM Regional Directorate, İYTE
 └── team-cvs/           # Team CVs (özgeçmişler)
@@ -279,6 +348,8 @@ archive/
 
 | Folder | Contents |
 |:-------|:---------|
+| [`docs/hardware/`](./docs/hardware/) | *Donanım Teknik Raporu* (Rev B) — component decisions, power budget, BOM + independent verification |
+| [`docs/digital-twin/`](./docs/digital-twin/) | Interactive digital twin — coupled physics, live figures, hardware inspector |
 | [`docs/research/`](./docs/research/) | *Miselyum Elektriksel Aktivitesi Araştırması* — science & roadmap |
 | [`docs/experiments/`](./docs/experiments/) | *Mantar Deney Raporu* — electrophysiology experiments 1 & 2 |
 | [`docs/business-plan/`](./docs/business-plan/) | *İş Planı Maliyet Formu* — 18‑month budget |

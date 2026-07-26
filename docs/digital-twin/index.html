@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mycellium-Aegis — Sayısal İkiz</title>
+<meta name="description" content="Mycellium-Aegis orman yangını erken uyarı sisteminin tek ekranlık sayısal ikizi: PBR üç boyutlu toprak kesiti, bağlı ısı–nem–biyoelektrik çözücüsü, füzyon kuralı, güç bütçesi ve maliyet modeli.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍄</text></svg>">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="css/twin.css">
+</head>
+<body>
+
+<div id="boot"><div class="b">
+  <h1>Mycellium&#8209;Aegis</h1>
+  <div class="s">Sayısal İkiz — bağlı ısı, nem ve biyoelektrik çözücüsü</div>
+  <div class="bar"><i></i></div>
+  <div class="st">başlatılıyor</div>
+</div></div>
+
+<div id="sheet">
+
+  <!-- ===================================================== başlık ======= -->
+  <header id="head">
+    <h1>Mycellium&#8209;Aegis<span class="sub">— sayısal ikiz</span></h1>
+    <span class="badge">TÜBİTAK 1812 BiGG</span>
+    <span class="badge">Donanım Rev B · Temmuz 2026</span>
+    <span class="badge">TRL 3→4</span>
+    <span class="meta" id="env"></span>
+    <span class="badge on" id="state">normal</span>
+  </header>
+
+  <!-- ================================================== 3B görünüm ====== -->
+  <section id="view">
+    <canvas id="gl"></canvas>
+    <div id="bar">
+      <button data-v="sub" class="on">kesit</button>
+      <button data-v="node">düğüm</button>
+      <button data-v="strata">profil</button>
+      <button data-v="site">saha</button>
+      <span class="sep"></span>
+      <button data-sc="normal">normal</button>
+      <button data-sc="drought">kuraklık</button>
+      <button data-sc="preignition" class="on">alev öncesi</button>
+      <button data-sc="surfaceFire">yüzey yangını</button>
+      <span class="sep"></span>
+      <button id="play">durdur</button>
+      <button id="rst">sıfırla</button>
+      <button id="spd">120×</button>
+      <span class="clk" id="clk">00:00</span>
+    </div>
+    <div class="hint">sürükle · döndür &nbsp; tekerlek · yakınlaş &nbsp; donanıma tıkla</div>
+    <div id="insp"></div>
+    <div class="cap" id="viewcap"></div>
+  </section>
+
+  <!-- ================================================== ölçüm sütunu ==== -->
+  <aside id="meas"></aside>
+
+  <!-- =============================================== donanım / ekonomi == -->
+  <aside id="econ"></aside>
+
+  <!-- ==================================================== şekil şeridi == -->
+  <section id="figs">
+    <figure class="fig">
+      <figcaption class="ft"><span><b>Şekil 2.</b> Biyoelektrik iz</span><span class="rd" id="rd-scope"></span></figcaption>
+      <canvas id="scope"></canvas>
+      <div class="fl" id="fl-scope"></div>
+    </figure>
+    <figure class="fig">
+      <figcaption class="ft"><span><b>Şekil 3.</b> Güç spektrumu</span><span class="rd" id="rd-fft"></span></figcaption>
+      <canvas id="fft"></canvas>
+      <div class="fl" id="fl-fft"></div>
+    </figure>
+    <figure class="fig">
+      <figcaption class="ft"><span><b>Şekil 4.</b> Derinlik profili</span><span class="rd" id="rd-prof"></span></figcaption>
+      <canvas id="prof"></canvas>
+      <div class="fl" id="fl-prof"></div>
+    </figure>
+    <figure class="fig">
+      <figcaption class="ft"><span><b>Şekil 5.</b> Karar değişkenleri</span><span class="rd" id="rd-tline"></span></figcaption>
+      <canvas id="tline"></canvas>
+      <div class="fl" id="fl-tline"></div>
+    </figure>
+  </section>
+
+</div>
+
+<noscript><p style="padding:40px">Bu sayfa WebGL ve JavaScript gerektirir.
+Statik özet için <a href="../hardware/MycelliumAegis_Donanim_Raporu.pdf">donanım raporuna</a> bakınız.</p></noscript>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/katex/katex.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/textures.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
