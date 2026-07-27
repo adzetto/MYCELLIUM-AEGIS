@@ -412,36 +412,41 @@ def fig_ai_pipeline():
     # şeklin üst %38'i boştu. Sınırı içeriğe oturtup figür yüksekliğini de
     # aynı oranda kısıyoruz — böylece kutu en-boy oranı korunuyor, yalnızca
     # boşluk gidiyor (birim başına inç sabit: 4.2/3.8 ~ 2.8/2.53).
-    fig, ax = plt.subplots(figsize=(8.2, 2.53))
-    ax.set_xlim(-0.25, 8.15); ax.set_ylim(-1.0, 1.8)
+    # Kutu genişliği 1.3 iken alttaki denklemler kutuya sığmıyor, komşu
+    # kutunun üstüne taşıyordu. Kutuları genişletip aralığı kısıyoruz ve
+    # denklem puntosunu düşürüyoruz; artık her ifade kendi kutusunda.
+    W, H, GAP = 1.62, 1.6, 0.22
+    N = 5
+    span = N*W + (N-1)*GAP                      # = 8.98
+    fig, ax = plt.subplots(figsize=(8.9, 2.53))
+    ax.set_xlim(-0.22, span + 0.22); ax.set_ylim(-1.0, 1.8)
     ax.axis('off')
     steps = [
         (r"\textbf{01}", r"Ofset"+"\n"+r"Kalibrasyon", r"$\bar{x}_{50}$ DC "+r"\"o"+r"teleme", GREEN),
         (r"\textbf{02}", r"5-tap FIR"+"\n"+r"Filtre", r"$y[n]=\sum h_k\,x[n\!-\!k]$", GREEN),
-        (r"\textbf{03}", r"\"Oznitelik"+"\n"+r"\c{C}\i kar\i m", r"FFT $\cdot$ $dT\!/\!dt$ $\cdot$ $f_{\mathrm{spike}}$", INDIGO),
-        (r"\textbf{04}", r"LSTM"+"\n"+r"S\i n\i fland\i rma", r"Zaman serisi $\to$ skor", INDIGO),
+        (r"\textbf{03}", r"\"Oznitelik"+"\n"+r"\c{C}\i kar\i m", r"FFT $\cdot\;dT\!/\!dt\;\cdot\;f_{\mathrm{spike}}$", INDIGO),
+        (r"\textbf{04}", r"LSTM"+"\n"+r"S\i n\i fland\i rma", r"zaman serisi $\to$ skor", INDIGO),
         (r"\textbf{05}", r"AND-Gate"+"\n"+r"Karar", r"3 ko\c{s}ul $\Rightarrow$ alarm", EMBER),
     ]
-    w, h = 1.3, 1.6
-    gap = 0.35
     for i, (num, title, eq, c) in enumerate(steps):
-        x = i * (w + gap)
-        bb = FancyBboxPatch((x, 0), w, h, boxstyle="round,pad=0.08",
+        x = i * (W + GAP)
+        bb = FancyBboxPatch((x, 0), W, H, boxstyle="round,pad=0.08",
                             facecolor=c, alpha=0.06, edgecolor=c, lw=2.25)
         ax.add_patch(bb)
-        ax.text(x+w/2, h-0.2, num, ha='center', va='center', fontsize=11.2, color=c)
-        ax.text(x+w/2, h*0.55, title, ha='center', va='center',
-                fontsize=11.9, fontweight='bold', color=INK, linespacing=1.4)
-        ax.text(x+w/2, 0.18, eq, ha='center', va='center', fontsize=11, color=MUT)
+        ax.text(x+W/2, H-0.2, num, ha='center', va='center', fontsize=11.2, color=c)
+        ax.text(x+W/2, H*0.56, title, ha='center', va='center',
+                fontsize=12.4, fontweight='bold', color=INK, linespacing=1.4)
+        ax.text(x+W/2, 0.19, eq, ha='center', va='center', fontsize=10.2, color=MUT)
         if i < len(steps)-1:
-            ax.annotate('', xy=(x+w+gap-0.05, h/2), xytext=(x+w+0.05, h/2),
+            ax.annotate('', xy=(x+W+GAP-0.03, H/2), xytext=(x+W+0.03, H/2),
                         arrowprops=dict(arrowstyle='->', color=MUT, lw=1.88))
-    ax.text(3.9, -0.55, r"$\left(\frac{dT}{dt}>\beta\right) \;\wedge\; "
+    # Alarm koşulu tam olarak kutu dizisinin ortasına hizalanıyor.
+    ax.text(span/2, -0.55, r"$\left(\frac{dT}{dt}>\beta\right) \;\wedge\; "
             r"\left(\frac{dR}{dt}>\gamma\right) \;\wedge\; "
             r"\left(f_{\mathrm{spike}} \in [0.5,5]\,\mathrm{Hz},\;"
             r"V_{\min}\!<\!-33\,\mathrm{mV}\right)$",
             ha='center', va='center', fontsize=12.6, color=EMBER,
-            bbox=dict(boxstyle='round,pad=0.4', facecolor=EMBER, alpha=0.06, edgecolor=EMBER, lw=1.25))
+            bbox=dict(boxstyle='round,pad=0.42', facecolor=EMBER, alpha=0.06, edgecolor=EMBER, lw=1.25))
     ax.set_title(r"\textbf{Sinyal i\c{s}leme hatt\i\\ --- ham gerilimden karara}", fontsize=16.1, pad=12)
     save(fig, "ai_pipeline")
 
@@ -466,7 +471,7 @@ def fig_electrode_material():
     # Sınır oranı panel kutusunun oranına (~1.32) yakın tutuluyor ki kutu
     # küçülüp (a) başlığı diğer iki başlığın altına düşmesin.
     axa.set_aspect("equal", adjustable="box")
-    axa.set_xlim(-4.5, 12.4); axa.set_ylim(-6.6, 6.2); axa.axis("off")
+    axa.set_xlim(-4.7, 12.6); axa.set_ylim(-7.4, 5.7); axa.axis("off")
     layers = [                       # (yarıçap mm, renk, ad, işlev, açı)
         (1.50, "#8A9099", r"316L \c{c}ekirdek",      r"mekanik dayan\i m",      -38),
         (2.35, INDIGO,    r"grafit\,/\,PPy",          r"elektron ilet\i m\i",     8),
@@ -489,13 +494,15 @@ def fig_electrode_material():
         axa.plot([x0], [y0], "o", color=c, ms=4.5, zorder=5)
         axa.text(xk+0.32, yk+0.40, name, color=c, fontsize=11.5, va="center", ha="left")
         axa.text(xk+0.32, yk-0.58, fn, color=MUT, fontsize=10, va="center", ha="left")
-    # çap ölçüsü — çemberlerin hemen altında, etiket sütununa girmeden
-    axa.annotate("", xy=(-3.40, -4.45), xytext=(3.40, -4.45),
+    # Çap ölçüsü. Çemberlere fazla yakınken en alttaki katman etiketiyle
+    # aynı bantta kalıyor ve sıkışık görünüyordu; ölçü çizgisini ve yazıyı
+    # daha aşağı indirip nefes payı bıraktık.
+    axa.annotate("", xy=(-3.40, -5.15), xytext=(3.40, -5.15),
                  arrowprops=dict(arrowstyle="<->", color=INK, lw=1.2))
     for xe in (-3.40, 3.40):
-        axa.plot([xe, xe], [-4.12, -4.78], color=INK, lw=1.0)
-    axa.text(0, -5.15, r"$\varnothing\;6.8$ mm", ha="center", fontsize=11.5, color=INK)
-    axa.text(0, -6.05, r"ger\c{c}ek \"ol\c{c}ek", ha="center", fontsize=10, color=MUT)
+        axa.plot([xe, xe], [-3.55, -5.52], color=MUT, lw=0.8, ls=(0, (3, 3)))
+    axa.text(0, -5.95, r"$\varnothing\;6.8$ mm", ha="center", fontsize=11.5, color=INK)
+    axa.text(0, -6.85, r"ger\c{c}ek \"ol\c{c}ek", ha="center", fontsize=10, color=MUT)
     axa.set_title(r"\textbf{(a)} Katman yap\i s\i", loc="left", fontsize=14)
 
     # ---- (b) korozyon: 24 ay toprak gömülü kütle kaybı --------------------
@@ -661,8 +668,8 @@ def fig_detection_timeline():
             ha="left", va="center")
     ax.annotate("", xy=(-25, 3.42), xytext=(0, 3.42),
                 arrowprops=dict(arrowstyle="<-", color=GREEN, lw=1.8))
-    ax.text(-12.5, 3.10, r"kazan\i lan s\"ure", fontsize=11, color=GREEN,
-            ha="center", va="center")
+    ax.text(-12.5, 3.13, r"kazan\i lan s\"ure", fontsize=11, color=GREEN,
+            ha="center", va="bottom")
 
     ax.set_yticks([]); ax.set_xlabel(r"Tutu\c{s}maya g\"ore zaman $[\mathrm{dk}]$")
     ax.set_xticks([-25, 0, 30, 60, 90])
@@ -671,6 +678,68 @@ def fig_detection_timeline():
     ax.grid(axis="y", visible=False)
     ax.grid(axis="x", color=GRID, lw=0.7)
     save(fig, "detection_timeline")
+
+# =============================================================================
+# 14 — iş modeli: donanım tek seferlik, SaaS tekrarlayan
+# -----------------------------------------------------------------------------
+# Paket başı: 360k TL satış / 160k TL maliyet -> 200k brüt kâr (%56).
+# SaaS: 54k TL/yıl lisans, ~%85 brüt marj (bulut maliyeti düşük).
+# Tümü iş planı varsayımı; ölçülmüş gerçekleşme değil.
+# =============================================================================
+def fig_business_model():
+    HW_REV, HW_GP = 360.0, 200.0        # bin TL, tek seferlik
+    SA_REV, SA_MG = 54.0, 0.85          # bin TL/yıl, brüt marj
+    yrs = np.arange(0, 6)
+
+    fig = plt.figure(figsize=(8.9, 3.15))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.45, 1.0], wspace=0.32)
+
+    # ---- (a) paket başına kümülatif brüt kâr ------------------------------
+    axa = fig.add_subplot(gs[0])
+    hw = np.full_like(yrs, HW_GP, dtype=float)
+    sa = yrs * SA_REV * SA_MG
+    axa.fill_between(yrs, 0, hw, color=INDIGO, alpha=0.20,
+                     label=r"Donan\i m --- tek seferlik")
+    axa.fill_between(yrs, hw, hw+sa, color=GREEN, alpha=0.28,
+                     label=r"SaaS lisans\i\ --- tekrarlayan")
+    axa.plot(yrs, hw, color=INDIGO, lw=2.0)
+    axa.plot(yrs, hw+sa, color=GREEN, lw=2.4)
+
+    # SaaS brüt kârının donanımı geçtiği yıl. Not, göstergenin sol üstteki
+    # yerine denk gelip üstünü çiziyordu; gösterge sağ alta, not üst
+    # şeride alındı.
+    xc = HW_GP / (SA_REV*SA_MG)
+    axa.axvline(xc, color=EMBER, lw=1.3, ls=(0, (4, 3)))
+    axa.annotate(r"SaaS, donan\i m\i\ ge\c{c}iyor",
+                 xy=(xc, HW_GP*1.62), xytext=(xc-0.16, 432),
+                 fontsize=11.5, color=EMBER, ha="right", va="center",
+                 arrowprops=dict(arrowstyle="->", color=EMBER, lw=1.2))
+    axa.set_xlim(0, 5); axa.set_ylim(0, 470)
+    axa.set_xticks(yrs); axa.set_xticklabels([fr"Y{y}" for y in yrs], fontsize=12)
+    axa.set_xlabel(r"Kurulumdan sonraki y\i l")
+    axa.set_ylabel(r"K\"um\"ulatif br\"ut k\^ar $[\mathrm{bin\;TL}]$")
+    axa.legend(loc="lower right", fontsize=11)
+    axa.set_title(r"\textbf{(a)} Paket ba\c{s}\i na k\^ar bir\i kimi", loc="left", fontsize=14)
+
+    # ---- (b) gelir kalitesi ----------------------------------------------
+    axb = fig.add_subplot(gs[1])
+    labels = [r"Donan\i m", r"SaaS"]
+    marg = [HW_GP/HW_REV*100, SA_MG*100]
+    bars = axb.bar(labels, marg, color=[INDIGO, GREEN], alpha=0.85, width=0.54)
+    for b, m in zip(bars, marg):
+        axb.text(b.get_x()+b.get_width()/2, m+3.5, fr"\%{m:.0f}",
+                 ha="center", fontsize=13, color=b.get_facecolor())
+    axb.text(0, -21, r"tek seferlik", ha="center", fontsize=10.5, color=MUT)
+    axb.text(1, -21, r"her y\i l yenilenir", ha="center", fontsize=10.5, color=GREEN)
+    axb.set_ylim(0, 108); axb.set_ylabel(r"Br\"ut marj $[\%]$")
+    axb.tick_params(axis="x", labelsize=12.5, pad=8)
+    axb.grid(axis="x", visible=False)
+    axb.set_title(r"\textbf{(b)} Gelir kalitesi", loc="left", fontsize=14)
+
+    fig.text(0.5, -0.085,
+             r"\.I\c{s} plan\i\ varsay\i mlar\i ndan t\"uretilmi\c{s} projeksiyondur.",
+             ha="center", fontsize=10, color=MUT)
+    save(fig, "business_model")
 
 if __name__ == "__main__":
     fig_signal_time()
@@ -686,4 +755,5 @@ if __name__ == "__main__":
     fig_electrode_material()
     fig_market()
     fig_detection_timeline()
+    fig_business_model()
     print("ALL FIGURES DONE")

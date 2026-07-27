@@ -303,7 +303,9 @@ table.t tr.warnrow td{background:#fdf7ee}
 
 </style>
 </head>
-<body>
+<!-- Yan paneller varsayılan olarak kapalı: sunumda önce üç boyutlu sahne
+     tam genişlikte görünsün. Başlıktaki düğmelerle açılıyor. -->
+<body class="no-meas no-econ">
 
 <div id="boot"><div class="b">
   <h1>Mycellium&#8209;Aegis</h1>
@@ -3495,7 +3497,11 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     [['#tgMeas', 'no-meas'], ['#tgEcon', 'no-econ']].forEach(([sel, cls]) => {
       const btn = $(sel);
       if (!btn) return;
-      btn.setAttribute('aria-pressed', 'false');
+      // Başlangıç durumu gövdedeki sınıftan okunuyor (varsayılan: kapalı),
+      // böylece düğme görünümü ile gerçek durum hep aynı.
+      const off0 = document.body.classList.contains(cls);
+      btn.classList.toggle('off', off0);
+      btn.setAttribute('aria-pressed', String(off0));
       btn.addEventListener('click', () => {
         const off = document.body.classList.toggle(cls);
         btn.classList.toggle('off', off);

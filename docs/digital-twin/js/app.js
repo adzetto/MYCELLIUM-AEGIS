@@ -548,7 +548,11 @@
     [['#tgMeas', 'no-meas'], ['#tgEcon', 'no-econ']].forEach(([sel, cls]) => {
       const btn = $(sel);
       if (!btn) return;
-      btn.setAttribute('aria-pressed', 'false');
+      // Başlangıç durumu gövdedeki sınıftan okunuyor (varsayılan: kapalı),
+      // böylece düğme görünümü ile gerçek durum hep aynı.
+      const off0 = document.body.classList.contains(cls);
+      btn.classList.toggle('off', off0);
+      btn.setAttribute('aria-pressed', String(off0));
       btn.addEventListener('click', () => {
         const off = document.body.classList.toggle(cls);
         btn.classList.toggle('off', off);

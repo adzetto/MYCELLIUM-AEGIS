@@ -310,6 +310,17 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 /* photo-wrap içine altyazı konduğunda beyaz zeminde dursun */
 .photo-wrap .figcap{padding:0 2px 2px;margin-top:12px}
 
+/* Yan yana iki şekil. Görsele flex:1 verilirse kapsayıcının kesin bir
+   yüksekliği olmadığı için sınırsız büyüyor; bu yüzden ortak bir yükseklik
+   tavanı koyuyoruz. Altyazılar margin-top:auto ile aynı tabana oturuyor,
+   böylece iki sütunun hem üst hem alt hizası tutuyor. */
+.figpair .fig-wrap{height:100%;justify-content:flex-start;margin:0}
+/* Zaman çizelgesi zaten genişlikle sınırlanıyor; tavanı yükseltmek
+   yalnızca sağdaki kare orantılı görseli büyütüyor. */
+.figpair .fig-wrap img{width:auto;max-width:100%;max-height:424px;
+  height:auto;object-fit:contain;align-self:flex-start}
+.figpair .fig-wrap .figcap{margin-top:auto;padding-top:18px}
+
 /* Slaytın altına oturan sayı şeridi — boş alanı doldurur ve konuşmacıya
    dört kilit rakamı tek bakışta verir. */
 .statline{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;
@@ -371,29 +382,39 @@ ul.clean.inline li::before{position:static;margin-right:9px}
   animation:fsIn .55s var(--ease-out) both}
 @keyframes fsIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:none}}
 
-/* roadmap */
-.road{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative;
-  margin:auto 0}
-.road::before{content:"";position:absolute;left:0;top:11px;height:1px;background:var(--accent);
-  width:0;transition:width 1.1s var(--ease-soft) .3s}
-.slide.active .road::before{width:100%}
-.milestone{position:relative;padding-top:40px;opacity:0;transform:translateY(12px);
-  transition:opacity .5s var(--ease),transform .5s var(--ease)}
+/* ---------------- yol haritası: iki satırlı yol ----------------
+   Beş durak tek sıraya dizilince kartlar dar kalıyor ve slaydın altı boş
+   duruyordu. Artık iki satır: üstte 3, altta 2 durak; aralarını sağ
+   kenardan inip sola dönen bir bağlantı birleştiriyor. Yol çizgileri ve
+   bağlantı SVG olarak JS ile çiziliyor (kart konumlarından ölçülüyor),
+   böylece punto veya metin değişince kendiliğinden uyum sağlıyor. */
+.road{position:relative;margin:auto 0;display:flex;flex-direction:column;gap:60px}
+.road-line{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+  overflow:visible;z-index:0}
+.road-line path{fill:none;stroke:var(--accent);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset 1.5s var(--ease-soft) .25s}
+.slide.active .road-line path{stroke-dashoffset:0}
+.road-row{display:grid;gap:44px;position:relative;z-index:1}
+.road-row.r1,.road-row.r2{grid-template-columns:repeat(3,1fr)}
+
+.milestone{position:relative;padding-top:38px;opacity:0;transform:translateY(14px);
+  transition:opacity .5s var(--ease-out),transform .55s var(--ease-out)}
 .slide.active .milestone{opacity:1;transform:none}
-.slide.active .milestone:nth-child(1){transition-delay:.30s}
-.slide.active .milestone:nth-child(2){transition-delay:.42s}
-.slide.active .milestone:nth-child(3){transition-delay:.54s}
-.slide.active .milestone:nth-child(4){transition-delay:.66s}
-.slide.active .milestone:nth-child(5){transition-delay:.78s}
-.milestone .dot{position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;
-  background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
-.milestone .ip{font-family:var(--f-serif);font-size:19px;color:var(--ink);font-weight:500}
-.milestone .mo{font-family:var(--f-mono);font-size:14px;color:var(--faint);margin:6px 0 14px;font-weight:400}
-.milestone h4{font-family:var(--f-display);font-size:20px;font-weight:400;line-height:1.4;
-  margin-bottom:12px;color:var(--ink)}
-.milestone p{font-size:16.5px;color:var(--ink-soft);line-height:1.58;font-weight:300}
-.trl{display:inline-block;font-family:var(--f-mono);font-size:13.5px;color:var(--accent-deep);
-  border:1px solid var(--accent);border-radius:3px;padding:5px 10px;margin-top:14px;font-weight:400}
+.milestone .dot{position:absolute;top:5px;left:0;width:11px;height:11px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);z-index:2}
+.milestone .ip{font-family:var(--f-display);font-size:21px;color:var(--ink);font-weight:600;
+  letter-spacing:-.01em}
+.milestone .mo{font-family:var(--f-mono);font-size:14.5px;color:var(--muted);
+  margin:6px 0 13px;font-weight:400}
+.milestone h4{font-family:var(--f-display);font-size:23px;font-weight:600;line-height:1.3;
+  margin-bottom:11px;color:var(--ink);letter-spacing:-.012em}
+.milestone p{font-size:18px;color:var(--ink-soft);line-height:1.55;font-weight:400}
+.trl{display:inline-block;font-family:var(--f-mono);font-size:14px;color:var(--accent-deep);
+  border:1px solid var(--accent);border-radius:3px;padding:5px 11px;margin-top:14px;font-weight:400}
+.milestone.last .dot{background:var(--ember);box-shadow:0 0 0 5px var(--ember-soft)}
+.milestone.last .trl{color:var(--ember);border-color:var(--ember)}
 
 /* team */
 .team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:36px;
@@ -506,23 +527,25 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
         kendi sinir sistemini dinleyerek.
       </p>
 
-      <div class="grid reveal" style="grid-template-columns:1.05fr 1fr;gap:52px;margin-top:6px;flex:1;min-height:0;align-items:center">
-        <div class="fig-wrap">
+      <!-- İki sütun eşit yükseklikte: görseller üstte hizalı, altyazılar
+           aynı taban çizgisinde. align-items:center iken her sütun kendi
+           içinde ortalanıp birbirinden kayıyordu. -->
+      <div class="grid reveal figpair" style="grid-template-columns:1.12fr 1fr;gap:52px;margin-top:8px;flex:1;min-height:0;align-items:stretch">
+        <figure class="fig-wrap">
           <img src="figures/detection_timeline.svg" alt="Tespit zaman çizelgesi karşılaştırması">
-          <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Tutuşma anına göre tespit
+          <figcaption class="figcap"><span class="caption-lbl">Şekil 1:</span> Tutuşma anına göre tespit
             pencereleri. Rakipler dumanın taşınmasını beklerken biyoelektrik + ısıl kanal
-            <span class="math">t&nbsp;=&nbsp;0</span> öncesinde tetikleniyor<span class="ref">[1]</span>.</div>
-        </div>
-        <div class="photo-wrap" style="text-align:center">
-          <img src="figures/ilk.jpeg" alt="Ağaçları birbirine bağlayan mikorizal mantar ağı şeması" loading="lazy"
-               style="max-height:470px;object-fit:contain;margin:0 auto;width:auto;max-width:100%">
-          <div class="figcap" style="text-align:left"><span class="caption-lbl">Şekil 2:</span>
+            <span class="math">t&nbsp;=&nbsp;0</span> öncesinde tetikleniyor<span class="ref">[1]</span>.</figcaption>
+        </figure>
+        <figure class="fig-wrap">
+          <img src="figures/ilk.jpeg" alt="Ağaçları birbirine bağlayan mikorizal mantar ağı şeması" loading="lazy">
+          <figcaption class="figcap"><span class="caption-lbl">Şekil 2:</span>
             Ağaçları birbirine bağlayan mikorizal ağ — kurmadığımız, yalnızca
-            <i>dinlediğimiz</i> altyapı. Trilyonlarca metre uzunluğunda, zaten sahada.</div>
-        </div>
+            <i>dinlediğimiz</i> altyapı. Trilyonlarca metre uzunluğunda, zaten sahada.</figcaption>
+        </figure>
       </div>
 
-      <div class="reveal statline" style="margin-top:auto">
+      <div class="reveal statline" style="margin-top:26px">
         <div><div class="stat">25<span class="u">dk</span></div><div class="tile-lbl">Tutuşma öncesi öncü süre</div></div>
         <div><div class="stat">20<span class="u">→ 5 Hz</span></div><div class="tile-lbl">Ölçülen ateş imzası</div></div>
         <div><div class="stat">%1<span class="u">altı</span></div><div class="tile-lbl">Hedef yanlış alarm</div></div>
@@ -863,23 +886,34 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     <div class="inner">
       <div class="eyebrow reveal">07 · İŞ MODELİ</div>
       <h1 class="title reveal">Donanımla gir, <span class="accent">SaaS ile büyü.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:40px;flex:1;min-height:0;align-items:center">
-        <div class="block">
-          <h3>Aegis-Nexus Kurulumu (CAPEX: B2G)</h3>
-          <p>
-            1 Ağ Geçidi + 100 Sensör Düğümünden oluşan sistem kamuya tek seferlik satışla kurulur.
-            Maliyetin hızlı geri dönüşünü (payback) sağlar ve sahada fiziksel tutunma (lock-in) yaratır.
-          </p>
-          <div class="data" style="margin-top:22px;font-size:27px">360.000 TL / Referans Paket</div>
+      <p class="lead reveal" style="max-width:100ch;margin-bottom:14px">
+        Donanım sahaya girişi ve fiziksel tutunmayı sağlar; ölçeklenebilir kârlılık
+        yıllık yenilenen lisanstan gelir. Dördüncü yıldan sonra bir paketin
+        <b style="color:var(--ink);font-weight:600">SaaS birikimi</b>, donanım satışının
+        brüt kârını geçiyor.
+      </p>
+
+      <div class="grid reveal" style="grid-template-columns:1.45fr 1fr;gap:48px;margin-top:6px;flex:1;min-height:0;align-items:center">
+        <div class="fig-wrap">
+          <img src="figures/business_model.svg" alt="Paket başına kâr birikimi ve gelir kalitesi">
+          <div class="figcap"><span class="caption-lbl">Şekil 13:</span> Tek bir referans paketin
+            beş yıllık kâr birikimi ve iki gelir kaleminin marj kalitesi.</div>
         </div>
-        <div class="block hi">
-          <h3>Yıllık Risk SaaS Analitiği (ARR: B2B)</h3>
-          <p>
-            Özel sektör (enerji tesisleri, kağıt, maden) için donanım düşük kâr marjıyla sahaya verilir.
-            Asıl ölçeklenebilir kârlılık, yapay zeka yangın analitik panosunun yıllık yenilenen bulut lisansından elde edilir.
-          </p>
-          <div class="chips" style="margin-top:22px">
-            <span class="chip hi">Gelecek Vizyonu: Biyoçeşitlilik ve Karbon Kredisi İzleme Entegrasyonu</span>
+        <div style="display:flex;flex-direction:column;gap:26px">
+          <div class="block">
+            <h3>Aegis-Nexus kurulumu <span style="color:var(--muted);font-weight:400">· CAPEX, B2G</span></h3>
+            <p>1 ağ geçidi + 100 sensör düğümü, kamuya tek seferlik satışla kurulur.
+              Hızlı geri dönüş sağlar ve sahada fiziksel tutunma yaratır.</p>
+            <div class="data" style="margin-top:16px;font-size:26px">360.000 TL / referans paket</div>
+          </div>
+          <div class="block hi">
+            <h3>Yıllık risk analitiği <span style="color:var(--muted);font-weight:400">· ARR, B2B</span></h3>
+            <p>Enerji, kâğıt ve maden tesislerinde donanım düşük marjla sahaya verilir;
+              gelir yapay zekâ panosunun yenilenen bulut lisansından elde edilir.</p>
+            <div class="data" style="margin-top:16px;font-size:26px;color:var(--accent-deep)">54.000 TL / paket / yıl</div>
+          </div>
+          <div class="chips" style="margin-top:0">
+            <span class="chip hi">Sonraki adım: biyoçeşitlilik ve karbon kredisi izleme</span>
           </div>
         </div>
       </div>
@@ -915,17 +949,28 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     <div class="inner">
       <div class="eyebrow reveal">09 · YOL HARİTASI</div>
       <h1 class="title reveal">Laboratuvardan satışa: 18 aylık plan.</h1>
-      <div class="road reveal">
-        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 1</div><div class="mo">Ay 1–6</div>
-          <h4>Biyomimetik Donanım</h4><p>Aljinat-grafit elektrot üretimi, iklim kabini optimizasyonu.</p><span class="trl">TRL 4</span></div>
-        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 2</div><div class="mo">Ay 6–9</div>
-          <h4>YZ Füzyonu Eğitimi</h4><p>LSTM modellerinin eğitilmesi, %99 gürültü izolasyon testi.</p><span class="trl">TRL 5</span></div>
-        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 3</div><div class="mo">Ay 9–12</div>
-          <h4>Saha Mesh Doğrulaması</h4><p>Orman zemininde 3 ay kesintisiz açık hava LoRaWAN verisi.</p><span class="trl">TRL 6</span></div>
-        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 4</div><div class="mo">Ay 12–15</div>
-          <h4>IP &amp; Regülasyon</h4><p>Patent başvurusu ve OGM saha entegrasyon izinleri.</p></div>
-        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 5</div><div class="mo">Ay 15–18</div>
-          <h4>MVP &amp; İlk Ticari Fatura</h4><p>Pilot B2B müşteriye kurulum ve SaaS sisteminin yayına alınması.</p><span class="trl">TRL 8</span></div>
+      <p class="lead reveal" style="max-width:98ch;margin-bottom:20px">
+        Her aşama bir sonrakinin girdisini üretiyor: malzeme doğrulanmadan model eğitilmiyor,
+        model saha verisiyle sınanmadan patent yazılmıyor, IP güvenceye alınmadan ticari
+        kurulum yapılmıyor.
+      </p>
+      <div class="road reveal" id="road">
+        <!-- Yol çizgileri JS ile buraya çiziliyor -->
+        <svg class="road-line" id="roadLine" aria-hidden="true"></svg>
+        <div class="road-row r1">
+          <div class="milestone"><div class="dot"></div><div class="ip">Aşama 1</div><div class="mo">Ay 1–6</div>
+            <h4>Biyomimetik donanım</h4><p>Aljinat–grafit elektrot üretimi ve iklim kabini optimizasyonu; malzeme dayanımının ölçümle doğrulanması.</p><span class="trl">TRL 4</span></div>
+          <div class="milestone"><div class="dot"></div><div class="ip">Aşama 2</div><div class="mo">Ay 6–9</div>
+            <h4>YZ füzyonu eğitimi</h4><p>LSTM modellerinin eğitilmesi ve gürültü izolasyon testleri; yanlış alarm oranının %1 altına indirilmesi.</p><span class="trl">TRL 5</span></div>
+          <div class="milestone"><div class="dot"></div><div class="ip">Aşama 3</div><div class="mo">Ay 9–12</div>
+            <h4>Saha mesh doğrulaması</h4><p>Orman zemininde üç ay kesintisiz açık hava LoRaWAN verisi; enerji bütçesinin sahada teyidi.</p><span class="trl">TRL 6</span></div>
+        </div>
+        <div class="road-row r2">
+          <div class="milestone"><div class="dot"></div><div class="ip">Aşama 4</div><div class="mo">Ay 12–15</div>
+            <h4>IP &amp; regülasyon</h4><p>Elektrot yığını için patent başvurusu ve OGM saha entegrasyon izinlerinin alınması.</p></div>
+          <div class="milestone last"><div class="dot"></div><div class="ip">Aşama 5</div><div class="mo">Ay 15–18</div>
+            <h4>MVP &amp; ilk ticari fatura</h4><p>Pilot B2B müşteriye kurulum ve SaaS panosunun yayına alınması; referans paketin teslimi.</p><span class="trl">TRL 8</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1164,6 +1209,7 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     history.replaceState(null,'','#'+(i+1));
     runCounters(slides[cur]);
     maybePrimeTwin(i);
+    window.dispatchEvent(new Event('aegis:slide'));
   }
   window.go = go;
 
@@ -1233,6 +1279,80 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     // tam ekrandan çıkınca sahne ölçeğini yeniden hesapla
     setTimeout(fit, 60);
   });
+
+  /* ---------- iki satırlı yol haritası ----------
+     Yol çizgisi kartların gerçek konumundan ölçülüp SVG olarak çiziliyor:
+     üst satırda soldan sağa, sağ kenardan aşağı dönüp sola geçiyor ve alt
+     satırda yeniden soldan sağa. Punto, metin veya sütun sayısı değişse de
+     çizgi kendiliğinden uyuyor. Köşeler quadratic Bézier — yay bayrakları
+     ile uğraşmadan her zaman doğru yöne dönüyor. */
+  function drawRoad(){
+    var road = document.getElementById('road');
+    var svg  = document.getElementById('roadLine');
+    if(!road || !svg) return;
+    var rows = [...road.querySelectorAll('.road-row')];
+    if(rows.length < 2) return;
+
+    /* Ölçüm getBoundingClientRect ile yapılamıyor: giriş animasyonu
+       sırasında hem .road hem de her .milestone ayrı ayrı translate
+       edilmiş oluyor, dolayısıyla noktalar olduğundan ~13 px aşağıda
+       okunuyor ve çizgi kartların altına kayıyordu. offsetTop/offsetLeft
+       dönüşümlerden etkilenmez; konumları .road'a kadar toplayarak
+       yerleşim koordinatını doğrudan alıyoruz. */
+    function offsetIn(el, root){
+      var x = 0, y = 0;
+      while(el && el !== root){ x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+      return {x:x, y:y};
+    }
+    var centers = rows.map(function(row){
+      return [...row.querySelectorAll('.milestone .dot')].map(function(d){
+        var o = offsetIn(d, road);
+        return {x:o.x + d.offsetWidth/2, y:o.y + d.offsetHeight/2};
+      });
+    });
+    if(!centers[0].length || !centers[1].length) return;
+
+    var W = road.offsetWidth, H = road.offsetHeight, r = 18;
+    var y1 = centers[0][0].y, y2 = centers[1][0].y;
+    var L  = centers[0][0].x;                       // sol dönüş ekseni
+    var R  = W - 2;                                 // sağ dönüş ekseni
+    // Dönüş çizgisi iki satırın ARASINDAKİ boşluktan geçmeli; satırların
+    // gerçek alt/üst sınırlarını kullanıyoruz.
+    var o1 = offsetIn(rows[0], road), o2 = offsetIn(rows[1], road);
+    var ym = (o1.y + rows[0].offsetHeight + o2.y) / 2;
+    var xEnd = centers[1][centers[1].length-1].x;
+
+    var d = [
+      'M', L, y1,
+      'H', (R - r),
+      'Q', R, y1, R, (y1 + r),
+      'V', (ym - r),
+      'Q', R, ym, (R - r), ym,
+      'H', (L + r),
+      'Q', L, ym, L, (ym + r),
+      'V', (y2 - r),
+      'Q', L, y2, (L + r), y2,
+      'H', xEnd
+    ].map(function(v){ return typeof v === 'number' ? v.toFixed(1) : v; }).join(' ');
+
+    svg.setAttribute('viewBox', '0 0 '+W.toFixed(1)+' '+H.toFixed(1));
+    svg.innerHTML = '<path d="'+d+'"/>';
+    var p = svg.firstChild, len = p.getTotalLength();
+    p.style.setProperty('--len', len.toFixed(1));
+
+    // duraklar yolun ilerleyişiyle aynı sırada belirsin
+    var all = centers[0].length + centers[1].length, i = 0;
+    rows.forEach(function(row){
+      [...row.querySelectorAll('.milestone')].forEach(function(m){
+        m.style.transitionDelay = (0.34 + (i++) * (1.05 / all)).toFixed(2)+'s';
+      });
+    });
+  }
+  window.addEventListener('resize', drawRoad);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawRoad);
+  setTimeout(drawRoad, 220); setTimeout(drawRoad, 700);
+  // Slayt görünür olmadan ölçü alınamıyor; o slayta geçince yeniden çiz.
+  window.addEventListener('aegis:slide', drawRoad);
 
   /* ---------- count-up stats ---------- */
   function runCounters(slide){
