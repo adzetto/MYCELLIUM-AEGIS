@@ -1,0 +1,262 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[turkish]{babel}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{titlesec}
+% Belgede hiçbir yerde kalın yazı kullanılmıyor; bölüm başlıkları da
+% varsayılan kalın biçimden çıkarılıyor.
+\titleformat{\section}{\normalfont\Large\color{ink}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{22pt plus 5pt}{9pt}
+
+\definecolor{myco}{HTML}{0E8F76}
+\definecolor{ember}{HTML}{C1670E}
+\definecolor{ink}{HTML}{1E2622}
+\definecolor{muted}{HTML}{727C75}
+
+\hypersetup{colorlinks=true, linkcolor=myco, urlcolor=myco,
+  pdftitle={Mycellium-Aegis - Yapay Zeka Gerekcesi},
+  pdfauthor={Mycellium-Aegis}}
+
+% Soru-cevap bicimi: kalin yazi kullanilmiyor, ayrim kucuk kapital
+% etiketler ve soru satirindaki italik ile saglaniyor.
+\newcommand{\soru}[1]{%
+  \par\vskip 15pt plus 4pt minus 2pt
+  \noindent\textcolor{ember}{\textsc{Soru}}\quad\emph{#1}%
+  \par\vskip 6pt\noindent\textcolor{myco}{\textsc{Cevap}}\quad\ignorespaces}
+
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\parindent}{0pt}
+\linespread{1.06}
+
+\title{\normalfont\LARGE Mycellium-Aegis\\[6pt]
+  \large Yapay Zeka Neden Var, Nasıl Çalışıyor, Nerede Zorlanıyor\\[5pt]
+  \normalsize\textcolor{muted}{İş fikri değerlendirmesi için soru-cevap notu}}
+\author{\normalfont\normalsize Mycellium-Aegis ekibi}
+\date{\normalfont\small TÜBİTAK 1812 BİGG \quad·\quad Temmuz 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\textcolor{muted}{Bu not, sistemin yapay zeka tarafını teknik olmayan bir
+değerlendiriciye anlatmak için hazırlandı. Matematiksel türetmeler ve
+donanım ayrıntıları ayrı belgelerde duruyor; burada yalnızca neyi neden
+yaptığımız, hangi kararı hangi gerekçeyle verdiğimiz ve nerede
+zorlandığımız anlatılıyor. Ölçülmüş olanla henüz hedef olanı birbirinden
+ayırmaya özellikle dikkat ettik.}
+
+\vskip 10pt
+
+\section*{Sorunun kendisi}
+
+\soru{Toprağa bir sensör gömüp bir eşik değeri koymak varken neden yapay
+zekaya ihtiyaç duyuyorsunuz? Bu bir aşırı mühendislik değil mi?}
+Bu itiraz haklı bir yerden geliyor, o yüzden önce neyi ölçtüğümüzü
+söylemek gerekiyor. Ölçtüğümüz şey bir yangın değil, bir canlının
+strese verdiği tepki. Miselyum ağı üzerinden okuduğumuz gerilim, ısı
+şoku dışında pek çok şeye de tepki veriyor: yağmur sonrası nem sıçraması,
+toprağın gün içinde ısınıp soğuması, yakınından geçen bir hayvan,
+kökün büyümesi, elektrotun etrafındaki toprağın oturması. Bunların
+hepsi aynı kanalda, aynı büyüklük mertebesinde görünüyor. Tek bir
+gerilim eşiği koyduğunuzda ya eşiği yükseltip gerçek yangını kaçırırsınız
+ya da alçaltıp sistemi haftada birkaç kez boşuna alarm veren, kimsenin
+ciddiye almadığı bir kutuya dönüştürürsünüz. Ormancılık tarafında bir
+sistemin öldüğü nokta tam olarak burasıdır; teknik başarısızlıktan çok,
+güvenilirliğini kaybetmesinden ölür.
+
+Yapay zekayı bu yüzden kullanıyoruz. İşi, sinyali bir eşikle kesmek
+yerine, sinyalin zaman içindeki biçimine bakıp ``bu ısı şokuna benziyor
+mu, yoksa nem sıçramasına mı'' sorusunu cevaplamak. Yani yapay zeka
+burada bir süs değil, ürünü kullanılabilir kılan bileşen. Onsuz da bir
+prototip yapılabilir, ama sahada bir yıl ayakta kalacak bir ürün
+yapılamaz.
+
+\soru{Peki sistem uçtan uca nasıl çalışıyor? Bir yangın başladığında
+sırasıyla ne oluyor?}
+Yerin on sekiz santimetre altındaki biyoelektrot, miselyum ağının
+gerilimini sürekli okuyor. Bu ham okuma çok küçük ve çok gürültülü
+olduğu için önce düğümün üzerinde temizleniyor: uzun vadeli sürüklenme
+çıkarılıyor, yüksek frekanslı elektriksel parazit süzülüyor. Ardından
+sinyalden birkaç sayı çıkarılıyor. Bunlar sinyalin baskın frekansı,
+genliğinin ne kadar düştüğü, aynı kablodaki sıcaklık probunun ne hızla
+ısındığı ve elektrot direncinin ne yönde değiştiği. Yani ham dalga
+biçimi değil, onun birkaç özeti taşınıyor.
+
+Bu özetler düğümün belleğinde bir süre birikiyor ve bir zaman serisi
+modeline veriliyor. Model, son yarım saatlik davranışa bakıp bir
+olasılık üretiyor. Bu olasılık tek başına alarm vermiyor; yanına
+fiziksel bir koşul listesi konuyor. Sıcaklık yeterince hızlı yükselmiş
+olmalı, toprak direnci kuruma yönünde değişmiş olmalı ve biyoelektrik
+imza kendi bandında görünmüş olmalı. Üçü birden sağlanmadan alarm
+çıkmıyor. Alarm çıktığında LoRa üzerinden yüzey düğümüne, oradan ağ
+geçidine ve buluta gidiyor; panoda konumu ve hangi koşulların
+tetiklendiği görünüyor.
+
+\soru{Modeli neden düğümün üzerinde çalıştırıyorsunuz? Buluta gönderip
+orada işlemek daha kolay olmaz mıydı?}
+Kolay olurdu ama sistem sahada yaşayamazdı. Yeraltı düğümü bir pille
+çalışıyor ve enerji bütçesinin neredeyse tamamı telsiz iletiminde
+harcanıyor; hesaplama yanında çok küçük kalıyor. Ham sinyali sürekli
+yukarı göndermek, pili haftalar yerine günler mertebesine indirir.
+İkinci sebep kapsama: orman içinde bağlantı sürekli değil, düğüm
+saatlerce yalnız kalabiliyor. Karar buluta bağlıysa, bağlantının
+koptuğu anda sistem kör oluyor. Bu yüzden ağır iş aşağıda yapılıyor,
+yukarıya yalnızca birkaç sayı ve bir karar çıkıyor. Bulut tarafı da
+işlevsiz değil; modelin yeni sürümleri orada eğitiliyor ve düğümlere
+indiriliyor, ayrıca birden fazla düğümün aynı anda ne gördüğü orada
+birleştiriliyor.
+
+\section*{Tasarım kararları ve gerekçeleri}
+
+\soru{Neden bu tip bir zaman serisi modeli seçtiniz? Daha güçlü ve
+güncel modeller varken bu tercih geri kalmış görünmüyor mu?}
+Model seçimini üç kısıt belirledi. Birincisi, elimizdeki veri az.
+Etiketli yangın verisi doğası gereği kıt, çünkü kontrollü koşulda
+yangın üretmek pahalı ve sınırlı. Az veriyle çalışırken büyük modeller
+ezberliyor, küçük modeller genelliyor. İkincisi, model bir mikrodenetleyici
+üzerinde, kilobaytlar mertebesinde bellekle ve pil bütçesiyle çalışacak.
+Üçüncüsü, kararın neden verildiğini açıklayabilmemiz gerekiyor; orman
+idaresine ``model öyle dedi'' demek yeterli bir gerekçe değil. Bu üç
+kısıt bizi mütevazı boyutlu, sırayı öğrenen bir modele götürdü. Amacımız
+literatürdeki en güçlü modeli kullanmak değil, sahada bir yıl boyunca
+aynı davranışı gösterecek modeli kullanmak.
+
+Şunu da açıkça söyleyelim: bu model henüz eğitilmedi. Elimizde şu an
+laboratuvarda ölçülmüş sinyal davranışı ve fiziksel karar kuralı var.
+Modelin eğitimi ve doğrulanması projenin altıncı ile dokuzuncu ayları
+arasındaki iş paketi. Bugün sunduğumuz şey eğitilmiş bir model değil,
+eğitilebileceğini gösteren ölçüm ve bunun üzerine kurulmuş bir plan.
+
+\soru{Modelin kararını neden fiziksel bir koşul listesiyle
+sınırlıyorsunuz? Modele güvenmiyor musunuz?}
+Güven meselesi değil, sorumluluk meselesi. Bir yangın alarmı, insan ve
+araç hareket ettiren bir sinyal. Böyle bir kararı tek bir öğrenilmiş
+modele bırakmak, modelin daha önce görmediği bir durumla karşılaştığında
+ne yapacağını bilmemek demek. Fiziksel koşullar burada bir güvenlik ağı
+işlevi görüyor: sıcaklık hiç yükselmediyse, toprak direnci hiç
+değişmediyse, model ne derse desin alarm çıkmıyor. Bu, yanlış alarmı
+bastırmanın en ucuz ve en denetlenebilir yolu. Aynı zamanda kararı
+açıklanabilir kılıyor, çünkü alarm ekranında hangi koşulun ne zaman
+tetiklendiği tek tek görünüyor.
+
+Bunun bir bedeli var ve onu da söylemek gerekir: koşulların hepsini
+birden aramak, duyarlılığı bir miktar düşürüyor. Çok yavaş gelişen,
+sıcaklığı yeterince hızlı yükseltmeyen bir için için yanmayı
+kaçırabiliriz. Bu bilinçli bir tercih. Erken aşamada kaçırılan bir
+olayın maliyeti, güvenilirliğini kaybetmiş bir sistemin maliyetinden
+düşük.
+
+\soru{Yanlış alarm oranı için verdiğiniz hedef neye dayanıyor?}
+Yüzde birin altı hedefi, ölçülmüş bir sonuç değil, bir tasarım hedefi
+ve bunu böyle sunuyoruz. Dayanağı şu: bir ağ geçidine yüz düğüm bağlı
+ve her düğüm günde birkaç kez karar üretiyorsa, yüzde birlik bir hata
+bile ekipleri haftada birkaç kez boşuna yola çıkarır. Operasyonu
+sürdürülebilir kılan eşik burada. Hedefe fiziksel koşulların birlikte
+aranmasıyla ve modelin buna göre ayarlanmasıyla ulaşmayı planlıyoruz;
+gerçek oran ancak sahada üç aylık kesintisiz veriyle ölçülebilir, o da
+dokuzuncu ile on ikinci aylar arasındaki iş paketi.
+
+\section*{Zorluklar ve bunlara yanıtımız}
+
+\soru{Toprak tipi, mevsim, mantar türü ve nem koşulları her sahada
+farklı. Bir sahada eğitilmiş model başka sahada çalışır mı?}
+Doğrudan çalışmaz, bunu baştan kabul ediyoruz. Bu yüzden modeli mutlak
+değerler üzerine değil, değişim üzerine kuruyoruz. Bir sahanın
+elektrot direncinin kaç kilo ohm olduğu sahadan sahaya değişir; ama o
+direncin bir saat içinde hangi yönde ve hangi hızda değiştiği çok daha
+taşınabilir bir bilgidir. Aynı şekilde gerilimin mutlak seviyesi değil,
+dinlenim durumuna göre ne kadar saptığı anlamlı. Kurulumdan sonra her
+düğüm birkaç gün boyunca kendi normalini öğreniyor ve kararlarını bu
+kişisel taban çizgisine göre veriyor. Bu, modelin sahaya taşınmasını
+kolaylaştıran temel tasarım kararı.
+
+Yine de bunun sınırı var. Çok farklı bir iklim kuşağında, çok farklı
+bir tür kompozisyonunda yeniden kalibrasyon gerekecektir. Ticari planda
+bunu bir zayıflık değil, bir hizmet kalemi olarak konumlandırıyoruz:
+kurulum, kalibrasyon ve ilk sezon takibi paketin parçası.
+
+\soru{Laboratuvarda ölçtüğünüz sinyalin gerçekten ısı kaynaklı olduğunu
+nereden biliyorsunuz? Ölçüm hatası olamaz mı?}
+Olabilir ve bu ihtimali kapatmak için birkaç şey yapıyoruz. Deneyde
+gördüğümüz şey, dinlenim halinde belirli bir frekansta salınan sinyalin,
+ısı şoku uygulandığında hem yavaşlaması hem de genliğinin belirgin bir
+alt sınıra inmesiydi. Bu iki değişimin birlikte olması, tek başına bir
+kayma olmasından daha güçlü bir kanıt. Bununla birlikte ölçüm
+düzeneğimizde bir zayıflık tespit ettik ve bunu saklamıyoruz: örnekleme
+hızımız, ölçtüğümüz frekansa fazla yakındı. Bu koşulda gözlenen
+frekansın gerçek mi yoksa örnekleme kaynaklı bir yanılsama mı olduğu
+kesin ayrılamaz. Deneyi daha yüksek örnekleme hızıyla ve girişe
+takma-ad önleyici bir süzgeç koyarak tekrarlamayı iş planına aldık.
+Bir ölçümü savunmanın yolu onu tekrarlamaktır; ilk işimiz bu.
+
+\soru{Sistemin en zayıf halkası nedir?}
+Bugün itibarıyla en zayıf halka model değil, verinin kendisi. Etiketli
+yangın verisi az ve üretmesi pahalı. Buna karşı üç koldan çalışıyoruz.
+İklim kabininde kontrollü ısı şoku uygulayarak etiketli veri üretiyoruz.
+Sahaya yerleştirilen düğümlerden yangın olmayan uzun süreli veri
+topluyoruz, çünkü yanlış alarmı bastırmak için asıl ihtiyaç duyulan şey
+normalin ne olduğunu iyi bilmek. Üçüncü olarak, fiziksel çözücümüzle
+sentetik senaryolar üretip modeli bunlarla ön eğitime tabi tutuyoruz.
+Sentetik veri gerçeğin yerini tutmaz, ama modelin sıfırdan başlamamasını
+sağlar.
+
+İkinci zayıf halka, sensörün derinliği konusunda belgelerimizle
+hesabımız arasında çıkan bir tutarsızlıktı. Isı iletim çözümünü
+çalıştırdığımızda, sıcaklık probunun miselyumla aynı derinlikte
+durmasının erken uyarıyı imkânsız kıldığını gördük; ısı cephesi o
+derinliğe tutuşmadan sonra varıyor. Çözüm basit oldu: biyoelektrot
+miselyumun yaşadığı derinlikte kalıyor, sıcaklık probu aynı kablo
+üzerinde yüzeye yakın bir noktaya alınıyor. Bu değişiklik maliyeti üç
+doların altında artırıyor ve erken uyarı penceresini açıyor. Bunu
+burada anmamızın sebebi şu: modelimiz bir hatayı yakaladı, biz de
+tasarımı ona göre düzelttik. Sayısal ikizi bunun için kurduk.
+
+\section*{Ticari taraf}
+
+\soru{Rakipleriniz de yapay zeka kullandığını söylüyor. Sizinki neden
+farklı?}
+Fark modelde değil, modele giren veride. Kamera tabanlı sistemler
+görüntüden duman ayırt etmeye çalışıyor; gaz sensörleri havadaki
+partikülü sınıflandırıyor. İkisi de yangının çıktısını işliyor. Biz
+yangının nedenini, yani toprakta yayılan ısı cephesini ve canlının ona
+verdiği tepkiyi işliyoruz. Aynı modelleme tekniğini kullansanız bile,
+daha erken bir sinyale bakıyor olmak yapısal bir avantaj. Görüş hattı,
+rüzgâr yönü ve hava koşulu bizim için bir kısıt değil, çünkü ölçüm
+yerin altında yapılıyor.
+
+\soru{Bu yapay zeka savunulabilir bir varlık mı, yoksa kopyalanabilir mi?}
+Modelin mimarisi kopyalanabilir; bunda özel bir şey yok. Kopyalanamayan
+şey, o modeli işe yarar kılan iki unsur. Birincisi biyomimetik elektrot
+ve onun toprakla kurduğu düşük empedanslı arayüz; iyi sinyal
+alamıyorsanız hangi modeli kullandığınızın önemi kalmıyor. Bu tarafta
+patent başvurusu planlıyoruz. İkincisi, sahadan biriken normal davranış
+verisi. Kurulu her düğüm, zamanla o bölgenin normalini daha iyi bilen
+bir veri kümesi üretiyor ve bu küme bizde kalıyor. Rekabet avantajı
+zamanla modelde değil, veride birikiyor.
+
+\soru{On sekiz ayın sonunda yapay zeka tarafında elinizde somut olarak
+ne olacak?}
+Üç şey. Kontrollü koşulda üretilmiş, etiketli bir ısı şoku veri kümesi
+ve bunun yanında sahadan toplanmış üç aylık kesintisiz normal davranış
+verisi. Bu veriyle eğitilmiş, mikrodenetleyici üzerinde çalışan ve
+enerji bütçesine sığdığı ölçülmüş bir karar modeli. Ve bu modelin saha
+koşulunda ürettiği yanlış alarm oranının, tahmin değil ölçüm olarak
+raporlanması. Üçüncüsü en önemlisi, çünkü satın alma kararını verecek
+kurumun soracağı ilk soru bu olacak.
+
+\vskip 18pt
+\hrule
+\vskip 8pt
+\textcolor{muted}{\small Bu belgede ölçülmüş olarak sunulan tek veri
+kümesi, laboratuvarda \emph{Pleurotus ostreatus} ağı üzerinde yapılan
+ısı şoku deneyidir. Yanlış alarm oranı, batarya ömrü ve saha
+başarımına ilişkin sayılar hedef veya modeldir; ilgili iş paketleri
+tamamlandığında ölçümle değiştirilecektir.}
+
+\end{document}

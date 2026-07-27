@@ -153,7 +153,7 @@
       <table class="t disc">
         <caption>Tablo 5. Kaynak belgeler arasında tespit edilen farklar</caption>
         <tbody>${D.discrepancies.map((d, i) => `<tr><td class="k">${i + 1}. ${d.t}</td>
-          <td class="faint" style="font-size:12px">${d.v}</td></tr>`).join('')}</tbody>
+          <td class="faint" style="font-size:15px">${d.v}</td></tr>`).join('')}</tbody>
       </table>
 
       <h2 class="sec">Ekip ve kaynak</h2>
@@ -255,7 +255,7 @@
   function chart(id) {
     const c = document.getElementById(id);
     if (!c) return null;
-    if (!A.charts[id]) A.charts[id] = new CH.Chart(c, { pad: [10, 10, 20, 38], font: '10px "CMU Serif", serif' });
+    if (!A.charts[id]) A.charts[id] = new CH.Chart(c, { pad: [12, 12, 26, 46], font: '13px "CMU Serif", serif' });
     return A.charts[id];
   }
   const setRd = (id, t) => { const e = $('#rd-' + id); if (e) e.innerHTML = t; };
@@ -383,20 +383,28 @@
   }
 
   /* --------------------------------------------------------- bileşen kartı */
+  /* Bileşen bilgisi artık ekranın ortasında bir kip pencere. Küçük köşe
+     kutusu sunumda okunmuyor ve sahnenin üstünü kapatıyordu. */
+  function closeInspect() {
+    $('#insp').classList.remove('on');
+    const b = $('#inspBack'); if (b) b.classList.remove('on');
+  }
+
   function inspect(cid) {
     const c = D.components.find(x => x.id === cid);
     const el = $('#insp');
-    if (!c) { el.style.display = 'none'; return; }
+    if (!c) { closeInspect(); return; }
     el.innerHTML = `<h4>${c.subsystem}<button id="ix">kapat ✕</button></h4>
       <p><b>${c.selected}</b> — <i>${c.detail}</i></p>
       <p class="dim">Elenen alternatif: ${c.alt}</p>
       <p>${c.why}</p>
-      ${c.note ? `<p class="dim" style="border-left:2px solid var(--rule-2);padding-left:7px">${c.note}</p>` : ''}
+      ${c.note ? `<p class="dim" style="border-left:2px solid var(--rule-2);padding-left:12px">${c.note}</p>` : ''}
       ${c.risk ? `<p class="a">⚠ ${c.risk}</p>` : ''}
       ${c.usd ? `<dl class="kv"><dt>Birim fiyat</dt><dd>${c.usd.toFixed(1)} USD${c.qty > 1 ? ' × ' + c.qty : ''}</dd>
         <dt>TL karşılığı</dt><dd>${nf(c.usd * c.qty * A.cost.fx, 0)} TL</dd></dl>` : ''}`;
-    el.style.display = 'block';
-    $('#ix').addEventListener('click', () => { el.style.display = 'none'; });
+    el.classList.add('on');
+    const b = $('#inspBack'); if (b) b.classList.add('on');
+    $('#ix').addEventListener('click', closeInspect);
   }
 
   /* =============================================================== BAĞLA = */
@@ -525,7 +533,7 @@
       else if (e.key.toLowerCase() === 'r') A.world.reset();
       else if (['1', '2', '3', '4'].includes(e.key)) {
         const b = $$('#bar [data-sc]')[+e.key - 1]; if (b) b.click();
-      } else if (e.key === 'Escape') $('#insp').style.display = 'none';
+      } else if (e.key === 'Escape') closeInspect();
     });
 
     let rt;
@@ -539,6 +547,9 @@
        tahmin etmek yerine gerçek boyut değişimini dinliyoruz: geçişin her
        karesinde tetiklenir, bittiğinde de son bir kez. Böylece tuval hiçbir
        durumda görünümden farklı bir en-boy oranında kalmıyor. */
+    const ib = $('#inspBack');
+    if (ib) ib.addEventListener('click', closeInspect);
+
     if (typeof ResizeObserver === 'function') {
       new ResizeObserver(relayout).observe($('#view'));
     }

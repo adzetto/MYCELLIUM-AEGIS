@@ -298,6 +298,25 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 .cover-meta span.val{color:var(--ink);font-family:var(--f-body);font-size:21px;font-weight:500;
   letter-spacing:-.008em}
 
+/* Kapaktaki kurumsal destek şeridi. İki imzalı niyet mektubu var; bunlar
+   satın alma taahhüdü değil, o yüzden metinde de "niyet mektubu" deniyor. */
+.endorse{display:flex;align-items:stretch;gap:0;margin-top:52px;
+  border-top:1px solid var(--line);padding-top:26px}
+.endorse .lbl{font-family:var(--f-mono);font-size:14px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);align-self:center;
+  padding-right:34px;margin-right:34px;border-right:1px solid var(--line);
+  max-width:15ch;line-height:1.6}
+.endorse .items{display:flex;gap:52px;flex-wrap:wrap}
+.endorse .item{display:flex;align-items:flex-start;gap:13px;max-width:36ch}
+.endorse .seal{width:34px;height:34px;flex-shrink:0;margin-top:2px;
+  border-radius:50%;border:1.5px solid var(--accent);
+  display:flex;align-items:center;justify-content:center}
+.endorse .seal svg{width:17px;height:17px;fill:none;stroke:var(--accent);
+  stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.endorse .who{font-family:var(--f-display);font-size:20px;font-weight:600;
+  color:var(--ink);letter-spacing:-.012em;line-height:1.3}
+.endorse .what{font-size:16px;color:var(--ink-soft);margin-top:5px;line-height:1.5}
+
 /* figures & imagery */
 .fig-wrap{display:flex;flex-direction:column;align-items:flex-start;width:100%}
 .fig-wrap img{width:100%;object-fit:contain;display:block;border-radius:3px}
@@ -310,16 +329,16 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 /* photo-wrap içine altyazı konduğunda beyaz zeminde dursun */
 .photo-wrap .figcap{padding:0 2px 2px;margin-top:12px}
 
-/* Yan yana iki şekil. Görsele flex:1 verilirse kapsayıcının kesin bir
-   yüksekliği olmadığı için sınırsız büyüyor; bu yüzden ortak bir yükseklik
-   tavanı koyuyoruz. Altyazılar margin-top:auto ile aynı tabana oturuyor,
-   böylece iki sütunun hem üst hem alt hizası tutuyor. */
-.figpair .fig-wrap{height:100%;justify-content:flex-start;margin:0}
-/* Zaman çizelgesi zaten genişlikle sınırlanıyor; tavanı yükseltmek
-   yalnızca sağdaki kare orantılı görseli büyütüyor. */
-.figpair .fig-wrap img{width:auto;max-width:100%;max-height:424px;
-  height:auto;object-fit:contain;align-self:flex-start}
-.figpair .fig-wrap .figcap{margin-top:auto;padding-top:18px}
+/* Yan yana iki şekil. Izgara satırının kesin bir yüksekliği var
+   (grid flex:1 + align-items:stretch), o yüzden görsele flex:1 verip
+   kalan alanı doldurtabiliyoruz; object-fit:contain en-boy oranını
+   koruyor. Sabit bir yükseklik tavanı yerine bu yol seçildi çünkü tavan
+   ya görseli küçük bırakıyor ya da altyazıyı aşağıdaki sayı şeridine
+   taşırıyordu. */
+.figpair .fig-wrap{height:100%;min-height:0;justify-content:flex-start;margin:0}
+.figpair .fig-wrap img{flex:1 1 auto;min-height:0;width:100%;height:auto;
+  object-fit:contain;object-position:left center}
+.figpair .fig-wrap .figcap{flex:none;margin-top:16px;padding-top:0}
 
 /* Slaytın altına oturan sayı şeridi — boş alanı doldurur ve konuşmacıya
    dört kilit rakamı tek bakışta verir. */
@@ -388,33 +407,82 @@ ul.clean.inline li::before{position:static;margin-right:9px}
    kenardan inip sola dönen bir bağlantı birleştiriyor. Yol çizgileri ve
    bağlantı SVG olarak JS ile çiziliyor (kart konumlarından ölçülüyor),
    böylece punto veya metin değişince kendiliğinden uyum sağlıyor. */
-.road{position:relative;margin:auto 0;display:flex;flex-direction:column;gap:60px}
+.road{position:relative;margin:auto 0;display:flex;flex-direction:column;gap:56px}
 .road-line{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
   overflow:visible;z-index:0}
-.road-line path{fill:none;stroke:var(--accent);stroke-width:1.6;
+/* İki katmanlı yol: altta soluk bir kılavuz (nereye gideceğini gösterir),
+   üstte çizilen asıl hat. Tek ince çizgi noktaların yanında kayboluyordu. */
+.road-line .rail{fill:none;stroke:var(--line);stroke-width:3;
+  stroke-linecap:round;stroke-linejoin:round}
+.road-line .path{fill:none;stroke:var(--accent);stroke-width:3;
   stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
   transition:stroke-dashoffset 1.5s var(--ease-soft) .25s}
-.slide.active .road-line path{stroke-dashoffset:0}
+.slide.active .road-line .path{stroke-dashoffset:0}
+/* anime.js yüklendiyse zamanlamayı o yönetiyor; CSS geçişleri devre dışı
+   kalmalı, yoksa iki motor aynı özelliği çekiştiriyor. Kütüphane herhangi
+   bir sebeple yüklenmezse bu sınıf hiç eklenmiyor ve yukarıdaki CSS
+   yedek yol olarak çalışmaya devam ediyor. */
+.road.anim-js .road-line path{transition:none}
+.road.anim-js .milestone{transition:none}
+.road.anim-js .milestone .dot{transform-origin:50% 50%}
 .road-row{display:grid;gap:44px;position:relative;z-index:1}
 .road-row.r1,.road-row.r2{grid-template-columns:repeat(3,1fr)}
 
-.milestone{position:relative;padding-top:38px;opacity:0;transform:translateY(14px);
+.milestone{position:relative;padding-top:44px;opacity:0;transform:translateY(14px);
   transition:opacity .5s var(--ease-out),transform .55s var(--ease-out)}
 .slide.active .milestone{opacity:1;transform:none}
-.milestone .dot{position:absolute;top:5px;left:0;width:11px;height:11px;border-radius:50%;
-  background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);z-index:2}
-.milestone .ip{font-family:var(--f-display);font-size:21px;color:var(--ink);font-weight:600;
-  letter-spacing:-.01em}
-.milestone .mo{font-family:var(--f-mono);font-size:14.5px;color:var(--muted);
-  margin:6px 0 13px;font-weight:400}
-.milestone h4{font-family:var(--f-display);font-size:23px;font-weight:600;line-height:1.3;
-  margin-bottom:11px;color:var(--ink);letter-spacing:-.012em}
-.milestone p{font-size:18px;color:var(--ink-soft);line-height:1.55;font-weight:400}
-.trl{display:inline-block;font-family:var(--f-mono);font-size:14px;color:var(--accent-deep);
-  border:1px solid var(--accent);border-radius:3px;padding:5px 11px;margin-top:14px;font-weight:400}
-.milestone.last .dot{background:var(--ember);box-shadow:0 0 0 5px var(--ember-soft)}
-.milestone.last .trl{color:var(--ember);border-color:var(--ember)}
+/* Durak işareti: beyaz halka hattı keser, çekirdek üstte durur. Böylece
+   nokta "hattın üzerinde bir istasyon" gibi okunuyor. */
+.milestone .dot{position:absolute;top:0;left:-9px;width:18px;height:18px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 5px var(--bg),0 0 0 8px var(--accent-soft);z-index:3}
+.milestone .ip{font-family:var(--f-mono);font-size:14px;color:var(--accent-deep);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:400}
+.milestone .mo{font-family:var(--f-display);font-size:26px;color:var(--ink);
+  margin:7px 0 16px;font-weight:600;letter-spacing:-.016em}
+.milestone h4{font-family:var(--f-display);font-size:24px;font-weight:600;line-height:1.28;
+  margin-bottom:11px;color:var(--ink);letter-spacing:-.014em}
+.milestone p{font-size:18px;color:var(--ink-soft);line-height:1.55;font-weight:400;
+  max-width:44ch}
+.trl{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:13.5px;
+  color:var(--accent-deep);background:var(--accent-soft);border:1px solid transparent;
+  border-radius:20px;padding:6px 14px;margin-top:16px;font-weight:400;letter-spacing:.05em}
+.trl::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.milestone.last .dot{background:var(--ember);
+  box-shadow:0 0 0 5px var(--bg),0 0 0 8px var(--ember-soft)}
+.milestone.last .ip{color:var(--ember)}
+.milestone.last .trl{color:var(--ember);background:var(--ember-soft)}
+.milestone.last .trl::before{background:var(--ember)}
+
+/* ---------------- yatırım tezi ---------------- */
+.thesis{grid-template-columns:repeat(4,1fr);gap:34px;flex:1;min-height:0;align-content:center}
+.tcard{position:relative;padding:26px 24px 22px;background:var(--bg-card);
+  border:1px solid var(--line);border-radius:9px;display:flex;flex-direction:column;
+  box-shadow:0 14px 40px -30px rgba(20,30,25,.42);
+  transition:transform .32s var(--ease-out),box-shadow .32s var(--ease),border-color .3s var(--ease)}
+.tcard:hover{transform:translateY(-4px);border-color:var(--accent);
+  box-shadow:0 22px 52px -28px rgba(14,143,118,.5)}
+.tcard.hi{border-color:var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--bg-card) 62%)}
+.tnum{font-family:var(--f-display);font-size:15px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em;display:block;margin-bottom:12px}
+.tcard h3{font-family:var(--f-display);font-size:24px;font-weight:600;line-height:1.26;
+  color:var(--ink);letter-spacing:-.014em;margin-bottom:11px}
+.tcard p{font-size:17.5px;line-height:1.55;color:var(--ink-soft);font-weight:400}
+.tfoot{margin-top:auto;padding-top:16px;font-family:var(--f-mono);font-size:14.5px;
+  color:var(--accent-deep);letter-spacing:.02em}
+
+/* kapanış: talep şeridi */
+.ask{display:flex;align-items:center;gap:46px;padding-top:28px;
+  border-top:1px solid var(--line)}
+.ask-l{flex-shrink:0}
+.ask-lbl{font-family:var(--f-mono);font-size:14px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.ask-val{font-family:var(--f-display);font-size:52px;font-weight:700;color:var(--ink);
+  letter-spacing:-.028em;line-height:1;font-variant-numeric:tabular-nums}
+.ask-sub{font-family:var(--f-mono);font-size:15px;color:var(--muted);margin-top:9px}
+.ask-r p{font-size:19px;line-height:1.6;color:var(--ink-soft);max-width:92ch;
+  padding-left:46px;border-left:2px solid var(--accent)}
 
 /* team */
 .team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:36px;
@@ -423,13 +491,22 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 .member:hover{transform:translateY(-4px)}
 .member .role{font-family:var(--f-mono);font-size:14px;letter-spacing:.06em;color:var(--accent-deep);
   text-transform:uppercase;font-weight:400}
-.member h4{font-family:var(--f-display);font-weight:400;font-size:23px;margin:8px 0 12px;color:var(--ink)}
-.member p{font-size:17px;color:var(--ink-soft);line-height:1.58;font-weight:300}
-.member .av{width:104px;height:104px;border-radius:50%;margin-bottom:22px;background:var(--bg-subtle);
-  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;
+.member h4{font-family:var(--f-display);font-weight:600;font-size:24px;margin:9px 0 12px;color:var(--ink);
+  letter-spacing:-.012em}
+.member p{font-size:17px;color:var(--ink-soft);line-height:1.58;font-weight:400}
+/* Portreler: kaynak fotoğraflar farklı ortam ve renklerde çekildiği için
+   (biri zaten siyah-beyaz) hepsi tek tip monokrom işlemden geçirildi;
+   bkz. people/make_portraits.py. Daire maske + ince çerçeve, üstüne
+   gelince vurgu halkası. */
+.member .av{width:132px;height:132px;border-radius:50%;margin-bottom:22px;
+  background:var(--bg-subtle);border:1px solid var(--line);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;position:relative;
   transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.member .av img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:contrast(1.02);transition:transform .45s var(--ease-out)}
+.member:hover .av img{transform:scale(1.045)}
 .member:hover .av{border-color:var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
-.member .av svg{width:42px;height:42px;fill:var(--faint)}
+.member .av svg{width:46px;height:46px;fill:var(--faint)}
 
 /* funnel */
 .funnel{display:flex;flex-direction:column;gap:8px;width:100%}
@@ -510,6 +587,28 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
         <div><span class="title">Ekip</span><span class="val">Çetin · Yağcıoğlu · Ünal · Göçlü</span></div>
         <div><span class="title">Ekosistem</span><span class="val">İzmir Yüksek Teknoloji Enstitüsü</span></div>
       </div>
+
+      <div class="endorse reveal">
+        <div class="lbl">Kurumsal<br>destek</div>
+        <div class="items">
+          <div class="item">
+            <span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <div class="who">İzmir Orman Bölge Müdürlüğü</div>
+              <div class="what">İmzalı niyet mektubu — pilot saha uygulaması ve
+                teknik yeterlilik değerlendirmesi için iş birliği.</div>
+            </div>
+          </div>
+          <div class="item">
+            <span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <div class="who">İYTE Rektörlüğü</div>
+              <div class="what">İmzalı niyet mektubu — ilk pilot çalışmalar kampüs
+                doğal alanlarında, akademik danışmanlıkla.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -530,7 +629,7 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
       <!-- İki sütun eşit yükseklikte: görseller üstte hizalı, altyazılar
            aynı taban çizgisinde. align-items:center iken her sütun kendi
            içinde ortalanıp birbirinden kayıyordu. -->
-      <div class="grid reveal figpair" style="grid-template-columns:1.12fr 1fr;gap:52px;margin-top:8px;flex:1;min-height:0;align-items:stretch">
+      <div class="grid reveal figpair" style="grid-template-columns:1.42fr 1fr;gap:52px;margin-top:26px;flex:1;min-height:0;align-items:stretch">
         <figure class="fig-wrap">
           <img src="figures/detection_timeline.svg" alt="Tespit zaman çizelgesi karşılaştırması">
           <figcaption class="figcap"><span class="caption-lbl">Şekil 1:</span> Tutuşma anına göre tespit
@@ -975,7 +1074,73 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     </div>
   </section>
 
-  <!-- 15 TEAM & CLOSE -->
+  <!-- 15 YATIRIM TEZİ — kapanış argümanı -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow reveal"><span class="dot"></span>10 · YATIRIM TEZİ</div>
+      <h1 class="title reveal">Neden şimdi, neden biz, neden <span class="accent">kazanır.</span></h1>
+
+      <div class="grid reveal thesis" style="margin-top:22px">
+        <div class="tcard">
+          <span class="tnum">01</span>
+          <h3>Pazar zorunlu hâle geldi</h3>
+          <p>Orman yangını artık mevsimlik bir olay değil, bilançoya giren bir risk.
+            Enerji ve maden tesisleri için ESG risk raporlaması zorunlu; sigortacı
+            ve regülatör ölçülebilir önlem istiyor. Alıcı bütçesi bu yüzden
+            <i>ihtiyari</i> olmaktan çıkıp <i>zorunlu</i> kaleme dönüştü.</p>
+          <div class="tfoot">$2,4 milyar pazar · %8,5 CAGR</div>
+        </div>
+
+        <div class="tcard">
+          <span class="tnum">02</span>
+          <h3>Fiziksel bir avantaj var</h3>
+          <p>Rakipler yangının çıktısını ölçüyor: duman ve alev. Biz nedenini
+            ölçüyoruz — toprakta yayılan ısı cephesini ve miselyumun ona verdiği
+            elektriksel yanıtı. Bu, daha iyi bir algoritma değil, daha erken bir
+            sinyal. Görüş hattı, rüzgâr ve hava koşulu bizim için kısıt değil.</p>
+          <div class="tfoot">Tutuşmadan önce, yerin altından</div>
+        </div>
+
+        <div class="tcard">
+          <span class="tnum">03</span>
+          <h3>Para iki kanaldan geliyor</h3>
+          <p>Donanım sahaya girişi ve fiziksel tutunmayı sağlıyor: paket başı
+            360 bin TL, %56 brüt marj. Asıl değer yıllık yenilenen SaaS
+            lisansında: paket başı 54 bin TL, %85 marj. Dördüncü yıldan sonra
+            bir paketin lisans birikimi, donanım kârını geçiyor.</p>
+          <div class="tfoot">5 referans paket = başa baş</div>
+        </div>
+
+        <div class="tcard hi">
+          <span class="tnum">04</span>
+          <h3>Savunma hattı zamanla güçleniyor</h3>
+          <p>Model mimarisi kopyalanabilir; kopyalanamayan iki şey var. Biri
+            biyomimetik elektrot ve düşük empedanslı toprak arayüzü — patent
+            başvurusu Ay 12–15. Diğeri sahadan biriken normal davranış verisi:
+            kurulu her düğüm rakibin sıfırdan üretemeyeceği bir veri kümesi
+            büyütüyor.</p>
+          <div class="tfoot">IP + veri birikimi</div>
+        </div>
+      </div>
+
+      <div class="reveal ask" style="margin-top:auto">
+        <div class="ask-l">
+          <div class="ask-lbl">Talep</div>
+          <div class="ask-val">1.350.000 TL</div>
+          <div class="ask-sub">TÜBİTAK 1812 BİGG · 18 ay</div>
+        </div>
+        <div class="ask-r">
+          <p>Bu tutar, TRL 4'ten TRL 8'e giden yolu ve ilk ticari faturayı
+            finanse ediyor. Sonunda elimizde ölçülmüş yanlış alarm oranı, patent
+            başvurusu ve iki kurumun pilot sahası olacak — yani bir sonraki turu
+            hikâyeyle değil, saha verisiyle konuşacağız. Dış yatırıma ihtiyaç
+            duymadan beşinci referans pakette kârlılığa geçiyoruz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 TEAM & CLOSE -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">10 · EKİP &amp; KAPANIŞ</div>
@@ -985,22 +1150,22 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
       </p>
       <div class="team reveal">
         <div class="member">
-          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="av"><img src="people/portraits/mehmet.webp" alt="Mehmet Çetin" loading="lazy"></div>
           <div class="role">CEO · Sistem Mimarı</div><h4>Mehmet Çetin</h4>
           <p>Proje yönetimi, endüstriyel tasarım, B2G ihale stratejisi.</p>
         </div>
         <div class="member">
-          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="av"><img src="people/portraits/muhammet.webp" alt="Muhammet Yağcıoğlu" loading="lazy"></div>
           <div class="role">CTO · Yapay Zeka</div><h4>Muhammet Yağcıoğlu</h4>
           <p>Biyosinyal işleme, PyTorch, zaman serisi makine öğrenmesi (LSTM).</p>
         </div>
         <div class="member">
-          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="av"><img src="people/portraits/omer.webp" alt="Ömer Ünal" loading="lazy"></div>
           <div class="role">COO · Donanım &amp; IoT</div><h4>Ömer Ünal</h4>
           <p>Elektronik tasarımı, LoRaWAN mesh ağları, düşük güç tüketimli gömülü sistemler.</p>
         </div>
         <div class="member">
-          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="av"><img src="people/portraits/mahmut.webp" alt="Mahmut Can Göçlü" loading="lazy"></div>
           <div class="role">CRO · Biyomateryal</div><h4>Mahmut Can Göçlü</h4>
           <p>Biyopolimer sentezi, aljinat-grafit kompozitleri, miselyum inokülasyonu.</p>
         </div>
@@ -1043,9 +1208,14 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
 <div class="footerbar">
   <div class="brand"><span>◆</span>MYCELLIUM-AEGIS</div>
   <div class="hint" id="hint">← → İLERLET&nbsp;&nbsp;·&nbsp;&nbsp;F TAM EKRAN</div>
-  <div class="counter"><em id="cnum">01</em> / <span id="ctot">16</span></div>
+  <div class="counter"><em id="cnum">01</em> / <span id="ctot">17</span></div>
 </div>
 <div class="progress" id="prog"></div>
+
+<!-- anime.js v4.5.0 (MIT) — yerel kopya; sunum internetsiz de çalışsın diye
+     CDN yerine vendor/ altından yükleniyor. Yol haritası zaman çizelgesi
+     bunu kullanıyor; yüklenmezse CSS yedek yolu devreye giriyor. -->
+<script src="vendor/anime.umd.min.js"></script>
 
 <script>
 (function(){
@@ -1336,23 +1506,86 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     ].map(function(v){ return typeof v === 'number' ? v.toFixed(1) : v; }).join(' ');
 
     svg.setAttribute('viewBox', '0 0 '+W.toFixed(1)+' '+H.toFixed(1));
-    svg.innerHTML = '<path d="'+d+'"/>';
-    var p = svg.firstChild, len = p.getTotalLength();
+    // İki katman: soluk kılavuz + üstüne çizilen asıl hat
+    svg.innerHTML = '<path class="rail" d="'+d+'"/><path class="path" d="'+d+'"/>';
+    var p = svg.querySelector('.path'), len = p.getTotalLength();
     p.style.setProperty('--len', len.toFixed(1));
 
-    // duraklar yolun ilerleyişiyle aynı sırada belirsin
-    var all = centers[0].length + centers[1].length, i = 0;
-    rows.forEach(function(row){
-      [...row.querySelectorAll('.milestone')].forEach(function(m){
-        m.style.transitionDelay = (0.34 + (i++) * (1.05 / all)).toFixed(2)+'s';
+    var stops = centers[0].concat(centers[1]);
+
+    /* Her durağın yol üzerindeki uzunluğunu bul: yolu örnekleyip noktaya
+       en yakın örneğin uzunluğunu alıyoruz. Böylece durak, çizgi tam ona
+       ulaştığı anda beliriyor — sabit aralıklı gecikmeden çok daha doğal. */
+    var N = 420, samples = [];
+    for(var s = 0; s <= N; s++){
+      var pt = p.getPointAtLength(len * s / N);
+      samples.push([pt.x, pt.y, len * s / N]);
+    }
+    var atLen = stops.map(function(c){
+      var best = 0, bd = Infinity;
+      samples.forEach(function(q){
+        var dx = q[0]-c.x, dy = q[1]-c.y, dd = dx*dx + dy*dy;
+        if(dd < bd){ bd = dd; best = q[2]; }
       });
+      return best / len;                       // 0..1
     });
+
+    var mils = [];
+    rows.forEach(function(row){ mils = mils.concat([...row.querySelectorAll('.milestone')]); });
+
+    if(!window.anime || !anime.createTimeline || !anime.svg){
+      // yedek yol: CSS geçişleri, duraklar yol boyunca sırayla
+      mils.forEach(function(m, i){ m.style.transitionDelay = (0.34 + atLen[i]*1.15).toFixed(2)+'s'; });
+      return;
+    }
+
+    /* ---- anime.js zaman çizelgesi ---- */
+    road.classList.add('anim-js');
+    if(road._tl){ road._tl.revert && road._tl.revert(); road._tl = null; }
+
+    var DRAW = 2000;                           // yol çizim süresi (ms)
+    var tl = anime.createTimeline({ defaults:{ ease:'outQuart' } });
+
+    // 1) önce soluk kılavuz belirir, sonra asıl hat üstüne çizilir
+    tl.add(svg.querySelector('.rail'), { opacity:[0, 1], duration:420 }, 0);
+    tl.add(anime.svg.createDrawable(p),
+           { draw:['0 0', '0 1'], duration:DRAW, ease:'inOutQuad' }, 180);
+
+    // 2) hat bir durağa varınca istasyon ve kart sırayla açılır
+    mils.forEach(function(m, i){
+      var t = 180 + atLen[i]*DRAW;
+      tl.add(m.querySelector('.dot'),
+             { scale:[0, 1], opacity:[0, 1], duration:700, ease:'outElastic(1, .55)' }, t);
+      tl.add(m, { opacity:[0, 1], duration:520 }, t + 60);
+      // etiket, ay aralığı, başlık ve metin kendi içinde de kademeli
+      var bits = [m.querySelector('.ip'), m.querySelector('.mo'),
+                  m.querySelector('h4'),  m.querySelector('p')].filter(Boolean);
+      bits.forEach(function(el, k){
+        tl.add(el, { opacity:[0, 1], translateY:[14, 0], duration:560 }, t + 90 + k*70);
+      });
+      var trl = m.querySelector('.trl');
+      if(trl) tl.add(trl, { opacity:[0, 1], scale:[.86, 1], duration:480,
+                            ease:'outBack' }, t + 430);
+    });
+
+    road._tl = tl;
+  }
+
+  function replayRoad(){
+    var road = document.getElementById('road');
+    if(!road) return;
+    drawRoad();
+    if(road._tl && road._tl.restart) road._tl.restart();
   }
   window.addEventListener('resize', drawRoad);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawRoad);
   setTimeout(drawRoad, 220); setTimeout(drawRoad, 700);
-  // Slayt görünür olmadan ölçü alınamıyor; o slayta geçince yeniden çiz.
-  window.addEventListener('aegis:slide', drawRoad);
+  // Slayt görünür olmadan ölçü alınamıyor; o slayta geçince yeniden çiz
+  // ve animasyonu baştan oynat.
+  window.addEventListener('aegis:slide', function(){
+    var s = document.querySelector('.slide.active');
+    if(s && s.querySelector('#road')) replayRoad(); else drawRoad();
+  });
 
   /* ---------- count-up stats ---------- */
   function runCounters(slide){

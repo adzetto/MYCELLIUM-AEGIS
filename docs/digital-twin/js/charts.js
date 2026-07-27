@@ -23,7 +23,7 @@
     constructor(canvas, opts) {
       this.c = canvas;
       this.ctx = canvas.getContext('2d');
-      this.o = Object.assign({ pad: [10, 10, 20, 38], grid: true, font: '10px "CMU Serif", Georgia, serif' }, opts || {});
+      this.o = Object.assign({ pad: [10, 10, 20, 38], grid: true, font: '13px "CMU Serif", Georgia, serif' }, opts || {});
       this.resize();
     }
     resize() {
@@ -110,7 +110,7 @@
       ctx.setLineDash([]);
       if (label) {
         const right = opts.align ? opts.align === 'right' : X > g.x + g.w * 0.75;
-        ctx.fillStyle = color; ctx.font = '9.5px "CMU Serif", Georgia, serif';
+        ctx.fillStyle = color; ctx.font = '13px "CMU Serif", Georgia, serif';
         ctx.textAlign = right ? 'right' : 'left'; ctx.textBaseline = 'top';
         ctx.fillText(label, X + (right ? -4 : 4), g.y + 2 + (opts.dy || 0));
       }
@@ -126,7 +126,7 @@
       ctx.setLineDash([]);
       if (label) {
         const right = opts.align !== 'left';
-        ctx.fillStyle = color; ctx.font = '9.5px "CMU Serif", Georgia, serif';
+        ctx.fillStyle = color; ctx.font = '13px "CMU Serif", Georgia, serif';
         ctx.textAlign = right ? 'right' : 'left';
         ctx.textBaseline = 'bottom';
         ctx.fillText(label, right ? g.x + g.w - 3 : g.x + 4, Y - 2 + (opts.dy || 0));
@@ -135,7 +135,7 @@
     }
     label(text, color) {
       const ctx = this.ctx, g = this.box();
-      ctx.save(); ctx.font = '10px "CMU Serif", Georgia, serif';
+      ctx.save(); ctx.font = '13px "CMU Serif", Georgia, serif';
       ctx.fillStyle = color || PAL().dim; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(text, g.x + 4, g.y + 2); ctx.restore();
     }

@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-07-27T16:04:31.093902</dc:date>
+    <dc:date>2026-07-27T18:07:57.493240</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -71,12 +71,12 @@ z
    </g>
    <g id="line2d_1">
     <path d="M 14.601427 142.256043 
-L 14.601427 162.200666 
+L 14.601427 164.225501 
 " clip-path="url(#p80d5c94fa6)" style="fill: none; stroke-dasharray: 2.4,2.4; stroke-dashoffset: 0; stroke: #6b7280; stroke-width: 0.8"/>
    </g>
    <g id="line2d_2">
     <path d="M 83.445812 142.256043 
-L 83.445812 162.200666 
+L 83.445812 164.225501 
 " clip-path="url(#p80d5c94fa6)" style="fill: none; stroke-dasharray: 2.4,2.4; stroke-dashoffset: 0; stroke: #6b7280; stroke-width: 0.8"/>
    </g>
    <g id="text_1">
@@ -832,21 +832,21 @@ z
     </g>
    </g>
    <g id="patch_5">
-    <path d="M 80.108255 158.454721 
-Q 49.027327 158.454721 17.9464 158.454721 
+    <path d="M 80.108255 159.973348 
+Q 49.027327 159.973348 17.9464 159.973348 
 " style="fill: none; stroke: #1a1d20; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 74.508255 155.654721 
-L 80.108255 158.454721 
-L 74.508255 161.254721 
+    <path d="M 74.508255 157.173348 
+L 80.108255 159.973348 
+L 74.508255 162.773348 
 " style="fill: none; stroke: #1a1d20; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 23.5464 161.254721 
-L 17.9464 158.454721 
-L 23.5464 155.654721 
+    <path d="M 23.5464 162.773348 
+L 17.9464 159.973348 
+L 23.5464 157.173348 
 " style="fill: none; stroke: #1a1d20; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="text_7">
-    <!-- $\varnothing\;6.8$ mm -->
-    <g style="fill: #1a1d20" transform="translate(24.199998 166.554061) scale(0.115 -0.115)">
+    <!-- $\varnothing\,6.8$ mm -->
+    <g style="fill: #1a1d20" transform="translate(24.836496 154.303383) scale(0.115 -0.115)">
      <defs>
       <path id="MSBM10-3f" d="M 4526 3462 
 C 4616 3539 4616 3576 4616 3602 
@@ -917,16 +917,16 @@ z
 " transform="scale(0.015625)"/>
      </defs>
      <use xlink:href="#MSBM10-3f" transform="scale(0.996264)"/>
-     <use xlink:href="#CMR17-36" transform="translate(105.161476 0) scale(0.996264)"/>
-     <use xlink:href="#CMMI12-3a" transform="translate(150.851953 0) scale(0.996264)"/>
-     <use xlink:href="#CMR17-38" transform="translate(177.949131 0) scale(0.996264)"/>
-     <use xlink:href="#CMR17-6d" transform="translate(253.715574 0) scale(0.996264)"/>
-     <use xlink:href="#CMR17-6d" transform="translate(330.635164 0) scale(0.996264)"/>
+     <use xlink:href="#CMR17-36" transform="translate(94.091873 0) scale(0.996264)"/>
+     <use xlink:href="#CMMI12-3a" transform="translate(139.78235 0) scale(0.996264)"/>
+     <use xlink:href="#CMR17-38" transform="translate(166.879527 0) scale(0.996264)"/>
+     <use xlink:href="#CMR17-6d" transform="translate(242.645971 0) scale(0.996264)"/>
+     <use xlink:href="#CMR17-6d" transform="translate(319.56556 0) scale(0.996264)"/>
     </g>
    </g>
    <g id="text_8">
     <!-- ger\c{c}ek \"ol\c{c}ek -->
-    <g style="fill: #6b7280" transform="translate(22.719443 175.665818) scale(0.1 -0.1)">
+    <g style="fill: #6b7280" transform="translate(22.719443 171.548966) scale(0.1 -0.1)">
      <defs>
       <path id="CMR17-7f" d="M 1133 3961 
 C 1133 4120 1005 4215 883 4215 

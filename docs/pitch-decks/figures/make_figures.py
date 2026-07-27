@@ -497,12 +497,18 @@ def fig_electrode_material():
     # Çap ölçüsü. Çemberlere fazla yakınken en alttaki katman etiketiyle
     # aynı bantta kalıyor ve sıkışık görünüyordu; ölçü çizgisini ve yazıyı
     # daha aşağı indirip nefes payı bıraktık.
-    axa.annotate("", xy=(-3.40, -5.15), xytext=(3.40, -5.15),
+    # Ölçü yazısı okun ÜSTÜNDE (teknik resimdeki alışılmış gösterim).
+    # Metni okun ortasına koyup iki yandan ok çizmeyi denedik ama yazı
+    # bırakılan boşluktan geniş kalıp okun üstüne biniyordu.
+    ydim = -5.30
+    axa.annotate("", xy=(-3.40, ydim), xytext=(3.40, ydim),
                  arrowprops=dict(arrowstyle="<->", color=INK, lw=1.2))
     for xe in (-3.40, 3.40):
-        axa.plot([xe, xe], [-3.55, -5.52], color=MUT, lw=0.8, ls=(0, (3, 3)))
-    axa.text(0, -5.95, r"$\varnothing\;6.8$ mm", ha="center", fontsize=11.5, color=INK)
-    axa.text(0, -6.85, r"ger\c{c}ek \"ol\c{c}ek", ha="center", fontsize=10, color=MUT)
+        axa.plot([xe, xe], [-3.55, -5.72], color=MUT, lw=0.8, ls=(0, (3, 3)))
+    axa.text(0, ydim + 0.34, r"$\varnothing\,6.8$ mm", ha="center", va="bottom",
+             fontsize=11.5, color=INK)
+    axa.text(0, ydim - 0.46, r"ger\c{c}ek \"ol\c{c}ek", ha="center", va="top",
+             fontsize=10, color=MUT)
     axa.set_title(r"\textbf{(a)} Katman yap\i s\i", loc="left", fontsize=14)
 
     # ---- (b) korozyon: 24 ay toprak gömülü kütle kaybı --------------------

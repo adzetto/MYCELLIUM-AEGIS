@@ -33,11 +33,11 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px}
+html{font-size:19.5px}
 html,body{height:100%}
 body{
   background:var(--paper);color:var(--ink);
-  font-family:var(--f);font-size:15px;line-height:1.5;
+  font-family:var(--f);font-size:18.3px;line-height:1.5;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   font-variant-numeric:oldstyle-nums;
   overflow:hidden;
@@ -97,7 +97,7 @@ body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
 /* katlama düğmeleri — başlık şeridinin sağ ucunda */
 #panelToggles{display:flex;gap:6px;align-items:center}
 #panelToggles button{
-  border:.8px solid var(--rule-2);padding:2px 9px;font-size:11.5px;
+  border:.8px solid var(--rule-2);padding:2px 9px;font-size:14px;
   font-variant:small-caps;letter-spacing:.05em;white-space:nowrap;
   background:transparent;color:var(--ink-2);cursor:pointer;
   transition:border-color .2s ease,color .2s ease,background .2s ease
@@ -110,11 +110,11 @@ body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
   border-bottom:1.6px solid var(--rule);
   padding:9px 20px 7px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
 }
-#head h1{font-size:19px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
-#head h1 .sub{font-weight:400;font-style:italic;color:var(--ink-2);font-size:15px;margin-left:8px}
-#head .meta{margin-left:auto;font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+#head h1{font-size:23.2px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+#head h1 .sub{font-weight:400;font-style:italic;color:var(--ink-2);font-size:18.3px;margin-left:8px}
+#head .meta{margin-left:auto;font-size:15.2px;color:var(--ink-2);white-space:nowrap}
 #head .badge{
-  border:.8px solid var(--rule-2);padding:1px 7px;font-size:11.5px;
+  border:.8px solid var(--rule-2);padding:1px 7px;font-size:14px;
   font-variant:small-caps;letter-spacing:.05em;white-space:nowrap
 }
 #head .badge.on{border-color:var(--green);color:var(--green)}
@@ -127,10 +127,10 @@ body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
 #view .cap{
   position:absolute;left:0;right:0;bottom:0;padding:6px 14px;
   background:linear-gradient(0deg,rgba(255,255,255,.97),rgba(255,255,255,.82) 62%,transparent);
-  font-size:12.5px;color:var(--ink-2);text-align:center;pointer-events:none
+  font-size:15.2px;color:var(--ink-2);text-align:center;pointer-events:none
 }
 #view .cap b{font-weight:700;color:var(--ink)}
-#view .hint{position:absolute;right:12px;bottom:38px;font-size:11.5px;color:var(--ink-3);
+#view .hint{position:absolute;right:12px;bottom:38px;font-size:14px;color:var(--ink-3);
   font-variant:small-caps;letter-spacing:.05em;pointer-events:none;
   background:rgba(255,255,255,.8);padding:1px 6px}
 
@@ -140,13 +140,13 @@ body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
   flex-wrap:wrap;background:rgba(255,255,255,.94);border:.8px solid var(--rule-2);padding:4px 6px;
 }
 #bar button{
-  border:.8px solid var(--rule-2);padding:2px 9px;font-size:12.5px;
+  border:.8px solid var(--rule-2);padding:2px 9px;font-size:15.2px;
   background:var(--paper);transition:.15s;white-space:nowrap
 }
 #bar button:hover{border-color:var(--ink-2)}
 #bar button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 #bar .sep{width:1px;height:17px;background:var(--rule-2);margin:0 3px}
-#bar .clk{font-size:12.5px;font-variant-numeric:lining-nums tabular-nums;
+#bar .clk{font-size:15.2px;font-variant-numeric:lining-nums tabular-nums;
   min-width:52px;text-align:center;color:var(--ink-2)}
 
 /* ------------------------------------------------------------- sütunlar -- */
@@ -156,21 +156,21 @@ body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
 #meas::-webkit-scrollbar-thumb,#econ::-webkit-scrollbar-thumb{background:var(--rule-2)}
 
 h2.sec{
-  font-size:12.5px;font-weight:700;font-variant:small-caps;letter-spacing:.06em;
+  font-size:15.2px;font-weight:700;font-variant:small-caps;letter-spacing:.06em;
   border-bottom:.8px solid var(--rule);padding-bottom:3px;margin:14px 0 6px
 }
 h2.sec:first-child{margin-top:0}
-h3.sub{font-size:12.5px;font-style:italic;color:var(--ink-2);margin:9px 0 4px}
-p.note{font-size:12.5px;line-height:1.5;color:var(--ink-2);margin:6px 0}
+h3.sub{font-size:15.2px;font-style:italic;color:var(--ink-2);margin:9px 0 4px}
+p.note{font-size:15.2px;line-height:1.5;color:var(--ink-2);margin:6px 0}
 p.note b{color:var(--ink)}
 
 /* --------------------------------------------------------------- tablo --- */
-table.t{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:4px}
-table.t caption{caption-side:top;text-align:left;font-size:12.5px;font-style:italic;
+table.t{width:100%;border-collapse:collapse;font-size:15.9px;margin-bottom:4px}
+table.t caption{caption-side:top;text-align:left;font-size:15.2px;font-style:italic;
   color:var(--ink-2);padding-bottom:3px}
 table.t th{
   text-align:left;font-weight:400;font-variant:small-caps;letter-spacing:.04em;
-  font-size:12px;color:var(--ink-2);padding:2px 5px;
+  font-size:14.6px;color:var(--ink-2);padding:2px 5px;
   border-top:.9px solid var(--rule);border-bottom:.6px solid var(--rule-2)
 }
 table.t td{padding:2px 5px;border-bottom:.4px solid var(--rule-3);vertical-align:baseline}
@@ -179,15 +179,15 @@ table.t td.n,table.t th.n{text-align:right;font-variant-numeric:lining-nums tabu
 table.t td.k{color:var(--ink-2);width:52%}
 table.t.cmp{table-layout:fixed}
 table.t.cmp td:nth-child(1){width:31%} table.t.cmp td:nth-child(2){width:34%} table.t.cmp td:nth-child(3){width:35%}
-table.t.cmp td{font-size:12px;line-height:1.34;hyphens:auto;overflow-wrap:anywhere}
+table.t.cmp td{font-size:14.6px;line-height:1.34;hyphens:auto;overflow-wrap:anywhere}
 table.t.wp{table-layout:fixed} table.t.wp td:nth-child(2){width:auto}
-table.t.disc td:nth-child(1){width:34%} table.t.disc td{font-size:11.5px;line-height:1.35}
+table.t.disc td:nth-child(1){width:34%} table.t.disc td{font-size:14px;line-height:1.35}
 table.t tr.hi td{background:#f2f8f5}
 table.t tr.warnrow td{background:#fdf7ee}
 
 /* ------------------------------------------------------------ denklemler - */
-.eq{margin:8px 0 10px;text-align:center;font-size:14px}
-.eq .tag{float:right;color:var(--ink-2);font-size:12.5px;margin-top:2px}
+.eq{margin:8px 0 10px;text-align:center;font-size:17.1px}
+.eq .tag{float:right;color:var(--ink-2);font-size:15.2px;margin-top:2px}
 .katex{font-size:1.03em!important}
 .katex-display{margin:.35em 0!important}
 .inl{white-space:nowrap}
@@ -195,21 +195,21 @@ table.t tr.warnrow td{background:#fdf7ee}
 /* --------------------------------------------------------------- lamba --- */
 .gate{border:.9px solid var(--rule);padding:8px 10px;margin:7px 0 9px}
 .gate .row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
-.gate .st{font-variant:small-caps;letter-spacing:.06em;font-weight:700;font-size:14px}
-.gate .lt{margin-left:auto;font-size:12.5px;color:var(--ink-2)}
+.gate .st{font-variant:small-caps;letter-spacing:.06em;font-weight:700;font-size:17.1px}
+.gate .lt{margin-left:auto;font-size:15.2px;color:var(--ink-2)}
 .conds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .cond{border:.6px solid var(--rule-2);padding:5px 6px;text-align:center}
 .cond.on{border-color:var(--green);background:#f2f8f5}
 .cond.on.al{border-color:var(--red);background:#fdf1f0}
-.cond .lbl{font-size:11.5px;color:var(--ink-2);margin-bottom:2px}
-.cond .v{font-size:14px;font-variant-numeric:lining-nums tabular-nums}
+.cond .lbl{font-size:14px;color:var(--ink-2);margin-bottom:2px}
+.cond .v{font-size:17.1px;font-variant-numeric:lining-nums tabular-nums}
 .cond.on .v{color:var(--green)} .cond.on.al .v{color:var(--red)}
-.cond .th{font-size:11px;color:var(--ink-3);margin-top:1px}
+.cond .th{font-size:13.4px;color:var(--ink-3);margin-top:1px}
 
 /* ------------------------------------------------------------ kaydırıcı -- */
 .ctl{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:baseline;margin:5px 0}
-.ctl .l{font-size:12.5px;color:var(--ink-2)}
-.ctl .v{font-size:12.5px;font-variant-numeric:lining-nums tabular-nums;text-align:right}
+.ctl .l{font-size:15.2px;color:var(--ink-2)}
+.ctl .v{font-size:15.2px;font-variant-numeric:lining-nums tabular-nums;text-align:right}
 .ctl input{grid-column:1/-1;width:100%}
 
 /* --------------------------------------------------------------- şekil --- */
@@ -224,43 +224,62 @@ table.t tr.warnrow td{background:#fdf7ee}
 .fig{border-right:.8px solid var(--rule-2);display:flex;flex-direction:column;
   padding:9px 14px 8px;min-width:0;overflow:hidden}
 .fig:last-child{border-right:none}
-.fig .ft{font-size:12.5px;color:var(--ink-2);display:flex;justify-content:space-between;
+.fig .ft{font-size:15.2px;color:var(--ink-2);display:flex;justify-content:space-between;
   gap:8px;margin-bottom:5px;align-items:baseline;flex:none}
 .fig .ft b{font-weight:700;color:var(--ink)}
 .fig .ft .rd{font-variant-numeric:lining-nums tabular-nums;color:var(--green);
-  font-size:12px;white-space:nowrap}
+  font-size:14.6px;white-space:nowrap}
 .fig canvas{flex:1 1 auto;width:100%;min-height:40px;display:block}
-.fig .fl{flex:none;font-size:10.5px;color:var(--ink-3);line-height:1.34;margin-top:5px;
+.fig .fl{flex:none;font-size:13px;color:var(--ink-3);line-height:1.34;margin-top:5px;
   height:2.68em;overflow:hidden}
 
-/* -------------------------------------------------------------- bilgi ---- */
+/* ------------------------------------------------- bileşen bilgisi (popup)
+   Eskiden sol alt köşede küçük bir kutuydu; sahnenin üstünü kapatıyor ve
+   sunumda okunmuyordu. Artık ekranın ortasında, karartılmış zemin üstünde
+   bir kip pencere: yazı büyük, satır aralığı geniş, ESC ile kapanıyor. */
+#inspBack{position:fixed;inset:0;z-index:40;background:rgba(20,24,28,.34);
+  backdrop-filter:blur(2px);opacity:0;visibility:hidden;
+  transition:opacity .24s ease,visibility .24s}
+#inspBack.on{opacity:1;visibility:visible}
+
 #insp{
-  position:absolute;left:12px;bottom:44px;width:min(360px,44%);z-index:9;
-  background:var(--paper);border:.9px solid var(--rule);padding:9px 11px;font-size:12.5px;
-  display:none;box-shadow:0 6px 22px rgba(0,0,0,.10)
+  position:fixed;z-index:41;left:50%;top:50%;
+  transform:translate(-50%,-50%) scale(.96);
+  width:min(660px,86vw);max-height:82vh;overflow-y:auto;
+  background:var(--paper);border:1.2px solid var(--rule);
+  padding:26px 30px 28px;font-size:19px;line-height:1.62;
+  box-shadow:0 24px 70px rgba(0,0,0,.26);
+  opacity:0;visibility:hidden;
+  transition:opacity .24s ease,visibility .24s,transform .28s cubic-bezier(.22,1,.36,1)
 }
-#insp h4{font-size:13px;font-weight:700;font-variant:small-caps;letter-spacing:.05em;
-  display:flex;align-items:baseline;gap:8px;margin-bottom:4px;
-  border-bottom:.6px solid var(--rule-2);padding-bottom:3px}
-#insp h4 button{margin-left:auto;font-size:11.5px;color:var(--ink-3)}
-#insp p{margin:4px 0;line-height:1.45}
-#insp .kv{display:grid;grid-template-columns:auto 1fr;gap:1px 8px;margin-top:5px}
-#insp .kv dt{color:var(--ink-2)} #insp .kv dd{text-align:right;font-variant-numeric:lining-nums tabular-nums}
+#insp.on{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+#insp h4{font-size:25px;font-weight:700;letter-spacing:.01em;font-variant:normal;
+  display:flex;align-items:baseline;gap:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--rule-2);padding-bottom:11px}
+#insp h4 button{margin-left:auto;font-size:17px;color:var(--ink-2);
+  border:.8px solid var(--rule-2);padding:3px 12px;line-height:1.5;
+  font-variant:small-caps;letter-spacing:.05em;flex-shrink:0}
+#insp h4 button:hover{border-color:var(--ink);color:var(--ink)}
+#insp p{margin:10px 0;line-height:1.62}
+#insp .kv{display:grid;grid-template-columns:auto 1fr;gap:7px 18px;margin-top:16px;
+  border-top:1px solid var(--rule-3);padding-top:14px}
+#insp .kv dt{color:var(--ink-2)}
+#insp .kv dd{text-align:right;font-variant-numeric:lining-nums tabular-nums}
 
 /* -------------------------------------------------------------- yükleme -- */
 #boot{position:fixed;inset:0;z-index:100;background:var(--paper);display:grid;place-items:center;
   transition:opacity .7s ease,visibility .7s}
 #boot.gone{opacity:0;visibility:hidden}
 #boot .b{text-align:center;width:min(420px,80vw)}
-#boot h1{font-size:26px;font-weight:400;margin-bottom:3px}
-#boot .s{font-style:italic;color:var(--ink-2);font-size:14px;margin-bottom:22px}
+#boot h1{font-size:31.7px;font-weight:400;margin-bottom:3px}
+#boot .s{font-style:italic;color:var(--ink-2);font-size:17.1px;margin-bottom:22px}
 #boot .bar{height:1px;background:var(--rule-3);position:relative}
 #boot .bar i{position:absolute;inset:0;background:var(--ink);transform:scaleX(0);
   transform-origin:left;transition:transform .3s linear}
-#boot .st{font-size:12px;color:var(--ink-3);margin-top:8px;font-variant:small-caps;letter-spacing:.06em}
+#boot .st{font-size:14.6px;color:var(--ink-3);margin-top:8px;font-variant:small-caps;letter-spacing:.06em}
 
 /* ------------------------------------------------------------ uyarı kutu - */
-.box{border-left:2px solid var(--amber);background:#fdf8f0;padding:6px 9px;font-size:12.5px;
+.box{border-left:2px solid var(--amber);background:#fdf8f0;padding:6px 9px;font-size:15.2px;
   line-height:1.45;color:var(--ink-2);margin:7px 0}
 .box.ok{border-left-color:var(--green);background:#f2f8f5}
 .box b{color:var(--ink)}
@@ -277,7 +296,7 @@ table.t tr.warnrow td{background:#fdf7ee}
 }
 @media (max-width:620px){
   #figs{grid-template-columns:1fr}
-  #head h1{font-size:16px}
+  #head h1{font-size:19.5px}
   .conds{grid-template-columns:1fr}
 }
 @media print{

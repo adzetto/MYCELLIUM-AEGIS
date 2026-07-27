@@ -1,3 +1,14 @@
 
 __pycache__/
 *.pyc
+
+# LaTeX ara dosyalari (kaynak .tex ve cikti .pdf versiyonlanir)
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.fls
+*.fdb_latexmk
