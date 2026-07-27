@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-07-27T13:59:52.632124</dc:date>
+    <dc:date>2026-07-27T14:38:24.370388</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -41,7 +41,7 @@ Q 6.571034 38.810667 6.571034 44.149333
 L 6.571034 118.890667 
 Q 6.571034 124.229333 11.702069 124.229333 
 z
-" clip-path="url(#p0a6bfba04e)" style="fill: #00a389; opacity: 0.08; stroke: #00a389; stroke-width: 1.8; stroke-linejoin: miter"/>
+" clip-path="url(#p0a6bfba04e)" style="fill: #00a389; opacity: 0.08; stroke: #00a389; stroke-width: 2.25; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 129.715862 124.229333 
@@ -54,7 +54,7 @@ Q 124.584828 38.810667 124.584828 44.149333
 L 124.584828 118.890667 
 Q 124.584828 124.229333 129.715862 124.229333 
 z
-" clip-path="url(#p0a6bfba04e)" style="fill: #0f2537; opacity: 0.08; stroke: #0f2537; stroke-width: 1.8; stroke-linejoin: miter"/>
+" clip-path="url(#p0a6bfba04e)" style="fill: #0f2537; opacity: 0.08; stroke: #0f2537; stroke-width: 2.25; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 247.729655 124.229333 
@@ -67,7 +67,7 @@ Q 242.598621 38.810667 242.598621 44.149333
 L 242.598621 118.890667 
 Q 242.598621 124.229333 247.729655 124.229333 
 z
-" clip-path="url(#p0a6bfba04e)" style="fill: #d95d39; opacity: 0.08; stroke: #d95d39; stroke-width: 1.8; stroke-linejoin: miter"/>
+" clip-path="url(#p0a6bfba04e)" style="fill: #d95d39; opacity: 0.08; stroke: #d95d39; stroke-width: 2.25; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 365.743448 124.229333 
@@ -80,11 +80,11 @@ Q 360.612414 38.810667 360.612414 44.149333
 L 360.612414 118.890667 
 Q 360.612414 124.229333 365.743448 124.229333 
 z
-" clip-path="url(#p0a6bfba04e)" style="fill: #b91c1c; opacity: 0.08; stroke: #b91c1c; stroke-width: 1.8; stroke-linejoin: miter"/>
+" clip-path="url(#p0a6bfba04e)" style="fill: #b91c1c; opacity: 0.08; stroke: #b91c1c; stroke-width: 2.25; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- Sens\"or -->
-    <g style="fill: #00a389" transform="translate(33.799104 65.568991) scale(0.095 -0.095)">
+    <g style="fill: #00a389" transform="translate(29.203263 64.569972) scale(0.133 -0.133)">
      <defs>
       <path id="CMR17-53" d="M 2803 4290 
 C 2803 4404 2797 4411 2758 4411 
@@ -257,7 +257,7 @@ z
      <use xlink:href="#CMR17-72" transform="translate(223.768215 0) scale(0.996264)"/>
     </g>
     <!-- Teraryum -->
-    <g style="fill: #00a389" transform="translate(26.789874 75.296383) scale(0.095 -0.095)">
+    <g style="fill: #00a389" transform="translate(19.869118 78.188313) scale(0.133 -0.133)">
      <defs>
       <path id="CMR17-54" d="M 3981 4326 
 L 288 4326 
@@ -420,7 +420,7 @@ z
    </g>
    <g id="text_2">
     <!-- Biyoelektrot -->
-    <g style="fill: #1a1d20" transform="translate(24.68071 95.472439) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(18.15197 94.310129) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-42" d="M 333 4352 
 L 333 4186 
@@ -557,7 +557,7 @@ z
      <use xlink:href="#CMR17-74" transform="translate(454.430499 0) scale(0.996264)"/>
     </g>
     <!-- ESP32 + ADC -->
-    <g style="fill: #1a1d20" transform="translate(19.706748 104.189737) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(11.470065 107.095509) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-45" d="M 3885 1615 
 L 3770 1615 
@@ -766,7 +766,7 @@ z
    </g>
    <g id="text_3">
     <!-- A\u{g} Ge\c{c}idi -->
-    <g style="fill: #0f2537" transform="translate(144.387404 70.432687) scale(0.095 -0.095)">
+    <g style="fill: #0f2537" transform="translate(137.30012 71.379142) scale(0.133 -0.133)">
      <defs>
       <path id="CMR17-15" d="M 2253 4448 
 C 2240 3874 1875 3506 1466 3506 
@@ -913,7 +913,7 @@ z
    </g>
    <g id="text_4">
     <!-- LoRaWAN 868 -->
-    <g style="fill: #1a1d20" transform="translate(137.679777 95.472439) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(129.407765 94.310129) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-4c" d="M 3469 1615 
 L 3354 1615 
@@ -1102,7 +1102,7 @@ z
      <use xlink:href="#CMR17-38" transform="translate(560.842185 0) scale(0.996264)"/>
     </g>
     <!-- Mesh gateway -->
-    <g style="fill: #1a1d20" transform="translate(139.402512 104.189737) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(131.812649 107.095509) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-4d" d="M 1338 4224 
 C 1299 4320 1293 4320 1158 4320 
@@ -1219,7 +1219,7 @@ z
    </g>
    <g id="text_5">
     <!-- Bulut / U\c{c} -->
-    <g style="fill: #d95d39" transform="translate(260.072695 70.432687) scale(0.095 -0.095)">
+    <g style="fill: #d95d39" transform="translate(252.206107 71.379135) scale(0.133 -0.133)">
      <defs>
       <path id="CMR17-2f" d="M 2605 4545 
 C 2637 4627 2637 4640 2637 4653 
@@ -1270,7 +1270,7 @@ z
    </g>
    <g id="text_6">
     <!-- LSTM f\"uzyon -->
-    <g style="fill: #1a1d20" transform="translate(258.136063 95.472439) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(250.694008 94.310129) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-66" d="M 979 2560 
 L 1709 2560 
@@ -1330,7 +1330,7 @@ z
      <use xlink:href="#CMR17-6e" transform="translate(499.785047 0) scale(0.996264)"/>
     </g>
     <!-- AND-gate karar -->
-    <g style="fill: #1a1d20" transform="translate(253.832986 104.189737) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(245.184092 107.095509) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-2d" d="M 1632 1216 
 L 1632 1496 
@@ -1357,7 +1357,7 @@ z
    </g>
    <g id="text_7">
     <!-- Alarm -->
-    <g style="fill: #b91c1c" transform="translate(388.275368 70.432687) scale(0.095 -0.095)">
+    <g style="fill: #b91c1c" transform="translate(383.823572 71.379142) scale(0.133 -0.133)">
      <use xlink:href="#CMR17-41" transform="scale(0.996264)"/>
      <use xlink:href="#CMR17-6c" transform="translate(69.07243 0) scale(0.996264)"/>
      <use xlink:href="#CMR17-61" transform="translate(93.943488 0) scale(0.996264)"/>
@@ -1367,7 +1367,7 @@ z
    </g>
    <g id="text_8">
     <!-- SaaS pano -->
-    <g style="fill: #1a1d20" transform="translate(382.283882 94.974301) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(376.698671 93.579532) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-70" d="M 1408 -1063 
 C 998 -1063 973 -1037 973 -789 
@@ -1408,7 +1408,7 @@ z
      <use xlink:href="#CMR17-6f" transform="translate(370.728877 0) scale(0.996264)"/>
     </g>
     <!-- SMS / API -->
-    <g style="fill: #1a1d20" transform="translate(380.541864 104.27276) scale(0.075 -0.075)">
+    <g style="fill: #1a1d20" transform="translate(374.339484 107.217276) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-49" d="M 1261 3905 
 C 1261 4192 1338 4192 1798 4192 
@@ -1439,16 +1439,16 @@ z
    </g>
    <g id="patch_6">
     <path d="M 85.534912 81.52 
-Q 106.6263 81.52 126.040637 81.52 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
-    <path d="M 121.640637 79.32 
-L 126.040637 81.52 
-L 121.640637 83.72 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
+Q 106.6263 81.52 125.615784 81.52 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
+    <path d="M 120.015784 78.72 
+L 125.615784 81.52 
+L 120.015784 84.32 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
    </g>
    <g id="text_9">
     <!-- LoRa 868\,MHz -->
-    <g style="fill: #6b7280" transform="translate(79.216337 70.842667) scale(0.075 -0.075)">
+    <g style="fill: #6b7280" transform="translate(71.16171 70.842667) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-48" d="M 3590 3905 
 C 3590 4192 3661 4192 4102 4192 
@@ -1500,16 +1500,16 @@ z
    </g>
    <g id="patch_7">
     <path d="M 203.548705 81.52 
-Q 224.640093 81.52 244.05443 81.52 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
-    <path d="M 239.65443 79.32 
-L 244.05443 81.52 
-L 239.65443 83.72 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
+Q 224.640093 81.52 243.629577 81.52 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
+    <path d="M 238.029577 78.72 
+L 243.629577 81.52 
+L 238.029577 84.32 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
    </g>
    <g id="text_10">
     <!-- TLS 1.3 / MQTT -->
-    <g style="fill: #6b7280" transform="translate(191.482974 70.842667) scale(0.075 -0.075)">
+    <g style="fill: #6b7280" transform="translate(181.793647 70.842667) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-31" d="M 1702 4058 
 C 1702 4192 1696 4192 1606 4192 
@@ -1581,16 +1581,16 @@ z
    </g>
    <g id="patch_8">
     <path d="M 321.562498 81.52 
-Q 342.653886 81.52 362.068223 81.52 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
-    <path d="M 357.668223 79.32 
-L 362.068223 81.52 
-L 357.668223 83.72 
-" style="fill: none; stroke: #6b7280; stroke-width: 1.5; stroke-linecap: round"/>
+Q 342.653886 81.52 361.64337 81.52 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
+    <path d="M 356.04337 78.72 
+L 361.64337 81.52 
+L 356.04337 84.32 
+" style="fill: none; stroke: #6b7280; stroke-width: 1.88; stroke-linecap: round"/>
    </g>
    <g id="text_11">
     <!-- WebSocket -->
-    <g style="fill: #6b7280" transform="translate(322.368938 70.842667) scale(0.075 -0.075)">
+    <g style="fill: #6b7280" transform="translate(316.47415 70.842667) scale(0.11 -0.11)">
      <defs>
       <path id="CMR17-62" d="M 960 4396 
 L 198 4326 
@@ -1629,7 +1629,7 @@ z
    </g>
    <g id="text_12">
     <!-- \textbf{Mycellium-Aegis - - - Sistem Mimarisi} -->
-    <g style="fill: #1a1d20" transform="translate(118.322527 14.786667) scale(0.115 -0.115)">
+    <g style="fill: #1a1d20" transform="translate(79.137729 14.786667) scale(0.161 -0.161)">
      <defs>
       <path id="CMBX12-4d" d="M 3411 797 
 L 1875 4218 

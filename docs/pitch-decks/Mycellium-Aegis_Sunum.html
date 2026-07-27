@@ -5,15 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mycellium-Aegis — TÜBİTAK 1812 BİGG Sunumu</title>
 <style>
-/* Yerel yazı tipleri — sunum internetsiz salonda da aynı görünür. */
-@font-face{font-family:'IBM Plex Sans';font-weight:300;font-display:swap;src:url('fonts/IBMPlexSans-Light.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:400;font-display:swap;src:url('fonts/IBMPlexSans-Regular.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:500;font-display:swap;src:url('fonts/IBMPlexSans-Medium.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:600;font-display:swap;src:url('fonts/IBMPlexSans-SemiBold.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:700;font-display:swap;src:url('fonts/IBMPlexSans-Bold.ttf') format('truetype')}
+/* ------------------------------------------------------------------
+   Yazı tipleri — hepsi yerel, sunum internetsiz salonda da aynı görünür.
+
+   Başlıklar    Source Serif 4  — bilimsel/editoryal ağırlık, projeksiyonda
+                                  ince gövdeli sanslardan çok daha okunur
+   Gövde        Inter           — ekran için çizilmiş, yüksek x-yüksekliği
+   Teknik       IBM Plex Mono   — üst başlıklar, altyazılar, veri
+   Matematik    CMU Serif       — LaTeX şekilleriyle birebir aynı aile
+
+   Türkçe glifler iki altkümeye dağılmış: ç/ö/ü 'latin', ğ/ş/ı 'latin-ext'
+   içinde. Bu yüzden her ağırlık iki dosya + unicode-range ile tanımlı.
+   ------------------------------------------------------------------ */
+@font-face{font-family:'Source Serif 4';font-weight:600;font-display:swap;src:url('fonts/SourceSerif4-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Source Serif 4';font-weight:600;font-display:swap;src:url('fonts/SourceSerif4-600-latinext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Source Serif 4';font-weight:700;font-display:swap;src:url('fonts/SourceSerif4-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Source Serif 4';font-weight:700;font-display:swap;src:url('fonts/SourceSerif4-700-latinext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Inter';font-weight:400;font-display:swap;src:url('fonts/Inter-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-weight:400;font-display:swap;src:url('fonts/Inter-400-latinext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Inter';font-weight:500;font-display:swap;src:url('fonts/Inter-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-weight:500;font-display:swap;src:url('fonts/Inter-500-latinext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Inter';font-weight:600;font-display:swap;src:url('fonts/Inter-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-weight:600;font-display:swap;src:url('fonts/Inter-600-latinext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'IBM Plex Mono';font-weight:400;font-display:swap;src:url('fonts/IBMPlexMono-Regular.ttf') format('truetype')}
 @font-face{font-family:'IBM Plex Mono';font-weight:700;font-display:swap;src:url('fonts/IBMPlexMono-Bold.ttf') format('truetype')}
-/* Şekiller LaTeX ile Computer Modern'de dizildi; serif aksanlar da aynı ailede. */
 @font-face{font-family:'CMU Serif';font-weight:400;font-display:swap;src:url('fonts/CMUSerif-Roman.otf') format('opentype')}
 @font-face{font-family:'CMU Serif';font-weight:400;font-style:italic;font-display:swap;src:url('fonts/CMUSerif-Italic.otf') format('opentype')}
 @font-face{font-family:'CMU Serif';font-weight:700;font-display:swap;src:url('fonts/CMUSerif-Bold.otf') format('opentype')}
@@ -42,12 +57,14 @@
   --ember:#C1670E;
   --ember-soft:rgba(193,103,14,.09);
 
-  --f-display:'IBM Plex Sans',system-ui,sans-serif;
-  --f-body:'IBM Plex Sans',system-ui,sans-serif;
+  --f-display:'Source Serif 4','Georgia',serif;
+  --f-body:'Inter',system-ui,sans-serif;
   --f-mono:'IBM Plex Mono',ui-monospace,monospace;
   --f-serif:'CMU Serif','Georgia',serif;
   --ease:cubic-bezier(0.22,1,0.36,1);
   --ease-soft:cubic-bezier(0.16,1,0.3,1);
+  /* yay benzeri, hafif geri tepmeli — geçişlerde kullanılıyor */
+  --ease-out:cubic-bezier(0.16,0.84,0.28,1);
 
   --W:1920px;
   --H:1080px;
@@ -55,8 +72,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  font-family:var(--f-body);font-weight:300;background:var(--ink);color:var(--ink);
+  font-family:var(--f-body);font-weight:400;background:var(--ink);color:var(--ink);
   overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  font-feature-settings:"kern" 1,"liga" 1,"calt" 1;
 }
 ::selection{background:var(--accent);color:#fff}
 
@@ -83,45 +101,80 @@ body{
 .stage{position:relative;width:var(--W);height:var(--H);flex-shrink:0;
   transform:scale(var(--scale,1));transform-origin:center center;}
 
+/* Yön duyarlı geçiş: ileri giderken yeni slayt sağdan gelir, eski sola
+   çıkar; geri giderken tersi. Yön JS'ten --enter-x / --exit-x ile verilir. */
 .slide{
   position:absolute;inset:0;width:var(--W);height:var(--H);
   display:flex;flex-direction:column;background:var(--bg);
   padding:78px 112px 58px;overflow:hidden;
-  opacity:0;visibility:hidden;transform:translateY(22px) scale(.985);
-  transition:opacity .65s var(--ease),transform .65s var(--ease),visibility 0s linear .65s;
+  opacity:0;visibility:hidden;
+  transform:translate3d(var(--enter-x,0px),0,0) scale(.975);
+  transition:opacity .5s var(--ease),transform .5s var(--ease),
+             visibility 0s linear .5s;
 }
 .slide.active{
-  opacity:1;visibility:visible;transform:none;
-  transition:opacity .75s var(--ease-soft),transform .75s var(--ease-soft);
+  opacity:1;visibility:visible;transform:none;z-index:2;
+  transition:opacity .62s var(--ease-out) .05s,transform .8s var(--ease-out);
+}
+.slide.exiting{
+  visibility:visible;z-index:1;opacity:0;
+  transform:translate3d(var(--exit-x,0px),0,0) scale(.975);
+  transition:opacity .42s var(--ease),transform .62s var(--ease);
 }
 .inner{width:100%;max-width:1750px;margin:0 auto;flex-grow:1;display:flex;flex-direction:column;min-height:0}
 
-/* reveal stagger */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+/* Kademeli içerik girişi. Başlıklar biraz daha yukarıdan ve yavaş,
+   şekiller hafif ölçeklenerek gelir — sıralı bir okuma ritmi kurar. */
+.reveal{opacity:0;transform:translate3d(0,22px,0);
+  transition:opacity .55s var(--ease-out),transform .68s var(--ease-out)}
 .slide.active .reveal{opacity:1;transform:none}
-.slide.active .reveal:nth-child(1){transition-delay:.05s}
-.slide.active .reveal:nth-child(2){transition-delay:.15s}
-.slide.active .reveal:nth-child(3){transition-delay:.25s}
-.slide.active .reveal:nth-child(4){transition-delay:.35s}
-.slide.active .reveal:nth-child(5){transition-delay:.45s}
+.slide.active .reveal:nth-child(1){transition-delay:.10s}
+.slide.active .reveal:nth-child(2){transition-delay:.19s}
+.slide.active .reveal:nth-child(3){transition-delay:.28s}
+.slide.active .reveal:nth-child(4){transition-delay:.37s}
+.slide.active .reveal:nth-child(5){transition-delay:.46s}
 .slide.active .reveal:nth-child(6){transition-delay:.55s}
+.slide.active .reveal:nth-child(7){transition-delay:.64s}
+.slide.active .reveal:nth-child(8){transition-delay:.73s}
 
-/* ---------------- typography & chrome ---------------- */
-.eyebrow{
-  font-family:var(--f-mono);font-size:16px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--muted);display:flex;align-items:center;
-  gap:14px;margin-bottom:34px;font-weight:400;
+/* Şekiller: kayarken hafifçe büyüsün, "yerine oturma" hissi versin. */
+.slide .fig-wrap,.slide .photo-wrap{
+  transition:opacity .6s var(--ease-out),transform .85s var(--ease-out)}
+.slide:not(.active) .fig-wrap,.slide:not(.active) .photo-wrap{
+  opacity:0;transform:scale(.965)}
+.slide.active .fig-wrap,.slide.active .photo-wrap{
+  opacity:1;transform:none;transition-delay:.24s}
+
+/* Üst başlığın önündeki çizgi soldan açılır. */
+.slide.active .eyebrow::before{animation:ruleIn .7s var(--ease-out) .12s both}
+@keyframes ruleIn{from{width:0;opacity:0}to{width:38px;opacity:1}}
+
+@media (prefers-reduced-motion: reduce){
+  .slide,.slide.active,.slide.exiting,.reveal,
+  .slide .fig-wrap,.slide .photo-wrap{transition-duration:.01ms !important}
+  .slide.active .eyebrow::before{animation:none}
+  .myco-pulse{animation:none}
 }
-.eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+
+/* ---------------- typography & chrome ----------------
+   Ölçek 1920x1080 tuvale göre. Salonun arkasından okunabilmesi için
+   gövde 21 px'in, altyazılar 16 px'in altına inmiyor. */
+.eyebrow{
+  font-family:var(--f-mono);font-size:17px;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--muted);display:flex;align-items:center;
+  gap:15px;margin-bottom:32px;font-weight:400;
+}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--accent);flex-shrink:0}
 .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);
   box-shadow:0 0 0 3px var(--accent-soft);flex-shrink:0}
 
 h1.title{
-  font-family:var(--f-display);font-weight:300;line-height:1.12;
-  letter-spacing:-.01em;font-size:58px;margin-bottom:28px;color:var(--ink);
+  font-family:var(--f-display);font-weight:600;line-height:1.09;
+  letter-spacing:-.017em;font-size:62px;margin-bottom:26px;color:var(--ink);
 }
 .lead{
-  font-size:25px;line-height:1.6;color:var(--ink-soft);max-width:74ch;font-weight:300;margin-bottom:20px;
+  font-size:26px;line-height:1.58;color:var(--ink-soft);max-width:76ch;
+  font-weight:400;margin-bottom:20px;letter-spacing:-.005em;
 }
 .accent{color:var(--accent)}
 .warn{color:var(--ember)}
@@ -136,49 +189,51 @@ h1.title{
 .g-problem{grid-template-columns:1.55fr 1fr}
 .g-wide{grid-template-columns:1fr 1.25fr}
 
-.block{position:relative;padding-left:26px;border-left:1px solid var(--line)}
-.block.hi{border-left-color:var(--accent)}
-.block h3{font-family:var(--f-display);font-weight:400;font-size:26px;margin-bottom:12px;color:var(--ink)}
-.block p{font-size:19px;line-height:1.62;color:var(--ink-soft);font-weight:300}
+.block{position:relative;padding-left:28px;border-left:1px solid var(--line)}
+.block.hi{border-left-color:var(--accent);border-left-width:2px;padding-left:27px}
+.block h3{font-family:var(--f-display);font-weight:600;font-size:29px;
+  line-height:1.24;margin-bottom:14px;color:var(--ink);letter-spacing:-.012em}
+.block p{font-size:21px;line-height:1.6;color:var(--ink-soft);font-weight:400}
 
-.num-ix{font-family:var(--f-serif);font-size:50px;color:var(--line);line-height:1;
-  margin-bottom:8px;display:block;font-weight:400;transition:color .3s var(--ease)}
+.num-ix{font-family:var(--f-display);font-size:52px;color:var(--line);line-height:1;
+  margin-bottom:10px;display:block;font-weight:600;font-variant-numeric:tabular-nums;
+  transition:color .3s var(--ease)}
 .block:hover .num-ix{color:var(--accent)}
 
 .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);
-  font-size:16px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);
-  padding:9px 16px;border-radius:5px;font-weight:400;transition:border-color .25s var(--ease),transform .25s var(--ease);}
+  font-size:17px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);
+  padding:10px 17px;border-radius:5px;font-weight:400;transition:border-color .25s var(--ease),transform .25s var(--ease);}
 .chip:hover{transform:translateY(-2px)}
 .chip.hi{color:var(--accent-deep);border-color:var(--accent)}
 .chip.amb{color:var(--ember);border-color:var(--ember)}
 .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
 
-.stat{font-family:var(--f-display);font-weight:300;letter-spacing:-.02em;line-height:1;
-  font-size:62px;color:var(--ink)}
-.stat .u{font-size:.4em;color:var(--faint);font-weight:300;margin-left:.25em}
-.tile-lbl{font-family:var(--f-mono);font-size:15px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--muted);margin-top:12px;font-weight:400}
+.stat{font-family:var(--f-display);font-weight:600;letter-spacing:-.028em;line-height:1;
+  font-size:74px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat .u{font-size:.36em;color:var(--faint);font-weight:600;margin-left:.22em;letter-spacing:-.01em}
+.tile-lbl{font-family:var(--f-mono);font-size:16px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin-top:13px;font-weight:400}
 
-ul.clean{list-style:none;display:flex;flex-direction:column;gap:18px}
-ul.clean li{position:relative;padding-left:26px;font-size:19px;line-height:1.58;color:var(--ink-soft);font-weight:300}
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:19px}
+ul.clean li{position:relative;padding-left:28px;font-size:21px;line-height:1.55;color:var(--ink-soft);font-weight:400}
 ul.clean li::before{content:"—";position:absolute;left:0;color:var(--accent);font-weight:400}
-ul.clean li b{color:var(--ink);font-weight:500}
+ul.clean li b{color:var(--ink);font-weight:600}
 /* Yatay dizilen liste: mutlak konumlu tire metnin üstüne binip üstünü çizik
    gösteriyordu — satır içine alıp payı sıfırlıyoruz. */
 ul.clean.inline{flex-direction:row;justify-content:center;flex-wrap:wrap}
 ul.clean.inline li{padding-left:0}
 ul.clean.inline li::before{position:static;margin-right:9px}
 
-.ref{font-family:var(--f-mono);font-size:.68em;vertical-align:super;color:var(--accent)}
-.footnotes{position:absolute;bottom:22px;left:112px;font-family:var(--f-mono);font-size:14px;
+.ref{font-family:var(--f-mono);font-size:.66em;vertical-align:super;color:var(--accent)}
+.footnotes{position:absolute;bottom:22px;left:112px;font-family:var(--f-mono);font-size:15px;
   color:var(--faint);font-weight:400;display:flex;gap:34px}
 
 /* booktabs-style comparison table */
-.cmp{width:100%;border-collapse:collapse;font-size:18px;margin-top:16px;
+.cmp{width:100%;border-collapse:collapse;font-size:20px;margin-top:16px;
   border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-.cmp th,.cmp td{text-align:left;padding:18px 16px}
-.cmp thead th{font-family:var(--f-serif);font-size:19px;color:var(--ink);font-weight:500;
-  border-bottom:1px solid var(--ink)}
+.cmp th,.cmp td{text-align:left;padding:27px 16px}
+.cmp thead th{font-family:var(--f-display);font-size:21px;color:var(--ink);font-weight:600;
+  border-bottom:1px solid var(--ink);letter-spacing:-.01em}
 .cmp tbody tr{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .slide.active .cmp tbody tr{opacity:1;transform:none}
 .slide.active .cmp tbody tr:nth-child(1){transition-delay:.35s}
@@ -186,67 +241,101 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 .slide.active .cmp tbody tr:nth-child(3){transition-delay:.55s}
 .slide.active .cmp tbody tr:nth-child(4){transition-delay:.65s}
 .cmp tbody tr:not(:last-child) td,.cmp tbody tr:not(:last-child) th{border-bottom:1px solid var(--line)}
-.cmp tbody th{font-weight:500;color:var(--ink);font-family:var(--f-body)}
+.cmp tbody th{font-weight:600;color:var(--ink);font-family:var(--f-body)}
 .cmp td.us{color:var(--accent-deep);font-weight:500}
 .cmp td.no{color:var(--muted)}
 
 /* cover */
 .cover{justify-content:center}
 .cover .inner{max-width:100%;flex-grow:0}
-.cover-title{font-family:var(--f-display);font-weight:300;letter-spacing:-.03em;line-height:1;
-  font-size:132px;color:var(--ink)}
-.cover-sub{font-family:var(--f-display);font-weight:300;font-size:32px;color:var(--ink-soft);
-  margin-top:26px;letter-spacing:-.01em;max-width:34ch;line-height:1.5}
-.cover-meta{display:flex;flex-wrap:wrap;gap:64px;margin-top:64px;font-family:var(--f-mono);
+.cover-title{font-family:var(--f-display);font-weight:700;letter-spacing:-.035em;line-height:.96;
+  font-size:146px;color:var(--ink)}
+.cover-sub{font-family:var(--f-display);font-weight:600;font-size:35px;color:var(--ink-soft);
+  margin-top:28px;letter-spacing:-.015em;max-width:34ch;line-height:1.42}
+.cover-meta{display:flex;flex-wrap:wrap;gap:64px;margin-top:66px;font-family:var(--f-mono);
   font-size:15px;color:var(--faint)}
-.cover-meta span.title{display:block;margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em}
-.cover-meta span.val{color:var(--ink);font-family:var(--f-body);font-size:20px;font-weight:300}
+.cover-meta span.title{display:block;margin-bottom:10px;text-transform:uppercase;letter-spacing:.13em}
+.cover-meta span.val{color:var(--ink);font-family:var(--f-body);font-size:21px;font-weight:500;
+  letter-spacing:-.008em}
 
 /* figures & imagery */
 .fig-wrap{display:flex;flex-direction:column;align-items:flex-start;width:100%}
 .fig-wrap img{width:100%;object-fit:contain;display:block;border-radius:3px}
-.figcap{font-family:var(--f-mono);font-size:15px;color:var(--ink-soft);margin-top:16px;
-  letter-spacing:.02em;font-weight:400;line-height:1.5}
-.caption-lbl{font-weight:500;color:var(--ink)}
+.figcap{font-family:var(--f-mono);font-size:16px;color:var(--ink-soft);margin-top:17px;
+  letter-spacing:.01em;font-weight:400;line-height:1.5}
+.caption-lbl{font-weight:700;color:var(--ink)}
 
 .photo-wrap{overflow:hidden;width:100%;border-radius:6px;box-shadow:0 18px 50px -22px rgba(20,30,25,.35)}
 .photo-wrap img{width:100%;object-fit:cover;display:block}
 
-/* ---------------- sayısal ikiz gömme ---------------- */
-/* İkiz 1920x1080 masaüstü görünümü için tasarlandı. iframe'i o boyutta
-   oluşturup ölçekliyoruz; böylece slaytta tek başına açıldığı gibi görünür. */
-.twin-stage{position:relative;width:100%;flex:1;min-height:0;display:flex;
-  align-items:center;justify-content:center}
-.twin-frame{position:relative;width:1404px;height:790px;border:1px solid var(--line);
-  border-radius:8px;overflow:hidden;background:#fff;
-  box-shadow:0 26px 70px -30px rgba(20,30,25,.45)}
-.twin-frame iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;
-  transform:scale(.73125);transform-origin:top left;display:block}
-.twin-idle{position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;
-  align-items:center;justify-content:center;background:var(--bg-subtle);
-  font-family:var(--f-mono);font-size:16px;color:var(--muted);
-  transition:opacity .5s var(--ease)}
+/* ---------------- sayısal ikiz ----------------
+   İkiz de 1920x1080 için tasarlandı; tasarım tuvaliyle birebir aynı. Bu
+   yüzden slaytta hiç ölçeklenmeden, kenardan kenara yerleşiyor: slaydın
+   kendi dolgusu iptal, iframe tam 1920x1080. Sahnenin ölçeği zaten tüm
+   sunumu ekrana oturtuyor, ikiz de onunla birlikte ölçekleniyor. */
+.slide.twin-slide{padding:0}
+.twin-slide .inner{max-width:none;margin:0}
+.twin-frame{position:relative;width:var(--W);height:var(--H);overflow:hidden;
+  background:#fff}
+.twin-frame iframe{width:100%;height:100%;border:0;display:block}
+
+.twin-idle{position:absolute;inset:0;display:flex;flex-direction:column;gap:16px;
+  align-items:center;justify-content:center;background:var(--bg);
+  font-family:var(--f-mono);font-size:17px;color:var(--muted);
+  transition:opacity .55s var(--ease);z-index:3}
 .twin-frame.loaded .twin-idle{opacity:0;pointer-events:none}
-.twin-idle .spin{width:26px;height:26px;border:2px solid var(--line);
+.twin-idle .spin{width:28px;height:28px;border:2px solid var(--line);
   border-top-color:var(--accent);border-radius:50%;animation:twinspin 1s linear infinite}
 @keyframes twinspin{to{transform:rotate(360deg)}}
-.twin-open{font-family:var(--f-mono);font-size:15px;color:var(--accent-deep);
-  text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px}
-.twin-open:hover{color:var(--accent)}
+
+/* Tam ekran düğmesi. İkizin kendi başlık satırı zaten dolu, o yüzden
+   üstüne şerit koymuyoruz: sağ alt köşede küçük, yarı saydam bir düğme
+   duruyor, fare yaklaşınca belirginleşiyor.
+
+   Başka dosyaya gitmiyor — aynı canlı iframe Fullscreen API ile ekranı
+   kaplıyor, ESC ile yerine geri oturuyor. */
+/* Yalnızca simge kadar yer kaplar; üstüne gelince etiket açılır. Böylece
+   ikizin en alttaki mini grafiğini neredeyse hiç kapatmıyor. */
+.twin-fs{position:absolute;right:16px;bottom:16px;z-index:5;
+  display:inline-flex;align-items:center;cursor:pointer;
+  font-family:var(--f-mono);font-size:14px;letter-spacing:.07em;
+  color:var(--accent-deep);background:rgba(255,255,255,.88);
+  border:1px solid var(--accent);padding:9px 10px;border-radius:7px;
+  font-weight:400;opacity:.38;backdrop-filter:blur(3px);
+  box-shadow:0 4px 16px -8px rgba(20,30,25,.5);
+  transition:opacity .3s var(--ease),background .28s var(--ease),
+             color .28s var(--ease),transform .3s var(--ease-out),
+             box-shadow .3s var(--ease)}
+.twin-frame:hover .twin-fs{opacity:.8}
+.twin-fs:hover{opacity:1;background:var(--accent);color:#fff;
+  transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(14,143,118,.7)}
+.twin-fs svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.twin-fs span{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;
+  transition:max-width .34s var(--ease-out),opacity .24s var(--ease),
+             margin-left .34s var(--ease-out)}
+.twin-fs:hover span,.twin-fs:focus-visible span{max-width:180px;opacity:1;margin-left:9px}
+
+/* Tam ekran hâli: iframe gerçek ekran çözünürlüğünü alır, ölçekleme yok. */
+.twin-frame:fullscreen{width:100vw;height:100vh;background:#fff}
+.twin-frame:fullscreen iframe{width:100vw;height:100vh;
+  animation:fsIn .55s var(--ease-out) both}
+@keyframes fsIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:none}}
 
 /* roadmap */
-.road{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative;margin-top:46px}
+.road{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative;
+  margin:auto 0}
 .road::before{content:"";position:absolute;left:0;top:11px;height:1px;background:var(--accent);
   width:0;transition:width 1.1s var(--ease-soft) .3s}
 .slide.active .road::before{width:100%}
 .milestone{position:relative;padding-top:40px;opacity:0;transform:translateY(12px);
   transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .slide.active .milestone{opacity:1;transform:none}
-.slide.active .milestone:nth-child(1){transition-delay:.35s}
-.slide.active .milestone:nth-child(2){transition-delay:.55s}
-.slide.active .milestone:nth-child(3){transition-delay:.75s}
-.slide.active .milestone:nth-child(4){transition-delay:.95s}
-.slide.active .milestone:nth-child(5){transition-delay:1.15s}
+.slide.active .milestone:nth-child(1){transition-delay:.30s}
+.slide.active .milestone:nth-child(2){transition-delay:.42s}
+.slide.active .milestone:nth-child(3){transition-delay:.54s}
+.slide.active .milestone:nth-child(4){transition-delay:.66s}
+.slide.active .milestone:nth-child(5){transition-delay:.78s}
 .milestone .dot{position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;
   background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 .milestone .ip{font-family:var(--f-serif);font-size:19px;color:var(--ink);font-weight:500}
@@ -258,7 +347,8 @@ ul.clean.inline li::before{position:static;margin-right:9px}
   border:1px solid var(--accent);border-radius:3px;padding:5px 10px;margin-top:14px;font-weight:400}
 
 /* team */
-.team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:36px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:36px;
+  flex:1;min-height:0;align-content:center}
 .member{transition:transform .3s var(--ease)}
 .member:hover{transform:translateY(-4px)}
 .member .role{font-family:var(--f-mono);font-size:14px;letter-spacing:.06em;color:var(--accent-deep);
@@ -300,6 +390,11 @@ ul.clean.inline li::before{position:static;margin-right:9px}
 .navzone.left{left:0;justify-content:flex-start;padding-left:18px}
 .navzone.right{right:0;justify-content:flex-end;padding-right:18px}
 .navzone svg{width:30px;height:30px;stroke:var(--ink);opacity:.55}
+/* Uçlarda gidilecek yer yok: bölgeyi tamamen kapat. Bu aynı zamanda son
+   slayttaki sayısal ikiz düğmesinin tıklamasını çalmasını da engelliyor
+   (navzone z-index:5 ile sahnenin üstünde duruyor). */
+body.at-start .navzone.left,
+body.at-end   .navzone.right{display:none}
 
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;transition-duration:.001ms!important}
@@ -731,7 +826,7 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
           <p>Biyopolimer sentezi, aljinat-grafit kompozitleri, miselyum inokülasyonu.</p>
         </div>
       </div>
-      <div class="reveal" style="margin-top:40px;padding-top:26px;border-top:1px solid var(--line)">
+      <div class="reveal" style="margin-top:auto;padding-top:28px;border-top:1px solid var(--line)">
         <h1 class="title accent" style="font-size:44px;margin-bottom:10px;color:var(--accent)">
           Orman kendi yangınını haber versin.
         </h1>
@@ -742,32 +837,23 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     </div>
   </section>
 
-  <!-- 16 SAYISAL İKİZ -->
-  <section class="slide" id="slide-twin">
+  <!-- 16 SAYISAL İKİZ — kenardan kenara, ölçeksiz -->
+  <section class="slide twin-slide" id="slide-twin">
     <div class="inner">
-      <div class="eyebrow reveal"><span class="dot"></span>11 · SAYISAL İKİZ · CANLI MODEL</div>
-      <h1 class="title reveal" style="font-size:44px;margin-bottom:14px">
-        Anlatmakla kalmıyoruz: sistem <span class="accent">çalışır hâlde</span> burada.
-      </h1>
-      <div class="twin-stage reveal">
-        <div class="twin-frame" id="twinFrame">
-          <iframe id="twinEmbed"
-                  data-src="../digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html"
-                  title="Mycellium-Aegis Sayısal İkiz — etkileşimli model"
-                  loading="lazy" referrerpolicy="no-referrer"></iframe>
-          <div class="twin-idle">
-            <div class="spin"></div>
-            <div>sayısal ikiz yükleniyor</div>
-          </div>
+      <div class="twin-frame" id="twinFrame">
+        <iframe id="twinEmbed"
+                data-src="../digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html"
+                title="Mycellium-Aegis Sayısal İkiz — etkileşimli model"
+                loading="lazy" referrerpolicy="no-referrer"></iframe>
+        <button class="twin-fs" id="twinFs" type="button"
+                title="İkizi tam ekran aç (F) — sayfa değişmez">
+          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3m13 5h3a2 2 0 0 0 2-2v-3"/></svg>
+          <span id="twinFsLabel">tam ekran</span>
+        </button>
+        <div class="twin-idle">
+          <div class="spin"></div>
+          <div>sayısal ikiz yükleniyor</div>
         </div>
-      </div>
-      <div class="figcap reveal" style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
-        <span style="max-width:118ch">
-          <span class="caption-lbl">Şekil 13:</span> Sayısal ikiz — PBR dokulu üç boyutlu toprak kesiti üzerinde bağlı
-          <span class="math">1</span>-B ısı iletimi, toprak nemi, Archie yasasıyla elektrot direnci ve biyoelektrik sinyal
-          çözücüsü. Alarm kuralı, güç bütçesi ve maliyet modeli canlı hesaplanır; senaryolar kaydırıcıyla değiştirilebilir.
-        </span>
-        <a class="twin-open" href="../digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html" target="_blank" rel="noopener">tam ekran aç ↗</a>
       </div>
     </div>
   </section>
@@ -777,7 +863,7 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
 
 <div class="footerbar">
   <div class="brand"><span>◆</span>MYCELLIUM-AEGIS</div>
-  <div class="hint">← → İLERLET&nbsp;&nbsp;·&nbsp;&nbsp;F TAM EKRAN</div>
+  <div class="hint" id="hint">← → İLERLET&nbsp;&nbsp;·&nbsp;&nbsp;F TAM EKRAN</div>
   <div class="counter"><em id="cnum">01</em> / <span id="ctot">16</span></div>
 </div>
 <div class="progress" id="prog"></div>
@@ -883,9 +969,18 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
   var cur=0, total=slides.length;
   ctot.textContent=total;
 
+  var hint=document.getElementById('hint');
   function update(){
     prog.style.width=((cur+1)/total*100)+'%';
     cnum.textContent=String(cur+1).padStart(2,'0');
+    // Uçtaki slaytta gidilecek yön yok; o bölgeyi kapat (ayrıca son
+    // slayttaki ikiz düğmesinin tıklamasını çalmasını engelliyor).
+    document.body.classList.toggle('at-start', cur === 0);
+    document.body.classList.toggle('at-end',   cur === total-1);
+    // İkiz slaydında F'in ne yaptığı değişiyor, ipucunu da değiştir.
+    if(hint) hint.innerHTML = (slides[cur].id === 'slide-twin')
+      ? '← → İLERLET  ·  F İKİZİ TAM EKRAN AÇ'
+      : '← → İLERLET  ·  F TAM EKRAN';
   }
   /* Sayısal ikiz ~2 MB'lık tek dosya. Sunumun açılışını yavaşlatmasın diye
      iframe'i ancak o slayta yaklaşınca yüklüyoruz. */
@@ -903,11 +998,34 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     if(twinIx >= 0 && i >= twinIx-1) primeTwin();
   }
 
+  /* Yön duyarlı geçiş. Giden slayt .exiting ile görünür kalıp karşı yöne
+     kayar; gelen slayt geldiği yönden içeri girer. Kaydırma mesafesi CSS
+     değişkeniyle veriliyor, süreler CSS'te. */
+  var SHIFT = 92;                       // px, tasarım tuvali ölçeğinde
+  var exitTimer = null;
+
   function go(i){
     i=Math.max(0,Math.min(total-1,i));
     if(i===cur) return;
-    slides[cur].classList.remove('active');
-    slides[i].classList.add('active');
+    var fwd = i > cur;
+    var from = slides[cur], to = slides[i];
+
+    // giden
+    from.style.setProperty('--exit-x', (fwd ? -SHIFT : SHIFT)+'px');
+    from.classList.remove('active');
+    from.classList.add('exiting');
+
+    // gelen: önce başlangıç konumunu ver, sonra aktifleştir ki
+    // tarayıcı geçişi baştan oynatsın
+    to.style.setProperty('--enter-x', (fwd ? SHIFT : -SHIFT)+'px');
+    void to.offsetWidth;
+    to.classList.add('active');
+
+    clearTimeout(exitTimer);
+    exitTimer = setTimeout(function(){
+      slides.forEach(function(s){ if(!s.classList.contains('active')) s.classList.remove('exiting'); });
+    }, 700);
+
     cur=i; update();
     history.replaceState(null,'','#'+(i+1));
     runCounters(slides[cur]);
@@ -928,6 +1046,8 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
     else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
     else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(total-1);}
     else if(e.key==='f'||e.key==='F'){
+      // İkiz slaydındayken F doğrudan ikizi tam ekrana alsın.
+      if(slides[cur].id === 'slide-twin'){ toggleTwinFs(); return; }
       if(!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
       else document.exitFullscreen&&document.exitFullscreen();
     }
@@ -938,7 +1058,7 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
   deck.addEventListener('click', function(e){
     if(e.target.closest('.navzone')) return;
     /* İkizle oynarken yanlışlıkla slayt değişmesin. */
-    if(e.target.closest('.twin-stage') || e.target.closest('.twin-open')) return;
+    if(e.target.closest('.twin-frame')) return;
     var half = deck.clientWidth/2;
     if(e.clientX > half) go(cur+1); else go(cur-1);
   });
@@ -946,8 +1066,38 @@ body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex
   var tx=0;
   document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
   document.addEventListener('touchend',function(e){
+    if(e.target.closest && e.target.closest('.twin-frame')) return;
     var dx=e.changedTouches[0].clientX-tx;
     if(Math.abs(dx)>60) go(cur+(dx<0?1:-1));
+  });
+
+  /* ---------- sayısal ikiz: tam ekran ----------
+     Fullscreen API'yi iframe'in kapsayıcısına uyguluyoruz. Böylece başka
+     dosyaya gidilmiyor: aynı canlı oturum ekranı kaplıyor, ESC ile yerine
+     dönüyor. Kapsayıcı tam ekranda sahnenin scale() dönüşümünden çıktığı
+     için ikiz gerçek ekran çözünürlüğünde, ölçeklenmeden çalışıyor. */
+  var twinFrame = document.getElementById('twinFrame');
+  var twinFs    = document.getElementById('twinFs');
+  var twinFsLbl = document.getElementById('twinFsLabel');
+
+  function twinIsFs(){ return document.fullscreenElement === twinFrame; }
+  function toggleTwinFs(){
+    if(!twinFrame) return;
+    primeTwin();
+    if(twinIsFs()){
+      (document.exitFullscreen && document.exitFullscreen()) || 0;
+    } else if(twinFrame.requestFullscreen){
+      var p = twinFrame.requestFullscreen({navigationUI:'hide'});
+      if(p && p.catch) p.catch(function(){});
+    }
+  }
+  if(twinFs){
+    twinFs.addEventListener('click', function(e){ e.stopPropagation(); toggleTwinFs(); });
+  }
+  document.addEventListener('fullscreenchange', function(){
+    if(twinFsLbl) twinFsLbl.textContent = twinIsFs() ? 'küçült  (ESC)' : 'tam ekran';
+    // tam ekrandan çıkınca sahne ölçeğini yeniden hesapla
+    setTimeout(fit, 60);
   });
 
   /* ---------- count-up stats ---------- */
