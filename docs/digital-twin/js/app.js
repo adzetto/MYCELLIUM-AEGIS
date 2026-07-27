@@ -529,9 +529,32 @@
     });
 
     let rt;
+    const relayout = () => { SC.resize(); Object.values(A.charts).forEach(c => c.resize()); };
     window.addEventListener('resize', () => {
       clearTimeout(rt);
-      rt = setTimeout(() => { SC.resize(); Object.values(A.charts).forEach(c => c.resize()); }, 120);
+      rt = setTimeout(relayout, 120);
+    });
+
+    /* Panel katlanınca sahne kolonu CSS geçişiyle genişliyor. Süreyi
+       tahmin etmek yerine gerçek boyut değişimini dinliyoruz: geçişin her
+       karesinde tetiklenir, bittiğinde de son bir kez. Böylece tuval hiçbir
+       durumda görünümden farklı bir en-boy oranında kalmıyor. */
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(relayout).observe($('#view'));
+    }
+
+    /* --- yan panelleri katla --------------------------------------------
+       Sunumda üç boyutlu sahnenin büyük görünmesi için paneller gizlenebilir. */
+    [['#tgMeas', 'no-meas'], ['#tgEcon', 'no-econ']].forEach(([sel, cls]) => {
+      const btn = $(sel);
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', () => {
+        const off = document.body.classList.toggle(cls);
+        btn.classList.toggle('off', off);
+        btn.setAttribute('aria-pressed', String(off));
+        if (typeof ResizeObserver !== 'function') relayout();   // yedek yol
+      });
     });
   }
 

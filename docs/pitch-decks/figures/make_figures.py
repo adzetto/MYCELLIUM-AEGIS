@@ -33,7 +33,7 @@ plt.style.use(["science"])
 # ekranda 25-40 px'e karşılık geliyor.
 mpl.rcParams.update({
     "text.usetex": True,
-    "text.latex.preamble": r"\usepackage{amsmath}\usepackage{bm}",
+    "text.latex.preamble": r"\usepackage{amsmath}\usepackage{amssymb}\usepackage{bm}",
     "font.family": "serif",
     "font.size": 14,
     "axes.prop_cycle": cycler(color=[GREEN, EMBER, INDIGO]),
@@ -445,6 +445,233 @@ def fig_ai_pipeline():
     ax.set_title(r"\textbf{Sinyal i\c{s}leme hatt\i\\ --- ham gerilimden karara}", fontsize=16.1, pad=12)
     save(fig, "ai_pipeline")
 
+# =============================================================================
+# 11 — elektrot malzemesi: katman yapısı, korozyon dayanımı, arayüz empedansı
+# -----------------------------------------------------------------------------
+# Belgelenmiş yığın: 316L çekirdek + grafit/PPy (polipirol) ara katman +
+# aljinat–gliserol–nanokarbon hidrojel (bkz. donanım raporu §3).
+# (b) ve (c) panelleri ÖLÇÜM DEĞİL, literatür dayanaklı model eğrileridir;
+# şekil üzerinde de böyle etiketlenir. TiN kaplama, elenen alternatif olarak
+# kıyas için konuldu — tasarımda titanyum kullanılmıyor.
+# =============================================================================
+def fig_electrode_material():
+    from matplotlib.patches import Rectangle, FancyBboxPatch
+    fig = plt.figure(figsize=(11.4, 3.5))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.02, 1.0, 1.0], wspace=0.34)
+
+    # ---- (a) katman yığını ----------------------------------------------
+    # Eş oranlı eksen şart: aksi hâlde eşmerkezli daireler elips çıkıyor.
+    axa = fig.add_subplot(gs[0])
+    # Eş oranlı eksen şart, yoksa eşmerkezli daireler elips çıkıyor.
+    # Sınır oranı panel kutusunun oranına (~1.32) yakın tutuluyor ki kutu
+    # küçülüp (a) başlığı diğer iki başlığın altına düşmesin.
+    axa.set_aspect("equal", adjustable="box")
+    axa.set_xlim(-4.5, 12.4); axa.set_ylim(-6.6, 6.2); axa.axis("off")
+    layers = [                       # (yarıçap mm, renk, ad, işlev, açı)
+        (1.50, "#8A9099", r"316L \c{c}ekirdek",      r"mekanik dayan\i m",      -38),
+        (2.35, INDIGO,    r"grafit\,/\,PPy",          r"elektron ilet\i m\i",     8),
+        (3.40, GREEN,     r"aljinat--nanokarbon",     r"iyonik e\c{s}le\c{s}me", 52),
+    ]
+    for r, c, *_ in reversed(layers):
+        axa.add_patch(plt.Circle((0, 0), r, facecolor=c, alpha=0.18,
+                                 edgecolor=c, lw=2.2, zorder=2))
+    # Her katman kendi açısından dışarı çıkan tek kırıklı bir kılavuzla
+    # etiketlenir; açılar ayrı olduğu için çizgiler birbirini kesmiyor.
+    for r, c, name, fn, ang in layers:
+        th = np.deg2rad(ang)
+        # halkanın ortasından başlat (çekirdek için merkeze yakın)
+        r0 = r - 0.42 if r > 1.6 else r*0.55
+        x0, y0 = r0*np.cos(th), r0*np.sin(th)
+        xk = 4.15
+        yk = {-38: -3.05, 8: 0.30, 52: 3.75}[ang]
+        axa.plot([x0, xk-1.15, xk], [y0, yk, yk], color=c, lw=1.35,
+                 solid_capstyle="round", zorder=4)
+        axa.plot([x0], [y0], "o", color=c, ms=4.5, zorder=5)
+        axa.text(xk+0.32, yk+0.40, name, color=c, fontsize=11.5, va="center", ha="left")
+        axa.text(xk+0.32, yk-0.58, fn, color=MUT, fontsize=10, va="center", ha="left")
+    # çap ölçüsü — çemberlerin hemen altında, etiket sütununa girmeden
+    axa.annotate("", xy=(-3.40, -4.45), xytext=(3.40, -4.45),
+                 arrowprops=dict(arrowstyle="<->", color=INK, lw=1.2))
+    for xe in (-3.40, 3.40):
+        axa.plot([xe, xe], [-4.12, -4.78], color=INK, lw=1.0)
+    axa.text(0, -5.15, r"$\varnothing\;6.8$ mm", ha="center", fontsize=11.5, color=INK)
+    axa.text(0, -6.05, r"ger\c{c}ek \"ol\c{c}ek", ha="center", fontsize=10, color=MUT)
+    axa.set_title(r"\textbf{(a)} Katman yap\i s\i", loc="left", fontsize=14)
+
+    # ---- (b) korozyon: 24 ay toprak gömülü kütle kaybı --------------------
+    axb = fig.add_subplot(gs[1])
+    t = np.linspace(0, 24, 200)
+    # doygunluğa giden basit pasifleşme modeli: m(t) = m_inf (1 - e^{-t/tau})
+    for m_inf, tau, c, ls, lbl in [
+            (4.20, 7.0, EMBER,  (0, (5, 2)), r"\c{C}\i plak karbon \c{c}elik"),
+            (0.95, 9.0, "#9CA3AF", "-",      r"TiN kaplama (elenen)"),
+            (0.34, 11.0, GREEN,   "-",       r"316L + grafit/PPy")]:
+        axb.plot(t, m_inf*(1-np.exp(-t/tau)), color=c, ls=ls, lw=2.1, label=lbl)
+    axb.axvline(18, color=INDIGO, lw=1.2, ls=":")
+    # Gösterge kutusunun altında kalıyordu; sağdaki boş alana alındı.
+    axb.text(18.5, 1.95, r"proje sonu" + "\n" + r"($18$ ay)", color=INDIGO,
+             fontsize=10.5, va="center", ha="left", linespacing=1.35)
+    axb.set_xlim(0, 24); axb.set_ylim(0, 5.55)
+    axb.set_xlabel(r"Topra\u{g}a g\"om\"ul\"u s\"ure $[\mathrm{ay}]$")
+    axb.set_ylabel(r"K\"utle kayb\i\;$[\mathrm{mg/cm^2}]$")
+    axb.legend(loc="upper left", fontsize=10.5)
+    axb.set_title(r"\textbf{(b)} Korozyon dayan\i m\i", loc="left", fontsize=14)
+
+    # ---- (c) arayüz empedansı |Z| ----------------------------------------
+    axc = fig.add_subplot(gs[2])
+    f = np.logspace(-1, 3, 300)
+    # sabit faz elemanı + çözelti direnci:  |Z| = Rs + 1/(Q (2 pi f)^n)
+    for Rs, Q, n, c, ls, lbl in [
+            (1.8e3, 4.0e-5, 0.80, EMBER,  (0, (5, 2)), r"\c{C}\i plak 316L i\u{g}ne"),
+            (0.9e3, 2.6e-4, 0.86, INDIGO, "-",          r"+ grafit/PPy"),
+            (0.4e3, 1.5e-3, 0.92, GREEN,  "-",          r"+ aljinat hidrojel")]:
+        axc.loglog(f, Rs + 1.0/(Q*(2*np.pi*f)**n), color=c, ls=ls, lw=2.1, label=lbl)
+    axc.axvspan(0.5, 5, color=GREEN, alpha=0.12)
+    # Etiket eksenin içinde kalsın: üstte olunca başlıkla çakışıyordu.
+    axc.text(1.6, 1.9e2, r"sinyal band\i" + "\n" + r"$0.5$--$5$ Hz",
+             color=GREEN, fontsize=10.5, ha="center", va="bottom",
+             linespacing=1.35)
+    axc.set_xlim(0.1, 1e3); axc.set_ylim(1.4e2, 9e4)
+    axc.set_xlabel(r"Frekans $f\;[\mathrm{Hz}]$")
+    axc.set_ylabel(r"$|Z|\;[\Omega]$")
+    axc.legend(loc="upper right", fontsize=10.5)
+    axc.set_title(r"\textbf{(c)} Arayüz empedans\i", loc="left", fontsize=14)
+    axc.grid(True, which="both", color=GRID, lw=0.6)
+
+    fig.text(0.5, -0.055,
+             r"(b) ve (c) literat\"ur dayanakl\i\ \emph{model} e\u{g}rileridir; "
+             r"WP-1 kapsam\i nda \"ol\c{c}\"umle do\u{g}rulanacakt\i r.",
+             ha="center", fontsize=10, color=MUT)
+    save(fig, "electrode_material")
+
+# =============================================================================
+# 12 — pazar büyümesi ve birim ekonomisi
+# -----------------------------------------------------------------------------
+# Tüm eğriler iş planındaki açık varsayımlardan türetilmiştir (TAM 2.4 milyar
+# USD, %8.5 CAGR; paket 360k TL fiyat / 160k TL maliyet; 18 ay 880k TL sabit
+# gider). Ölçülmüş veri değil, projeksiyondur.
+# =============================================================================
+def fig_market():
+    fig = plt.figure(figsize=(11.4, 3.4))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 1.05], wspace=0.36)
+
+    # ---- (a) TAM büyümesi -------------------------------------------------
+    axa = fig.add_subplot(gs[0])
+    yr = np.arange(2024, 2031)
+    tam = 2.4*(1.085**(yr-2024))
+    axa.fill_between(yr, tam, color=GREEN, alpha=0.13)
+    axa.plot(yr, tam, color=GREEN, lw=2.4, marker="o", ms=5)
+    # "\$" LaTeX'te tuhaf küçük bir işaret bırakıyordu; birimi yazıyla veriyoruz.
+    axa.annotate(fr"{tam[-1]:.1f} milyar USD", xy=(yr[-1], tam[-1]),
+                 xytext=(yr[-1]-3.4, tam[-1]+0.42), fontsize=11.5, color=GREEN)
+    axa.text(2024.15, 1.15, r"\%8.5 CAGR", fontsize=11.5, color=MUT)
+    axa.set_xlim(2024, 2030.4); axa.set_ylim(0, 5.15)
+    axa.set_xlabel(r"Y\i l"); axa.set_ylabel(r"TAM $[\mathrm{milyar\;USD}]$")
+    axa.set_title(r"\textbf{(a)} Pazar b\"uy\"umesi", loc="left", fontsize=14)
+
+    # ---- (b) birim ekonomisi: şelale --------------------------------------
+    axb = fig.add_subplot(gs[1])
+    bars = [(r"Sat\i\c{s}", 360, GREEN), (r"\"Uretim", -110, EMBER),
+            (r"Kurulum", -50, EMBER), (r"Br\"ut k\^ar", 200, INDIGO)]
+    run = 0
+    for i, (lbl, v, c) in enumerate(bars):
+        if lbl == r"Br\"ut k\^ar":
+            axb.bar(i, v, bottom=0, color=c, alpha=0.85, width=0.62)
+            axb.text(i, v+13, r"$200$k", ha="center", fontsize=11.5, color=c)
+        else:
+            base = run if v < 0 else 0
+            axb.bar(i, abs(v), bottom=min(base, base+v), color=c,
+                    alpha=0.85 if v > 0 else 0.55, width=0.62)
+            axb.text(i, max(base, base+v)+13, fr"${abs(v)}$k", ha="center",
+                     fontsize=11.5, color=c)
+            run = base + v if v < 0 else v
+    axb.set_xticks(range(len(bars)))
+    axb.set_xticklabels([b[0] for b in bars], fontsize=11)
+    axb.set_ylim(0, 452)
+    axb.set_ylabel(r"Paket ba\c{s}\i\ $[\mathrm{bin\;TL}]$")
+    axb.text(0.97, 0.93, r"br\"ut marj \%56", transform=axb.transAxes,
+             fontsize=11.5, color=INDIGO, ha="right")
+    axb.set_title(r"\textbf{(b)} Birim ekonomisi", loc="left", fontsize=14)
+    axb.grid(axis="x", visible=False)
+
+    # ---- (c) gelir bileşimi: donanım vs SaaS ------------------------------
+    axc = fig.add_subplot(gs[2])
+    yrs = np.arange(1, 6)
+    pkgs = np.array([5, 14, 32, 60, 96])          # kümülatif kurulu paket
+    hw   = np.array([5, 9, 18, 28, 36])*0.36      # o yıl satılan paket x 360k
+    saas = pkgs*0.054                              # paket başı 54k TL/yıl lisans
+    axc.bar(yrs, hw,  color=INDIGO, alpha=0.85, width=0.6, label=r"Donan\i m (CAPEX)")
+    axc.bar(yrs, saas, bottom=hw, color=GREEN, alpha=0.85, width=0.6,
+            label=r"SaaS lisans (ARR)")
+    for x, a, b in zip(yrs, hw, saas):
+        axc.text(x, a+b+0.42, fr"${a+b:.1f}$M", ha="center", fontsize=10.5, color=INK)
+    axc.set_xticks(yrs); axc.set_xticklabels([fr"Y{y}" for y in yrs], fontsize=11)
+    axc.set_ylim(0, 22.5)
+    axc.set_ylabel(r"Gelir $[\mathrm{milyon\;TL}]$")
+    axc.legend(loc="upper left", fontsize=10.5)
+    axc.set_title(r"\textbf{(c)} Gelir bile\c{s}imi", loc="left", fontsize=14)
+    axc.grid(axis="x", visible=False)
+
+    fig.text(0.5, -0.06,
+             r"\.I\c{s} plan\i ndaki a\c{c}\i k varsay\i mlardan t\"uretilen "
+             r"\emph{projeksiyondur}; ger\c{c}ekle\c{s}me de\u{g}ildir.",
+             ha="center", fontsize=10, color=MUT)
+    save(fig, "market_economics")
+
+# =============================================================================
+# 13 — tespit zaman çizelgesi: rakip teknolojilere göre kazanılan süre
+# -----------------------------------------------------------------------------
+# t = 0 tutuşma anı. Gaz ve kamera pencereleri iş planındaki kaynaklı
+# değerlerdir (30–60 dk / 45–90 dk). Mycellium-Aegis penceresi, sayısal
+# ikizdeki ısı iletim çözümünden gelir: T/R probu 5–8 cm'e alındığında
+# ısıl cephe tutuşmadan önce eşiği geçiyor. Model sonucudur.
+# =============================================================================
+def fig_detection_timeline():
+    from matplotlib.patches import FancyBboxPatch
+    fig, ax = plt.subplots(figsize=(8.6, 3.05))
+    # Sol tarafta satır adları için ayrı bir şerit bırakılıyor; daha önce
+    # etiketler -25 dk'da başlayan kutunun üstüne biniyordu.
+    ax.set_xlim(-118, 102); ax.set_ylim(-0.35, 3.62)
+
+    rows = [
+        (2.60, -25,   0,  GREEN,   r"\textbf{Mycellium-Aegis}",
+         r"\i s\i l cephe + biyoelektrik"),
+        (1.55,  30,  60,  INDIGO,  r"Gaz / partik\"ul sens\"or\"u",
+         r"r\"uzg\^ar dumani ta\c{s}\i y\i nca"),
+        (0.50,  45,  90,  EMBER,   r"Kamera / optik kule",
+         r"duman g\"or\"un\"ur olunca"),
+    ]
+    for y, a, b, c, name, sub in rows:
+        ax.add_patch(FancyBboxPatch((a, y-0.26), b-a, 0.52,
+                                    boxstyle="round,pad=0.02",
+                                    facecolor=c, alpha=0.22, edgecolor=c, lw=1.8))
+        # Aralık etiketi kutu dar olduğunda dışarı, geniş olduğunda içine
+        txt = r"$-25\dots 0$ dk" if a == -25 else fr"${a:+d}\dots{b:+d}$ dk"
+        ax.text((a+b)/2, y, txt, ha="center", va="center",
+                fontsize=11.5, color=c)
+        ax.text(-114, y+0.13, name, ha="left", va="center", fontsize=12.5, color=c)
+        ax.text(-114, y-0.30, sub, ha="left", va="center", fontsize=10, color=MUT)
+
+    # satır şeridi ile zaman ekseni arasına ince bir ayraç
+    ax.axvline(-46, color=GRID, lw=1.0)
+
+    # tutuşma anı
+    ax.axvline(0, color=INK, lw=1.6)
+    ax.text(3.0, 3.42, r"\textbf{tutu\c{s}ma} $t=0$", fontsize=12, color=INK,
+            ha="left", va="center")
+    ax.annotate("", xy=(-25, 3.42), xytext=(0, 3.42),
+                arrowprops=dict(arrowstyle="<-", color=GREEN, lw=1.8))
+    ax.text(-12.5, 3.10, r"kazan\i lan s\"ure", fontsize=11, color=GREEN,
+            ha="center", va="center")
+
+    ax.set_yticks([]); ax.set_xlabel(r"Tutu\c{s}maya g\"ore zaman $[\mathrm{dk}]$")
+    ax.set_xticks([-25, 0, 30, 60, 90])
+    for s in ("left", "right", "top"):
+        ax.spines[s].set_visible(False)
+    ax.grid(axis="y", visible=False)
+    ax.grid(axis="x", color=GRID, lw=0.7)
+    save(fig, "detection_timeline")
+
 if __name__ == "__main__":
     fig_signal_time()
     fig_fft()
@@ -456,4 +683,7 @@ if __name__ == "__main__":
     fig_electrode()
     fig_architecture()
     fig_ai_pipeline()
+    fig_electrode_material()
+    fig_market()
+    fig_detection_timeline()
     print("ALL FIGURES DONE")

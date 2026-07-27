@@ -72,9 +72,38 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border:none;border-ra
     "view meas econ"
     "figs figs figs";
   gap:0;
+  transition:grid-template-columns .42s cubic-bezier(.22,1,.36,1);
 }
 #head{grid-area:head} #view{grid-area:view} #meas{grid-area:meas}
 #econ{grid-area:econ} #figs{grid-area:figs}
+
+/* --- yan panelleri katla -------------------------------------------------
+   Sunumda üç boyutlu sahnenin büyük görünmesi isteniyor. Panel kolonlarını
+   sıfıra çekiyoruz; #sheet üzerindeki geçiş sayesinde sahne yumuşakça
+   genişliyor. Kapanınca WebGL tuvali yeniden ölçeklenmeli — bunu
+   twin.js'teki resize çağrısı hallediyor. */
+body.no-econ #sheet{
+  grid-template-columns:minmax(0,1fr) minmax(330px,26vw) 0px;
+}
+body.no-meas.no-econ #sheet{
+  grid-template-columns:minmax(0,1fr) 0px 0px;
+}
+body.no-econ #econ,
+body.no-meas #meas{opacity:0;pointer-events:none;overflow:hidden;
+  padding-left:0;padding-right:0;border-left-width:0;
+  transition:opacity .22s ease}
+#meas,#econ{transition:opacity .3s ease .12s}
+
+/* katlama düğmeleri — başlık şeridinin sağ ucunda */
+#panelToggles{display:flex;gap:6px;align-items:center}
+#panelToggles button{
+  border:.8px solid var(--rule-2);padding:2px 9px;font-size:11.5px;
+  font-variant:small-caps;letter-spacing:.05em;white-space:nowrap;
+  background:transparent;color:var(--ink-2);cursor:pointer;
+  transition:border-color .2s ease,color .2s ease,background .2s ease
+}
+#panelToggles button:hover{border-color:var(--green);color:var(--green)}
+#panelToggles button.off{background:var(--green);border-color:var(--green);color:#fff}
 
 /* ------------------------------------------------------------ üst başlık - */
 #head{
@@ -184,19 +213,25 @@ table.t tr.warnrow td{background:#fdf7ee}
 .ctl input{grid-column:1/-1;width:100%}
 
 /* --------------------------------------------------------------- şekil --- */
+/* Grafik şeridi: dört panel yan yana, her biri belirgin şekilde yatay bir
+   dikdörtgen. Yükseklik ve iç boşluklar, çizim alanı ~3:1 orana otursun
+   diye ayarlandı; başlık ve dipnot satırları çizimden yer çalmıyor. */
 #figs{
   border-top:1.6px solid var(--rule);display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));height:206px
+  grid-template-columns:repeat(4,minmax(0,1fr));height:232px;
+  background:var(--paper)
 }
 .fig{border-right:.8px solid var(--rule-2);display:flex;flex-direction:column;
-  padding:5px 8px 5px;min-width:0;overflow:hidden}
+  padding:9px 14px 8px;min-width:0;overflow:hidden}
 .fig:last-child{border-right:none}
-.fig .ft{font-size:12px;color:var(--ink-2);display:flex;justify-content:space-between;gap:6px;margin-bottom:2px}
+.fig .ft{font-size:12.5px;color:var(--ink-2);display:flex;justify-content:space-between;
+  gap:8px;margin-bottom:5px;align-items:baseline;flex:none}
 .fig .ft b{font-weight:700;color:var(--ink)}
-.fig .ft .rd{font-variant-numeric:lining-nums tabular-nums;color:var(--green)}
+.fig .ft .rd{font-variant-numeric:lining-nums tabular-nums;color:var(--green);
+  font-size:12px;white-space:nowrap}
 .fig canvas{flex:1 1 auto;width:100%;min-height:40px;display:block}
-.fig .fl{flex:none;font-size:10.5px;color:var(--ink-3);line-height:1.32;margin-top:2px;
-  height:2.7em;overflow:hidden}
+.fig .fl{flex:none;font-size:10.5px;color:var(--ink-3);line-height:1.34;margin-top:5px;
+  height:2.68em;overflow:hidden}
 
 /* -------------------------------------------------------------- bilgi ---- */
 #insp{
