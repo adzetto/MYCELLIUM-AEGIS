@@ -3,14 +3,19 @@
 Mycellium-Aegis'in tek ekranlık, etkileşimli ve fiziksel olarak tutarlı sayısal
 ikizi. Depodaki bütün teknik belgeleri tek bir çalışan modelde birleştirir.
 
-**Açmak için:** [`index.html`](./index.html) dosyasını tarayıcıda açın.
-İnternet bağlantısı gerekmez — three.js, KaTeX ve Computer Modern yazı tipleri
-depoya dahildir.
+## Açmak için
+
+**Tek dosya (önerilen):**
+[`Mycellium-Aegis_Sayisal_Ikiz.html`](./Mycellium-Aegis_Sayisal_Ikiz.html) — 2,1 MB,
+çift tıklayıp açın. Yazı tipleri, KaTeX, three.js ve tüm kodlar dosyanın içine
+gömülüdür; **hiçbir ağ isteği yapmaz**, sunucu gerektirmez, e-posta ekiyle
+gönderilebilir veya USB ile taşınabilir.
+
+**Kaynak sürüm (geliştirme için):** [`index.html`](./index.html) — aynı uygulama,
+ayrı CSS/JS dosyalarıyla. Tek dosya bundan üretilir:
 
 ```bash
-# yerel sunucu (dosya:// üzerinden de çalışır)
-python3 -m http.server 8000
-# → http://localhost:8000/docs/digital-twin/
+python3 docs/digital-twin/build_single_file.py
 ```
 
 ---
@@ -102,7 +107,9 @@ Kaydırıcıyı hareket ettirip sonucu kendiniz görebilirsiniz.
 ## Dosya düzeni
 
 ```
-index.html            tek ekran yerleşimi
+Mycellium-Aegis_Sayisal_Ikiz.html   ← bağımsız tek dosya (üretilen çıktı)
+build_single_file.py                kaynakları tek dosyaya gömen derleyici
+index.html            tek ekran yerleşimi (kaynak)
 css/twin.css          beyaz tema · Computer Modern tipografi
 js/data.js            proje veri katmanı (her sayı kaynak belgeye bağlı)
 js/sim.js             fizik çekirdeği (ısı · nem · direnç · biyosinyal · füzyon · güç · maliyet)
@@ -110,12 +117,31 @@ js/textures.js        yordamsal PBR doku üretimi (albedo · normal · pürüzl�
 js/scene.js           three.js sahnesi — PMREM ortam aydınlatması, PCF gölgeler, ACES
 js/charts.js          bağımlılıksız 2B canvas çizim katmanı
 js/app.js             tek ekran denetleyicisi
-fonts/                Computer Modern (CMU Serif · CMU Sans)
+fonts/                Computer Modern (CMU Serif · CMU Sans) — OTF + WOFF2
 vendor/three.min.js   three.js r160
 vendor/katex/         KaTeX 0.16.11 (yalnızca woff2)
 ```
 
-Hiçbir yapı adımı, paket yöneticisi veya ağ isteği yoktur.
+Paket yöneticisi, derleme zinciri veya ağ isteği yoktur. `build_single_file.py`
+yalnızca dosyaları okuyup base64 ile gömer; standart kütüphane dışında bağımlılığı
+yoktur.
+
+### Üç boyutlu sahnenin gerçekçiliği
+
+Hiçbir hazır 3B model veya doku dosyası kullanılmaz; her şey çalışma anında
+üretilir:
+
+- **Yordamsal PBR dokular** — toprak horizonlarının her biri için ayrı albedo,
+  normal ve pürüzlülük haritası; albedoya oyuk gölgelendirmesi (yükseklik alanına
+  bağlı kendi kendini gölgeleme) işlenir
+- **Kesit yüzeyinde gerçek geometri** — düzlemden yarı çıkıntılı 150 çakıl
+  (derinlikle irileşen tane boyutu), profili boydan boya geçen dallanmış kökler,
+  yüzeyde iğne yaprak döküntüsü
+- **Hacimli miselyum** — ince çizgi ağının yanında 72 ana hif, yarı geçirgen ve
+  mat krem beyazı fiziksel malzemeyle tüp olarak çizilir
+- **PMREM ortam aydınlatması** yordamsal gökyüzünden; PCF yumuşak gölgeler
+  (kesit ölçeğinde daraltılmış gölge hacmiyle keskin temas gölgesi); ACES ton
+  eşlemesi
 
 ## Tarayıcı gereksinimi
 

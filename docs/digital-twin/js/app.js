@@ -433,11 +433,19 @@
   let last = performance.now(), acc = 0;
   function loop(now) {
     /* Çizim adımı (kamera yumuşatma) ile benzetim adımı ayrıdır: ağır bir
-       karede benzetim yavaşlamasın diye benzetim duvar saatini kullanır.     */
-    const real = (now - last) / 1000; last = now;
+       karede benzetim yavaşlamasın diye benzetim duvar saatini kullanır.
+
+       requestAnimationFrame'in ilk zaman damgası, modül yüklenirken alınan
+       performance.now() değerinden KÜÇÜK olabilir (kare başlangıç zamanıdır).
+       Ham fark o karede negatif çıkar; negatif adım eğri parametresini
+       negatife iter, CatmullRomCurve3.getUtoTmapping NaN döndürür ve
+       getPoint çöker. Adım bu yüzden daima [0, 0.3] aralığına kıstırılır.  */
+    const raw = (now - last) / 1000;
+    const real = isFinite(raw) ? clamp(raw, 0, 0.3) : 0;
+    last = now;
     const dt = Math.min(0.05, real);
     if (A.playing) {
-      let s = Math.min(0.3, real) * A.speed;
+      let s = real * A.speed;
       while (s > 0) { const step = Math.min(120, s); A.world.advance(step); s -= step; }
     }
     const w = A.world, sc = SIM.SCENARIOS[w.scenario];
@@ -456,7 +464,12 @@
       st.className = 'badge ' + (alarm ? 'al' : w.state === 'KURAKLIK' ? 'dr' : 'on');
       $('#env').innerHTML = `T<sub>s</sub> ${surf.toFixed(0)} °C · T(z<sub>p</sub>) ${w.Tz().toFixed(1)} °C · θ ${w.thetaZ().toFixed(3)} · R ${(w.resistance() / 1000).toFixed(1)} kΩ`;
     }
-    requestAnimationFrame(loop);
+  }
+
+  /* Tek bir karedeki hata animasyonu tümüyle durdurmasın. */
+  function frame(now) {
+    try { loop(now); } catch (e) { if (!frame.warned) { frame.warned = true; console.error(e); } }
+    requestAnimationFrame(frame);
   }
 
   /* =============================================================== BAŞLAT */
@@ -485,7 +498,7 @@
       if (u < 1) requestAnimationFrame(grow);
     })();
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(frame);
     setTimeout(() => $('#boot').classList.add('gone'), 1300);
 
     $$('#bar [data-v]').forEach(b => b.addEventListener('click', () => setView(b.dataset.v)));

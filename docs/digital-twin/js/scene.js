@@ -47,6 +47,32 @@
     return g;
   }
 
+  /* ------------------------------------------------ geometri birleştirme -- */
+  /* r160 UMD yapısı BufferGeometryUtils içermiyor; yüzlerce ayrı tüpü tek bir
+     çizim çağrısında toplamak için küçük bir birleştirici.                    */
+  function mergeGeoms(list) {
+    let nv = 0, ni = 0;
+    list.forEach(g => { nv += g.attributes.position.count; ni += g.index ? g.index.count : 0; });
+    const pos = new Float32Array(nv * 3), nor = new Float32Array(nv * 3), uv = new Float32Array(nv * 2);
+    const idx = new Uint32Array(ni);
+    let vo = 0, io = 0;
+    list.forEach(g => {
+      const p = g.attributes.position, n = g.attributes.normal, u = g.attributes.uv;
+      pos.set(p.array, vo * 3);
+      if (n) nor.set(n.array, vo * 3);
+      if (u) uv.set(u.array, vo * 2);
+      if (g.index) { const a = g.index.array; for (let i = 0; i < a.length; i++) idx[io + i] = a[i] + vo; io += a.length; }
+      vo += p.count;
+      g.dispose();
+    });
+    const out = new T.BufferGeometry();
+    out.setAttribute('position', new T.BufferAttribute(pos, 3));
+    out.setAttribute('normal', new T.BufferAttribute(nor, 3));
+    out.setAttribute('uv', new T.BufferAttribute(uv, 2));
+    out.setIndex(new T.BufferAttribute(idx, 1));
+    return out;
+  }
+
   /* -------------------------------------------------------- yazı etiketi -- */
   /* Beyaz tema · Computer Modern serif                                        */
   function makeLabel(text, opt) {
@@ -94,7 +120,7 @@
   };
 
   /* ======================================================== KESİT DÜNYASI = */
-  let layerMeshes = [], hyphaGeo, hyphaLine, hyphaPaths = [], pulses = [], pulsePts;
+  let layerMeshes = [], hyphaGeo, hyphaLine, hyphaTubes, hyphaPaths = [], pulses = [], pulsePts;
   let nodeGrp, surfGrp, cableFlow = [], safeBand, electrodeTips = [];
 
   function buildMicro() {
@@ -197,8 +223,100 @@
       new T.MeshStandardMaterial({ color: 0x574a3a, roughness: 1, metalness: 0 }));
     base.position.set(0, -8.95, -MZ / 2); base.receiveShadow = true; micro.add(base);
 
+    buildCutFaceDetail();
     buildHyphae();
     buildNode();
+  }
+
+  /* ============================================ KESİT YÜZEYİ 3B DETAYI ==== */
+  /* Düz bir dokulu duvar yerine, kesit düzleminden dışarı taşan çakıllar,
+     profili boydan boya geçen kökler ve gözenek boşlukları. Siluet kırıldığı
+     için yüzey artık "duvar kâğıdı" gibi değil, kazılmış toprak gibi okunur. */
+  function buildCutFaceDetail() {
+    const rk = TX.rock(71);
+    const rockMat = new T.MeshStandardMaterial({
+      map: rk.map, normalMap: rk.normalMap, normalScale: new T.Vector2(1.3, 1.3),
+      roughness: 0.92, metalness: 0.02, vertexColors: true });
+
+    /* --- kesit düzleminden yarı çıkıntılı çakıllar --- */
+    const NP = 150;
+    const pebG = new T.IcosahedronGeometry(1, 1);
+    const pp = pebG.attributes.position;
+    for (let i = 0; i < pp.count; i++) {          // düzensizleştir
+      const k = 0.66 + 0.5 * hash2(pp.getX(i) * 9.1 + 3, pp.getZ(i) * 7.7 + pp.getY(i) * 5.3);
+      pp.setXYZ(i, pp.getX(i) * k, pp.getY(i) * k * 0.78, pp.getZ(i) * k);
+    }
+    pebG.computeVertexNormals();
+    const pebbles = new T.InstancedMesh(pebG, rockMat, NP);
+    pebbles.castShadow = true; pebbles.receiveShadow = true;
+    const mm = new T.Matrix4(), qq2 = new T.Quaternion(), ss = new T.Vector3(), pv2 = new T.Vector3();
+    const rc1 = new T.Color(0xc2b8a8), rc2 = new T.Color(0xe8dfcd);
+    for (let i = 0; i < NP; i++) {
+      const y = -rnd(0.5, 8.4);
+      /* derinlikle irileşen taneler: üst horizonlar ince, alt horizonlar iri */
+      const sc = rnd(0.05, 0.10) + Math.max(0, (-y - 1.5)) * rnd(0.010, 0.030);
+      pv2.set(rnd(-MX / 2 + 0.4, MX / 2 - 0.4), y, rnd(-0.06, 0.07));  // kesit düzlemine gömülü
+      qq2.setFromEuler(new T.Euler(rnd(0, 6.28), rnd(0, 6.28), rnd(0, 6.28)));
+      ss.set(sc * rnd(0.8, 1.3), sc * rnd(0.7, 1.2), sc * rnd(0.35, 0.6));
+      mm.compose(pv2, qq2, ss); pebbles.setMatrixAt(i, mm);
+      pebbles.setColorAt(i, rc1.clone().lerp(rc2, Math.random()));
+    }
+    pebbles.instanceMatrix.needsUpdate = true;
+    if (pebbles.instanceColor) pebbles.instanceColor.needsUpdate = true;
+    micro.add(pebbles);
+
+    /* --- kökler: profili yukarıdan aşağı geçen, dallanan odunsu yapılar --- */
+    const rt = TX.root();
+    const rootGeoms = [];
+    function rootBranch(p0, dir, rad, depth) {
+      if (depth > 2 || rad < 0.012) return;
+      const pts = [p0.clone()];
+      const d = dir.clone();
+      let cur = p0.clone();
+      const n = 5 + (Math.random() * 4 | 0);
+      for (let i = 0; i < n; i++) {
+        d.x += rnd(-0.35, 0.35); d.y += rnd(-0.30, 0.10); d.z += rnd(-0.16, 0.16);
+        d.normalize();
+        cur = cur.clone().addScaledVector(d, rnd(0.35, 0.95));
+        cur.y = clamp(cur.y, -8.6, 0.2);
+        cur.x = clamp(cur.x, -MX / 2 + 0.2, MX / 2 - 0.2);
+        cur.z = clamp(cur.z, -0.25, 0.7);
+        pts.push(cur.clone());
+      }
+      if (pts.length < 3) return;
+      const curve = new T.CatmullRomCurve3(pts);
+      rootGeoms.push(new T.TubeGeometry(curve, pts.length * 3, rad, 6, false));
+      if (Math.random() < 0.75)
+        rootBranch(pts[(pts.length * 0.45) | 0], new T.Vector3(rnd(-1, 1), rnd(-1, -0.1), rnd(-.4, .4)).normalize(),
+                   rad * rnd(0.42, 0.62), depth + 1);
+    }
+    for (let i = 0; i < 22; i++)
+      rootBranch(new T.Vector3(rnd(-MX / 2 + 1, MX / 2 - 1), rnd(-0.2, 0.25), rnd(-0.15, 0.35)),
+                 new T.Vector3(rnd(-0.5, 0.5), -1, rnd(-0.25, 0.25)).normalize(), rnd(0.035, 0.085), 0);
+    if (rootGeoms.length) {
+      const roots = new T.Mesh(mergeGeoms(rootGeoms), new T.MeshStandardMaterial({
+        map: rt.map, normalMap: rt.normalMap, normalScale: new T.Vector2(1.1, 1.1),
+        roughness: 0.94, metalness: 0, color: 0xb08b5e }));
+      roots.castShadow = true; roots.receiveShadow = true; micro.add(roots);
+    }
+
+    /* --- yüzeydeki iğne yaprak ve dal döküntüsü --- */
+    const debG = new T.CylinderGeometry(0.012, 0.006, 0.55, 4);
+    debG.rotateZ(Math.PI / 2);
+    const debris = new T.InstancedMesh(debG, new T.MeshStandardMaterial({
+      color: 0xffffff, roughness: 0.95, metalness: 0 }), 420);
+    debris.castShadow = true;
+    const dc1 = new T.Color(0x6e5a34), dc2 = new T.Color(0x9d8a55);
+    for (let i = 0; i < 420; i++) {
+      pv2.set(rnd(-MX / 2, MX / 2), 0.40, rnd(-MZ + 0.2, -0.05));
+      qq2.setFromEuler(new T.Euler(rnd(-0.3, 0.3), rnd(0, 6.28), rnd(-0.2, 0.2)));
+      const sc = rnd(0.7, 1.7); ss.set(sc, 1, 1);
+      mm.compose(pv2, qq2, ss); debris.setMatrixAt(i, mm);
+      debris.setColorAt(i, dc1.clone().lerp(dc2, Math.random()));
+    }
+    debris.instanceMatrix.needsUpdate = true;
+    if (debris.instanceColor) debris.instanceColor.needsUpdate = true;
+    micro.add(debris);
   }
 
   /* ------------------------------------------------------- miselyum ağı --- */
@@ -216,6 +334,25 @@
       vertexColors: true, transparent: true, opacity: 0.8, depthWrite: false }));
     hyphaGeo.setDrawRange(0, verts.length / 3);
     micro.add(hyphaLine);
+
+    /* Ana hifler ince çizgi değil, hacimli tüp olarak çizilir: ışığı yakalar,
+       gölge düşürür ve ağ "tel kafes" yerine organik bir doku gibi okunur.  */
+    const tubeGeoms = [];
+    const chosen = hyphaPaths.filter(() => Math.random() < 0.30).slice(0, 72);
+    chosen.forEach((c) => {
+      try { tubeGeoms.push(new T.TubeGeometry(c, 22, rnd(0.007, 0.016), 5, false)); } catch (_) {}
+    });
+    if (tubeGeoms.length) {
+      /* Miselyum gerçekte mat, krem beyazı ve hafif yarı geçirgendir —
+         parlak plastik değil. Düşük parlaklık + az geçirgenlik.            */
+      hyphaTubes = new T.Mesh(mergeGeoms(tubeGeoms), new T.MeshPhysicalMaterial({
+        color: 0xeaf3ec, roughness: 0.78, metalness: 0,
+        transmission: 0.22, thickness: 0.05, ior: 1.33,
+        transparent: true, opacity: 0.66,
+        sheen: 0.4, sheenRoughness: 0.8, sheenColor: new T.Color(0xd8ecdf),
+        emissive: 0x0d5c40, emissiveIntensity: 0.05 }));
+      micro.add(hyphaTubes);
+    }
 
     const P = 80, pp = new Float32Array(P * 3);
     for (let i = 0; i < P; i++)
@@ -301,6 +438,19 @@
       p.rotation.y = Math.random() < 0.5 ? 0 : Math.PI / 2;
       nodeGrp.add(p);
     }
+    /* temas gölgesi — gövde ile toprak arasındaki karanlık geçiş */
+    const cs = document.createElement('canvas'); cs.width = cs.height = 128;
+    const cx = cs.getContext('2d');
+    const cg = cx.createRadialGradient(64, 64, 4, 64, 64, 62);
+    cg.addColorStop(0, 'rgba(0,0,0,.55)'); cg.addColorStop(0.55, 'rgba(0,0,0,.22)');
+    cg.addColorStop(1, 'rgba(0,0,0,0)');
+    cx.fillStyle = cg; cx.fillRect(0, 0, 128, 128);
+    const csTex = new T.CanvasTexture(cs);
+    const contact = new T.Mesh(new T.PlaneGeometry(4.4, 3.2),
+      new T.MeshBasicMaterial({ map: csTex, transparent: true, depthWrite: false, opacity: 0.85 }));
+    contact.rotation.x = -Math.PI / 2; contact.position.y = -0.61;
+    nodeGrp.add(contact);
+
     const nlbl = makeLabel('yeraltı düğümü · 18 cm', { scale: 0.34, size: 42 });
     nlbl.position.set(0, 1.3, 0); nlbl.scale.set(nlbl.userData.aspect * 0.34, 0.34, 1);
     nodeGrp.add(nlbl);
@@ -596,7 +746,7 @@
     sun = new T.DirectionalLight(0xfff4e2, 2.5);
     sun.position.set(26, 34, 22);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(1536, 1536);
+    sun.shadow.mapSize.set(2048, 2048);
     sun.shadow.camera.near = 1; sun.shadow.camera.far = 120;
     sun.shadow.camera.left = -26; sun.shadow.camera.right = 26;
     sun.shadow.camera.top = 26; sun.shadow.camera.bottom = -26;
@@ -625,11 +775,14 @@
     orbit.a = orbit.a0 = Math.atan2(v.pos[0], v.pos[2]);
     orbit.baseY = v.pos[1];
     orbit.userA = 0; orbit.userB = 0;
-    const k = v.mode === 'macro' ? 5 : 1;
+    /* Gölge hacmi sahneye göre daraltılır: kesitte küçük bir hacim, aynı
+       gölge haritası çözünürlüğüyle çok daha keskin temas gölgesi verir.   */
+    const k = v.mode === 'macro' ? 5 : 0.72;
     sun.shadow.camera.left = -26 * k; sun.shadow.camera.right = 26 * k;
     sun.shadow.camera.top = 26 * k; sun.shadow.camera.bottom = -26 * k;
-    sun.shadow.camera.far = 130 * k;
-    sun.position.set(26 * k * 0.7, 34 * k * 0.7, 22 * k * 0.7);
+    sun.shadow.camera.far = 130 * k + 40;
+    sun.shadow.bias = v.mode === 'macro' ? -0.0009 : -0.0004;
+    sun.position.set(26 * k * 0.9, 34 * k * 0.9, 22 * k * 0.9);
     sun.shadow.camera.updateProjectionMatrix();
     if (instant) {
       cam.pos.copy(cam.posT); cam.tgt.copy(cam.tgtT);
@@ -738,7 +891,14 @@
 
     if (hyphaGeo) {
       hyphaGeo.setDrawRange(0, Math.floor(hyphaGeo.attributes.position.count * clamp(S.growth, 0, 1)));
-      hyphaLine.material.opacity = 0.6 + 0.3 * (w ? (w.stress || 0) : 0);
+      const st = w ? (w.stress || 0) : 0;
+      hyphaLine.material.opacity = 0.55 + 0.3 * st;
+      if (hyphaTubes) {
+        hyphaTubes.visible = S.growth > 0.55;
+        hyphaTubes.material.emissiveIntensity = 0.04 + 0.22 * st;
+        hyphaTubes.material.emissive.setRGB(
+          ctx.alarm ? 0.42 : 0.05, ctx.alarm ? 0.10 : 0.36, ctx.alarm ? 0.04 : 0.25);
+      }
     }
 
     const f = w && w.cond ? w.cond.f : 0.4;
@@ -748,8 +908,8 @@
       const p = pulses[i];
       if (i < active) {
         p.u += p.speed * dt * (0.6 + f * 0.9);
-        if (p.u > 1) { p.u = 0; p.path = hyphaPaths[(Math.random() * hyphaPaths.length) | 0]; }
-        if (p.path) { p.path.getPointAt(clamp(p.u, 0, 1), tmp); pa.setXYZ(i, tmp.x, tmp.y, tmp.z); }
+        if (!isFinite(p.u) || p.u > 1) { p.u = 0; p.path = hyphaPaths[(Math.random() * hyphaPaths.length) | 0]; }
+        if (p.path) { p.path.getPointAt(clamp(p.u, 0, 0.999), tmp); pa.setXYZ(i, tmp.x, tmp.y, tmp.z); }
       } else pa.setXYZ(i, 0, 999, 0);
     }
     pa.needsUpdate = true;
@@ -763,7 +923,9 @@
     });
 
     cableFlow.forEach((c) => {
-      c.u += dt * 0.28; if (c.u > 1) c.u -= 1;
+      c.u += dt * 0.28;
+      if (!isFinite(c.u)) c.u = 0;
+      c.u = ((c.u % 1) + 1) % 1;                 // daima [0,1)
       c.curve.getPointAt(c.u, tmp); c.mesh.position.copy(tmp);
       c.mesh.material.color.setHex(ctx.alarm ? 0xc0392b : 0xc8781a);
     });

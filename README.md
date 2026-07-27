@@ -170,8 +170,10 @@ At 10 % duty cycle the same system runs 27–34 weeks.
 ## 🖥️ Interactive digital twin
 
 A single‑screen, physically coupled simulation of the whole system lives in
-**[`docs/digital-twin/`](./docs/digital-twin/)** — open `index.html` in a browser,
-no build step and no network access required.
+**[`docs/digital-twin/`](./docs/digital-twin/)**. It ships as one self‑contained
+file — **[`Mycellium-Aegis_Sayisal_Ikiz.html`](./docs/digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html)**
+(2.1 MB) — with the Computer Modern fonts, KaTeX, three.js and all code embedded.
+Double‑click it: no server, no build step, **no network requests at all**.
 
 It solves four coupled models live and drives a PBR 3‑D soil‑profile render from
 the results:
@@ -333,7 +335,7 @@ This repository holds the TÜBİTAK 1812 BİGG application dossier and supportin
 ```
 docs/
 ├── hardware/           # Rev B hardware report + independent verification of its numbers
-├── digital-twin/       # Interactive single-screen digital twin (open index.html)
+├── digital-twin/       # Interactive digital twin — one self-contained HTML + sources
 ├── research/           # Scientific evaluation & R&D roadmap (the "why" and the physics)
 ├── experiments/        # Electrophysiology experiments 1 & 2 — hardware, firmware, results
 ├── pitch-decks/        # TÜBİTAK BiGG presentation, backup slides, Q&A
@@ -349,7 +351,7 @@ archive/
 | Folder | Contents |
 |:-------|:---------|
 | [`docs/hardware/`](./docs/hardware/) | *Donanım Teknik Raporu* (Rev B) — component decisions, power budget, BOM + independent verification |
-| [`docs/digital-twin/`](./docs/digital-twin/) | Interactive digital twin — coupled physics, live figures, hardware inspector |
+| [`docs/digital-twin/`](./docs/digital-twin/) | Interactive digital twin — coupled physics, live figures, hardware inspector. Self‑contained single file + sources |
 | [`docs/research/`](./docs/research/) | *Miselyum Elektriksel Aktivitesi Araştırması* — science & roadmap |
 | [`docs/experiments/`](./docs/experiments/) | *Mantar Deney Raporu* — electrophysiology experiments 1 & 2 |
 | [`docs/business-plan/`](./docs/business-plan/) | *İş Planı Maliyet Formu* — 18‑month budget |

@@ -86,7 +86,7 @@
      Parametreler horizona göre değişir: üst katmanlar organik ve koyu,
      alt katmanlar mineral, killi ve daha düzgün.                            */
   function soil(opts) {
-    const S = 512;
+    const S = 768;
     const o = Object.assign({
       base: [0x7a, 0x5f, 0x3c], seed: 7, grain: 0.42, organic: 0.25,
       pebbles: 46, pebbleR: [2.5, 9], roughBase: 0.94, dark: 0.35
@@ -112,12 +112,16 @@
         const m = (n1 - 0.5) * o.grain + (n2 - 0.5) * o.grain * 0.65 + (n3 - 0.5) * 0.18;
         const org = Math.max(0, n2 - 0.62) * o.organic * 4;   // koyu organik lekeler
         const k = (j * S + i) * 4;
-        const shade = 1 + m - org * o.dark;
+        /* oyuk gölgelendirmesi: yüzey yüksekliği düşük olan yerler kendi
+           kendini gölgeler — tek başına en çok gerçekçilik katan terim      */
+        const hh = n1 * 0.55 + n2 * 0.3 + n3 * 0.15;
+        const ao = 0.62 + 0.38 * Math.pow(Math.max(0, Math.min(1, (hh - 0.18) / 0.62)), 0.75);
+        const shade = (1 + m - org * o.dark) * ao;
         d[k]     = Math.max(0, Math.min(255, o.base[0] * shade));
         d[k + 1] = Math.max(0, Math.min(255, o.base[1] * shade * (1 - org * 0.12)));
         d[k + 2] = Math.max(0, Math.min(255, o.base[2] * shade * (1 - org * 0.2)));
         d[k + 3] = 255;
-        hgt[j * S + i] = n1 * 0.55 + n2 * 0.3 + n3 * 0.15;
+        hgt[j * S + i] = hh;
         const rv = Math.max(0, Math.min(1, o.roughBase + (n3 - 0.5) * 0.25 - org * 0.12));
         rd[k] = rd[k + 1] = rd[k + 2] = rv * 255; rd[k + 3] = 255;
       }
@@ -348,6 +352,57 @@
     return { map: tex(c, [46, 46], true), normalMap: tex(normalFromHeight(h, S, 1.6), [46, 46], false) };
   }
 
+  /* ================================================================= KAYAÇ = */
+  function rock(seed) {
+    const S = 256;
+    const c = document.createElement('canvas'); c.width = c.height = S;
+    const x = c.getContext('2d');
+    const f1 = fbmFactory(seed || 71, 6), f2 = fbmFactory((seed || 71) + 13, 24);
+    const img = x.createImageData(S, S), d = img.data;
+    const h = new Float32Array(S * S);
+    for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) {
+      const n = f1(i / S, j / S), n2 = f2(i / S, j / S, 3);
+      const k = (j * S + i) * 4;
+      const base = 118 + n * 62 + (n2 - 0.5) * 34;
+      const ao = 0.7 + 0.3 * n2;
+      d[k] = base * ao; d[k + 1] = (base - 6) * ao; d[k + 2] = (base - 20) * ao; d[k + 3] = 255;
+      h[j * S + i] = n * 0.6 + n2 * 0.4;
+    }
+    x.putImageData(img, 0, 0);
+    /* kuvars damarları */
+    const rnd = mulberry((seed || 71) * 3 + 7);
+    x.strokeStyle = 'rgba(226,222,210,.42)';
+    for (let n = 0; n < 12; n++) {
+      x.lineWidth = 0.8 + rnd() * 2.2;
+      let px = rnd() * S, py = rnd() * S;
+      x.beginPath(); x.moveTo(px, py);
+      for (let q = 0; q < 5; q++) { px += (rnd() - 0.5) * 90; py += (rnd() - 0.5) * 90; x.lineTo(px, py); }
+      x.stroke();
+    }
+    return { map: tex(c, [1, 1], true), normalMap: tex(normalFromHeight(h, S, 2.4), [1, 1], false) };
+  }
+
+  /* ================================================================== KÖK == */
+  function root() {
+    const S = 256;
+    const c = document.createElement('canvas'); c.width = c.height = S;
+    const x = c.getContext('2d');
+    const f = fbmFactory(97, 4);
+    const img = x.createImageData(S, S), d = img.data;
+    const h = new Float32Array(S * S);
+    for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) {
+      /* boyuna lifler */
+      const fib = 0.5 + 0.5 * Math.sin(i * 0.9 + f(i / S, j / S) * 8);
+      const n = f(i / S * 0.5, j / S * 3);
+      const k = (j * S + i) * 4;
+      const v = 0.62 + 0.38 * fib;
+      d[k] = (128 + n * 54) * v; d[k + 1] = (100 + n * 42) * v; d[k + 2] = (66 + n * 30) * v; d[k + 3] = 255;
+      h[j * S + i] = fib * 0.7 + n * 0.3;
+    }
+    x.putImageData(img, 0, 0);
+    return { map: tex(c, [1, 3], true), normalMap: tex(normalFromHeight(h, S, 1.8), [1, 3], false) };
+  }
+
   /* ------------------------------------------------ yumuşak nokta dokusu -- */
   function dot() {
     const c = document.createElement('canvas'); c.width = c.height = 64;
@@ -395,5 +450,6 @@
     return t;
   }
 
-  global.AEGIS_TEX = { soil, litter, pcb, solar, cable, biocomposite, terrain, dot, skyEquirect, fbmFactory, mulberry };
+  global.AEGIS_TEX = { soil, litter, pcb, solar, cable, biocomposite, terrain, rock, root,
+    dot, skyEquirect, fbmFactory, mulberry };
 })(window);
