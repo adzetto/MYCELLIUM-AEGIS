@@ -175,6 +175,9 @@ file — **[`Mycellium-Aegis_Sayisal_Ikiz.html`](./docs/digital-twin/Mycellium-A
 (2.1 MB) — with the Computer Modern fonts, KaTeX, three.js and all code embedded.
 Double‑click it: no server, no build step, **no network requests at all**.
 
+It is also embedded live as the closing slide (16/16) of the BİGG pitch deck,
+so the twin can be driven in front of the panel without leaving the deck.
+
 It solves four coupled models live and drives a PBR 3‑D soil‑profile render from
 the results:
 

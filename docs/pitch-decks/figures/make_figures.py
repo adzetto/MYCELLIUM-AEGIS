@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Mycellium-Aegis — publication-quality figures for the pitch deck (White Theme).
-scienceplots + matplotlib + LaTeX (Computer Modern). Transparent PDF + PNG.
+scienceplots + matplotlib + LaTeX (Computer Modern). Transparent SVG + PDF.
+
+SVG, HTML sunuma gömülmek içindir: her ölçekte keskin kalır ve yazı tipi
+gömülüdür (usetex glifleri yol olarak yazılır). PDF, LaTeX yedek slaytları
+içindir.
 """
 import os
 import numpy as np
@@ -34,6 +38,11 @@ mpl.rcParams.update({
     "savefig.transparent": True,
     "savefig.bbox": "tight",
     "savefig.pad_inches": 0.02,
+    # SVG: glifleri yola çevir -> dosya kendi kendine yeter, tarayıcıda
+    # Computer Modern kurulu olmasa da aynı görünür.
+    "svg.fonttype": "path",
+    # Sabit tuz -> aynı girdi aynı SVG'yi üretir, gereksiz git diff olmaz.
+    "svg.hashsalt": "mycellium-aegis",
     "axes.edgecolor": "#D1D5DB",   # Lighter border
     "axes.linewidth": 0.8,
     "axes.labelcolor": INK,
@@ -47,7 +56,7 @@ mpl.rcParams.update({
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 def save(fig, name):
-    for ext in ("pdf", "png"):
+    for ext in ("svg", "pdf"):
         fig.savefig(os.path.join(HERE, f"{name}.{ext}"))
     plt.close(fig)
     print("wrote", name)
@@ -78,17 +87,23 @@ def sig_fire(t):
 def fig_signal_time():
     t = np.linspace(0, 5, 5*220)
     n, f = sig_normal(t), sig_fire(t)
+    # Etiketler yoğun dalga biçiminin üstüne düşüyor; okunabilmesi için
+    # yarı saydam beyaz zemin veriyoruz.
+    lblbox = dict(facecolor="white", alpha=0.78, edgecolor="none",
+                  boxstyle="round,pad=0.18")
     # Made wider and slightly shorter: 6.5 x 3.0
     fig, ax = plt.subplots(2, 1, figsize=(6.5, 3.0), sharex=True)
     ax[0].plot(t, n, color=GREEN, lw=1.2)
     ax[0].axhline(-2.9, color=MUT, lw=0.9, ls=(0, (4, 3)))
-    ax[0].text(4.98, -2.9, r"\,$\bar V=-2.9$", ha="right", va="bottom", color=MUT, fontsize=8)
+    ax[0].text(4.98, -2.9, r"$\bar V=-2.9$", ha="right", va="bottom",
+               color=MUT, fontsize=8, bbox=lblbox, zorder=5)
     ax[0].set_ylabel(r"$V\;[\mathrm{mV}]$")
     ax[0].set_title(r"\textbf{Normal (dinlenim)}\quad$f_{\mathrm{dom}}\!\approx\!20$ Hz",
                     color=INDIGO, fontsize=10, loc="left")
     ax[1].plot(t, f, color=EMBER, lw=1.2)
     ax[1].axhline(-33.4, color=EMBER, lw=0.9, ls=":")
-    ax[1].text(4.98, -33.4, r"\,$V_{\min}=-33.4$", ha="right", va="bottom", color=EMBER, fontsize=8)
+    ax[1].text(4.98, -33.4, r"$V_{\min}=-33.4$", ha="right", va="bottom",
+               color=EMBER, fontsize=8, bbox=lblbox, zorder=5)
     ax[1].set_ylabel(r"$V\;[\mathrm{mV}]$")
     ax[1].set_xlabel(r"$t\;[\mathrm{s}]$")
     ax[1].set_title(r"\textbf{Ate\c{s} stresi}\quad$f_{\mathrm{dom}}\!\approx\!5$ Hz",
@@ -150,7 +165,10 @@ def fig_heat():
     pm = axm.pcolormesh(tmin, z*100, field.T, cmap="YlOrRd", shading="auto",
                         vmin=20, vmax=180, rasterized=True)
     axm.axhline(17.5, color=INDIGO, lw=1.2, ls=(0, (5, 2)))
-    axm.text(1.5, 16.5, r"sens\"or yata\u{g}\i\;($17.5$ cm)", color=INDIGO, fontsize=8, va="bottom")
+    # Etiketi çizginin altına indir: va="bottom" iken yazı kesik çizgiyle
+    # üst üste biniyor ve okunmuyordu.
+    axm.text(2.0, 16.4, r"sens\"or yata\u{g}\i\;($17.5$ cm)", color=INDIGO,
+             fontsize=8, va="top", ha="left")
     axm.set_ylabel(r"Derinlik $z\;[\mathrm{cm}]$")
     axm.set_xlabel(r"Zaman $t\;[\mathrm{dk}]$")
     axm.set_title(r"\textbf{Is\i\ yay\i n\i m\i}\;\;$\partial_t T=\alpha\,\partial_z^2 T$",
@@ -373,8 +391,12 @@ def fig_architecture():
 # =============================================================================
 def fig_ai_pipeline():
     from matplotlib.patches import FancyBboxPatch
-    fig, ax = plt.subplots(figsize=(8.2, 3.8))
-    ax.set_xlim(-0.3, 8.5); ax.set_ylim(-1.0, 3.2)
+    # Eski hâlde ylim üst sınırı 3.2 idi ama kutular y=1.6'da bitiyordu:
+    # şeklin üst %38'i boştu. Sınırı içeriğe oturtup figür yüksekliğini de
+    # aynı oranda kısıyoruz — böylece kutu en-boy oranı korunuyor, yalnızca
+    # boşluk gidiyor (birim başına inç sabit: 4.2/3.8 ~ 2.8/2.53).
+    fig, ax = plt.subplots(figsize=(8.2, 2.53))
+    ax.set_xlim(-0.25, 8.15); ax.set_ylim(-1.0, 1.8)
     ax.axis('off')
     steps = [
         (r"\textbf{01}", r"Ofset"+"\n"+r"Kalibrasyon", r"$\bar{x}_{50}$ DC "+r"\"o"+r"teleme", GREEN),

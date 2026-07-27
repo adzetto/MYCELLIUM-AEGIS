@@ -5,95 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mycellium-Aegis — TÜBİTAK 1812 BİGG Sunumu</title>
 <style>
+/* Yerel yazı tipleri — sunum internetsiz salonda da aynı görünür. */
+@font-face{font-family:'IBM Plex Sans';font-weight:300;font-display:swap;src:url('fonts/IBMPlexSans-Light.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Sans';font-weight:400;font-display:swap;src:url('fonts/IBMPlexSans-Regular.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Sans';font-weight:500;font-display:swap;src:url('fonts/IBMPlexSans-Medium.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Sans';font-weight:600;font-display:swap;src:url('fonts/IBMPlexSans-SemiBold.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Sans';font-weight:700;font-display:swap;src:url('fonts/IBMPlexSans-Bold.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Mono';font-weight:400;font-display:swap;src:url('fonts/IBMPlexMono-Regular.ttf') format('truetype')}
+@font-face{font-family:'IBM Plex Mono';font-weight:700;font-display:swap;src:url('fonts/IBMPlexMono-Bold.ttf') format('truetype')}
+/* Şekiller LaTeX ile Computer Modern'de dizildi; serif aksanlar da aynı ailede. */
+@font-face{font-family:'CMU Serif';font-weight:400;font-display:swap;src:url('fonts/CMUSerif-Roman.otf') format('opentype')}
+@font-face{font-family:'CMU Serif';font-weight:400;font-style:italic;font-display:swap;src:url('fonts/CMUSerif-Italic.otf') format('opentype')}
+@font-face{font-family:'CMU Serif';font-weight:700;font-display:swap;src:url('fonts/CMUSerif-Bold.otf') format('opentype')}
 /* ============================================================
-   MYCELLIUM-AEGIS · Pitch Deck (Ultra Minimal, Elegant)
-   No Bold Face, LaTeX Booktabs style, Maximum use of space
+   MYCELLIUM-AEGIS · Pitch Deck v2
+   Sabit 1920x1080 tasarım tuvali + otomatik ekrana ölçekleme.
+   Aynı kimlik (teal/antrasit, IBM Plex, booktabs tablo), daha
+   büyük görseller, canlı miselyum-ağı arkaplan animasyonu.
    ============================================================ */
-@font-face{font-family:'IBM Plex Sans';font-weight:300;src:url('fonts/IBMPlexSans-Light.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Sans';font-weight:400;src:url('fonts/IBMPlexSans-Regular.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Mono';font-weight:300;src:url('fonts/IBMPlexMono-Light.ttf') format('truetype')}
-@font-face{font-family:'IBM Plex Mono';font-weight:400;src:url('fonts/IBMPlexMono-Regular.ttf') format('truetype')}
-@font-face{font-family:'CMU Serif';font-weight:400;src:url('fonts/CMUSerif-Roman.otf') format('opentype')}
-@font-face{font-family:'CMU Serif';font-weight:400;font-style:italic;src:url('fonts/CMUSerif-Italic.otf') format('opentype')}
 
 :root{
-  --bg: #FCFCFC;
-  --bg-subtle: #F4F4F5;
-  --text: #3F3F46;
-  --text-muted: #52525B;
-  --text-light: #A1A1AA;
-  --border: #D4D4D8;
-  
-  --primary: #27272A; /* Slate/Charcoal */
-  --accent: #0D9488;  /* Elegant Teal */
-  --warn: #D97706;    /* Amber */
+  --bg:#FBFBF9;
+  --bg-subtle:#F1F3EF;
+  --bg-card:#FFFFFF;
 
-  --f-display: 'IBM Plex Sans', system-ui, sans-serif;
-  --f-body: 'IBM Plex Sans', system-ui, sans-serif;
-  --f-mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --f-serif: 'CMU Serif', 'Georgia', serif;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ink:#1E2622;
+  --ink-soft:#48534C;
+  --muted:#727C75;
+  --faint:#A6AEA7;
+  --line:#DEE2DA;
+  --line-strong:#1E2622;
+
+  --accent:#0E8F76;
+  --accent-deep:#0A6C59;
+  --accent-soft:rgba(14,143,118,.09);
+  --ember:#C1670E;
+  --ember-soft:rgba(193,103,14,.09);
+
+  --f-display:'IBM Plex Sans',system-ui,sans-serif;
+  --f-body:'IBM Plex Sans',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --f-serif:'CMU Serif','Georgia',serif;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --ease-soft:cubic-bezier(0.16,1,0.3,1);
+
+  --W:1920px;
+  --H:1080px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  font-family:var(--f-body);
-  font-weight:300;
-  background:var(--bg);
-  color:var(--text);
-  overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  font-size: 1.15rem; 
+  font-family:var(--f-body);font-weight:300;background:var(--ink);color:var(--ink);
+  overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
-::selection{background:var(--accent);color:var(--bg)}
+::selection{background:var(--accent);color:#fff}
 
-.myco-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background: radial-gradient(circle at top left, #FFFFFF 0%, #F5F5F5 100%);
+/* ---------------- ambient background ---------------- */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(circle at 14% 10%,#FFFFFF 0%,#F4F5F1 46%,#EEF0EA 100%);
 }
-.myco-bg svg{position:absolute;inset:0;width:100%;height:100%;opacity:0.15}
-.hypha{fill:none;stroke:var(--accent);stroke-linecap:round}
-.node{fill:var(--accent);opacity:0.2}
+.bg-layer svg{position:absolute;inset:0;width:100%;height:100%}
+.hypha{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-width:1.3;opacity:.22}
+.hypha.alt{stroke:var(--ink-soft);opacity:.10}
+.myco-node{fill:var(--accent);opacity:.28}
+.myco-pulse{fill:var(--accent);opacity:0}
 
-/* ---- stage & slides ---- */
-.stage{position:relative;z-index:1;height:100vh;width:100vw}
+@keyframes pulseFade{
+  0%{opacity:0;r:2.2}
+  12%{opacity:.9;r:4.4}
+  100%{opacity:0;r:5.5}
+}
+.myco-pulse{animation:pulseFade 5.4s ease-in-out infinite}
+
+/* ---------------- deck scaffold ---------------- */
+.deck{position:fixed;left:0;right:0;top:0;bottom:44px;z-index:1;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.stage{position:relative;width:var(--W);height:var(--H);flex-shrink:0;
+  transform:scale(var(--scale,1));transform-origin:center center;}
+
 .slide{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  justify-content:flex-start; 
-  padding:clamp(3rem,6vw,5rem) clamp(3rem,8vw,6rem);
-  opacity:0;visibility:hidden;transform:translateY(12px);
-  transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s;
-  overflow-y:auto;overflow-x:hidden;
+  position:absolute;inset:0;width:var(--W);height:var(--H);
+  display:flex;flex-direction:column;background:var(--bg);
+  padding:78px 112px 58px;overflow:hidden;
+  opacity:0;visibility:hidden;transform:translateY(22px) scale(.985);
+  transition:opacity .65s var(--ease),transform .65s var(--ease),visibility 0s linear .65s;
 }
-.slide.active{opacity:1;visibility:visible;transform:none}
-.inner{width:100%;max-width:1400px;margin:0 auto;flex-grow:1;display:flex;flex-direction:column}
-
-/* ---- typography & chrome (No Bolds) ---- */
-.eyebrow{
-  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;
-  text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;
-  gap:0.75rem;margin-bottom:2.5rem; font-weight: 300;
+.slide.active{
+  opacity:1;visibility:visible;transform:none;
+  transition:opacity .75s var(--ease-soft),transform .75s var(--ease-soft);
 }
-.eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
-
-h1.title{
-  font-family:var(--f-display);font-weight:300;line-height:1.1;
-  letter-spacing:-0.01em;font-size:clamp(2.5rem,5vw,4.2rem);
-  margin-bottom:1.5rem;color:var(--primary);
-}
-.lead{
-  font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.6;color:var(--text-muted);
-  max-width:70ch;font-weight:300; margin-bottom: 2rem;
-}
-
-.accent{color:var(--accent)}
-.warn{color:var(--warn)}
-.data{font-family:var(--f-mono);color:var(--primary);font-weight:300; font-size:1.1em;}
-.serif{font-family:var(--f-serif)}
-.math{font-family:var(--f-serif);font-style:italic;color:var(--primary)}
+.inner{width:100%;max-width:1750px;margin:0 auto;flex-grow:1;display:flex;flex-direction:column;min-height:0}
 
 /* reveal stagger */
-.reveal{opacity:0;transform:translateY(12px);transition:.6s var(--ease)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .slide.active .reveal{opacity:1;transform:none}
 .slide.active .reveal:nth-child(1){transition-delay:.05s}
 .slide.active .reveal:nth-child(2){transition-delay:.15s}
@@ -102,236 +106,241 @@ h1.title{
 .slide.active .reveal:nth-child(5){transition-delay:.45s}
 .slide.active .reveal:nth-child(6){transition-delay:.55s}
 
-/* ---- layout grids ---- */
-.grid{display:grid;gap:clamp(2rem,4vw,4rem); width:100%;}
+/* ---------------- typography & chrome ---------------- */
+.eyebrow{
+  font-family:var(--f-mono);font-size:16px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);display:flex;align-items:center;
+  gap:14px;margin-bottom:34px;font-weight:400;
+}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);flex-shrink:0}
+
+h1.title{
+  font-family:var(--f-display);font-weight:300;line-height:1.12;
+  letter-spacing:-.01em;font-size:58px;margin-bottom:28px;color:var(--ink);
+}
+.lead{
+  font-size:25px;line-height:1.6;color:var(--ink-soft);max-width:74ch;font-weight:300;margin-bottom:20px;
+}
+.accent{color:var(--accent)}
+.warn{color:var(--ember)}
+.data{font-family:var(--f-mono);color:var(--ink);font-weight:400;font-size:1.05em}
+.serif{font-family:var(--f-serif)}
+.math{font-family:var(--f-serif);font-style:italic;color:var(--ink)}
+
+/* ---------------- layout grids ---------------- */
+.grid{display:grid;gap:56px;width:100%;min-height:0}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g2{grid-template-columns:1fr 1fr}
-.g-problem{grid-template-columns:1.6fr 1fr} /* specifically for problem slide */
-.g-wide{grid-template-columns:1fr 1.3fr} /* For diagrams requiring more space */
+.g-problem{grid-template-columns:1.55fr 1fr}
+.g-wide{grid-template-columns:1fr 1.25fr}
 
-/* Clean text blocks */
-.block{
-  position:relative;
-  padding-left:1.8rem;
-  border-left:1px solid var(--border);
-}
-.block h3{
-  font-family:var(--f-display);font-weight:300;font-size:1.6rem;
-  margin-bottom:0.8rem;color:var(--primary);letter-spacing:0;
-}
-.block p{
-  font-size:1.2rem;line-height:1.65;color:var(--text-muted);font-weight:300;
-}
+.block{position:relative;padding-left:26px;border-left:1px solid var(--line)}
+.block.hi{border-left-color:var(--accent)}
+.block h3{font-family:var(--f-display);font-weight:400;font-size:26px;margin-bottom:12px;color:var(--ink)}
+.block p{font-size:19px;line-height:1.62;color:var(--ink-soft);font-weight:300}
 
-/* Elegant numeric index for Problem slide */
-.num-ix{
-  font-family:var(--f-serif);
-  font-size:3.5rem;
-  color:var(--border);
-  line-height:1;
-  margin-bottom:0.5rem;
-  display:block;
-  font-weight:400;
-}
-.block:hover .num-ix { color: var(--accent); transition: color 0.3s ease; }
+.num-ix{font-family:var(--f-serif);font-size:50px;color:var(--line);line-height:1;
+  margin-bottom:8px;display:block;font-weight:400;transition:color .3s var(--ease)}
+.block:hover .num-ix{color:var(--accent)}
 
-.chip{
-  display:inline-flex;align-items:center;gap:0.5rem;
-  font-family:var(--f-mono);font-size:1rem;letter-spacing:0.02em;
-  background:transparent;border:1px solid var(--border);
-  color:var(--text-muted);padding:0.5rem 1rem;border-radius:4px;font-weight:300;
-}
-.chip.hi{color:var(--accent);border-color:var(--accent);}
-.chip.amb{color:var(--warn);border-color:var(--warn);}
-.chips{display:flex;flex-wrap:wrap;gap:0.8rem; margin-top: 1.5rem;}
+.chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);
+  font-size:16px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);
+  padding:9px 16px;border-radius:5px;font-weight:400;transition:border-color .25s var(--ease),transform .25s var(--ease);}
+.chip:hover{transform:translateY(-2px)}
+.chip.hi{color:var(--accent-deep);border-color:var(--accent)}
+.chip.amb{color:var(--ember);border-color:var(--ember)}
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
 
-/* stat tiles */
-.stat{
-  font-family:var(--f-display);font-weight:300;letter-spacing:-0.02em;
-  line-height:1;font-size:clamp(2.5rem,4vw,3.8rem);color:var(--primary);
-}
-.stat .u{font-size:0.4em;color:var(--text-light);font-weight:300;margin-left:0.3em}
-.tile-lbl{
-  font-family:var(--f-mono);font-size:0.9rem;letter-spacing:0.05em;
-  text-transform:uppercase;color:var(--text-muted);margin-top:0.8rem;font-weight:300;
-}
+.stat{font-family:var(--f-display);font-weight:300;letter-spacing:-.02em;line-height:1;
+  font-size:62px;color:var(--ink)}
+.stat .u{font-size:.4em;color:var(--faint);font-weight:300;margin-left:.25em}
+.tile-lbl{font-family:var(--f-mono);font-size:15px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin-top:12px;font-weight:400}
 
-/* minimalist lists */
-ul.clean{list-style:none;display:flex;flex-direction:column;gap:1.2rem}
-ul.clean li{
-  position:relative;padding-left:1.8rem;font-size:1.2rem;
-  line-height:1.6;color:var(--text-muted);font-weight:300;
-}
-ul.clean li::before{
-  content:"—";position:absolute;left:0;color:var(--accent);font-weight:300;
-}
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:18px}
+ul.clean li{position:relative;padding-left:26px;font-size:19px;line-height:1.58;color:var(--ink-soft);font-weight:300}
+ul.clean li::before{content:"—";position:absolute;left:0;color:var(--accent);font-weight:400}
+ul.clean li b{color:var(--ink);font-weight:500}
+/* Yatay dizilen liste: mutlak konumlu tire metnin üstüne binip üstünü çizik
+   gösteriyordu — satır içine alıp payı sıfırlıyoruz. */
+ul.clean.inline{flex-direction:row;justify-content:center;flex-wrap:wrap}
+ul.clean.inline li{padding-left:0}
+ul.clean.inline li::before{position:static;margin-right:9px}
 
-/* Citations & Footnotes */
-.ref{font-family:var(--f-mono);font-size:0.7em;vertical-align:super;color:var(--accent);cursor:default;}
-.footnotes{
-  position:absolute; bottom: 1.5rem; left: clamp(3rem,8vw,6rem);
-  font-family: var(--f-mono); font-size: 0.85rem; color: var(--text-light);
-  font-weight:300;
-}
-.footnotes span { margin-right: 1.5rem; }
+.ref{font-family:var(--f-mono);font-size:.68em;vertical-align:super;color:var(--accent)}
+.footnotes{position:absolute;bottom:22px;left:112px;font-family:var(--f-mono);font-size:14px;
+  color:var(--faint);font-weight:400;display:flex;gap:34px}
 
-/* LaTeX Booktabs style comparison table */
-.cmp{
-  width:100%;border-collapse:collapse;font-size:1.1rem;
-  margin-top: 1rem;
-  border-top: 2px solid var(--primary);
-  border-bottom: 2px solid var(--primary);
-}
-.cmp th,.cmp td{
-  text-align:left;padding:1.2rem 1rem;
-}
-.cmp thead th{
-  font-family:var(--f-serif);font-size:1.2rem;
-  color:var(--primary);font-weight:400;
-  border-bottom: 1px solid var(--primary);
-}
-.cmp tbody tr:not(:last-child) td, .cmp tbody tr:not(:last-child) th {
-  border-bottom: 1px solid var(--border);
-}
-.cmp tbody th{
-  font-weight:400;color:var(--primary);font-family:var(--f-body);
-}
-.cmp td.us{color:var(--accent);font-weight:400;}
-.cmp td.no{color:var(--text-muted);}
+/* booktabs-style comparison table */
+.cmp{width:100%;border-collapse:collapse;font-size:18px;margin-top:16px;
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.cmp th,.cmp td{text-align:left;padding:18px 16px}
+.cmp thead th{font-family:var(--f-serif);font-size:19px;color:var(--ink);font-weight:500;
+  border-bottom:1px solid var(--ink)}
+.cmp tbody tr{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.slide.active .cmp tbody tr{opacity:1;transform:none}
+.slide.active .cmp tbody tr:nth-child(1){transition-delay:.35s}
+.slide.active .cmp tbody tr:nth-child(2){transition-delay:.45s}
+.slide.active .cmp tbody tr:nth-child(3){transition-delay:.55s}
+.slide.active .cmp tbody tr:nth-child(4){transition-delay:.65s}
+.cmp tbody tr:not(:last-child) td,.cmp tbody tr:not(:last-child) th{border-bottom:1px solid var(--line)}
+.cmp tbody th{font-weight:500;color:var(--ink);font-family:var(--f-body)}
+.cmp td.us{color:var(--accent-deep);font-weight:500}
+.cmp td.no{color:var(--muted)}
 
-/* Cover */
-.cover{ justify-content: center; } 
-.cover .inner{max-width:100%; flex-grow:0;}
-.cover-title{
-  font-family:var(--f-display);font-weight:300;letter-spacing:-0.03em;
-  line-height:1;font-size:clamp(4rem,10vw,7.5rem);color:var(--primary);
-}
-.cover-sub{
-  font-family:var(--f-display);font-weight:300;
-  font-size:clamp(1.5rem,2.5vw,2rem);color:var(--text-muted);margin-top:1.5rem;
-  letter-spacing:-0.01em;max-width:32ch;line-height:1.5;
-}
-.cover-meta{
-  display:flex;flex-wrap:wrap;gap:4rem;margin-top:4rem;
-  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-light);
-}
-.cover-meta span.title{ display:block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em;}
-.cover-meta span.val{ color:var(--primary); font-family:var(--f-body); font-size:1.2rem; font-weight:300;}
+/* cover */
+.cover{justify-content:center}
+.cover .inner{max-width:100%;flex-grow:0}
+.cover-title{font-family:var(--f-display);font-weight:300;letter-spacing:-.03em;line-height:1;
+  font-size:132px;color:var(--ink)}
+.cover-sub{font-family:var(--f-display);font-weight:300;font-size:32px;color:var(--ink-soft);
+  margin-top:26px;letter-spacing:-.01em;max-width:34ch;line-height:1.5}
+.cover-meta{display:flex;flex-wrap:wrap;gap:64px;margin-top:64px;font-family:var(--f-mono);
+  font-size:15px;color:var(--faint)}
+.cover-meta span.title{display:block;margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em}
+.cover-meta span.val{color:var(--ink);font-family:var(--f-body);font-size:20px;font-weight:300}
 
 /* figures & imagery */
-.fig-wrap{display:flex;flex-direction:column;align-items:flex-start; width: 100%;}
-.fig-wrap img{
-  width:100%;max-height:55vh;object-fit:contain;display:block;
-}
-.figcap{
-  font-family:var(--f-mono);font-size:0.9rem;color:var(--text-muted);
-  margin-top:1rem;letter-spacing:0.02em;font-weight:300;
-}
-.caption-lbl{ font-weight:400; color:var(--primary); }
+.fig-wrap{display:flex;flex-direction:column;align-items:flex-start;width:100%}
+.fig-wrap img{width:100%;object-fit:contain;display:block;border-radius:3px}
+.figcap{font-family:var(--f-mono);font-size:15px;color:var(--ink-soft);margin-top:16px;
+  letter-spacing:.02em;font-weight:400;line-height:1.5}
+.caption-lbl{font-weight:500;color:var(--ink)}
 
-.photo-wrap{overflow:hidden; width: 100%;}
-.photo-wrap img{width:100%;max-height:50vh;object-fit:cover;display:block; border-radius: 4px;}
+.photo-wrap{overflow:hidden;width:100%;border-radius:6px;box-shadow:0 18px 50px -22px rgba(20,30,25,.35)}
+.photo-wrap img{width:100%;object-fit:cover;display:block}
 
-/* roadmap minimal */
-.road{display:grid;grid-template-columns:repeat(5,1fr);gap:2rem;position:relative; margin-top: 3rem;}
-.road::before{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:var(--border)}
-.milestone{position:relative;padding-top:32px}
-.milestone .dot{position:absolute;top:7px;left:0;width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.milestone .ip{font-family:var(--f-serif);font-size:1.2rem;color:var(--primary);font-weight:400;}
-.milestone .mo{font-family:var(--f-mono);font-size:0.85rem;color:var(--text-light);margin:0.4rem 0 1rem; font-weight:300;}
-.milestone h4{font-family:var(--f-display);font-size:1.25rem;font-weight:300;line-height:1.4;margin-bottom:0.8rem;color:var(--primary)}
-.milestone p{font-size:1.05rem;color:var(--text-muted);line-height:1.6; font-weight:300;}
-.trl{
-  display:inline-block;font-family:var(--f-mono);font-size:0.85rem;
-  color:var(--accent);border:1px solid var(--accent);border-radius:2px;
-  padding:0.3rem 0.6rem;margin-top:1rem;font-weight:300;
-}
+/* ---------------- sayısal ikiz gömme ---------------- */
+/* İkiz 1920x1080 masaüstü görünümü için tasarlandı. iframe'i o boyutta
+   oluşturup ölçekliyoruz; böylece slaytta tek başına açıldığı gibi görünür. */
+.twin-stage{position:relative;width:100%;flex:1;min-height:0;display:flex;
+  align-items:center;justify-content:center}
+.twin-frame{position:relative;width:1404px;height:790px;border:1px solid var(--line);
+  border-radius:8px;overflow:hidden;background:#fff;
+  box-shadow:0 26px 70px -30px rgba(20,30,25,.45)}
+.twin-frame iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;
+  transform:scale(.73125);transform-origin:top left;display:block}
+.twin-idle{position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;
+  align-items:center;justify-content:center;background:var(--bg-subtle);
+  font-family:var(--f-mono);font-size:16px;color:var(--muted);
+  transition:opacity .5s var(--ease)}
+.twin-frame.loaded .twin-idle{opacity:0;pointer-events:none}
+.twin-idle .spin{width:26px;height:26px;border:2px solid var(--line);
+  border-top-color:var(--accent);border-radius:50%;animation:twinspin 1s linear infinite}
+@keyframes twinspin{to{transform:rotate(360deg)}}
+.twin-open{font-family:var(--f-mono);font-size:15px;color:var(--accent-deep);
+  text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px}
+.twin-open:hover{color:var(--accent)}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative;margin-top:46px}
+.road::before{content:"";position:absolute;left:0;top:11px;height:1px;background:var(--accent);
+  width:0;transition:width 1.1s var(--ease-soft) .3s}
+.slide.active .road::before{width:100%}
+.milestone{position:relative;padding-top:40px;opacity:0;transform:translateY(12px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.slide.active .milestone{opacity:1;transform:none}
+.slide.active .milestone:nth-child(1){transition-delay:.35s}
+.slide.active .milestone:nth-child(2){transition-delay:.55s}
+.slide.active .milestone:nth-child(3){transition-delay:.75s}
+.slide.active .milestone:nth-child(4){transition-delay:.95s}
+.slide.active .milestone:nth-child(5){transition-delay:1.15s}
+.milestone .dot{position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.milestone .ip{font-family:var(--f-serif);font-size:19px;color:var(--ink);font-weight:500}
+.milestone .mo{font-family:var(--f-mono);font-size:14px;color:var(--faint);margin:6px 0 14px;font-weight:400}
+.milestone h4{font-family:var(--f-display);font-size:20px;font-weight:400;line-height:1.4;
+  margin-bottom:12px;color:var(--ink)}
+.milestone p{font-size:16.5px;color:var(--ink-soft);line-height:1.58;font-weight:300}
+.trl{display:inline-block;font-family:var(--f-mono);font-size:13.5px;color:var(--accent-deep);
+  border:1px solid var(--accent);border-radius:3px;padding:5px 10px;margin-top:14px;font-weight:400}
 
 /* team */
-.team{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5rem; margin-top: 2rem;}
-.member .role{
-  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.05em;
-  color:var(--accent);text-transform:uppercase;font-weight:300;
-}
-.member h4{
-  font-family:var(--f-display);font-weight:300;font-size:1.5rem;
-  margin:0.4rem 0 0.8rem;color:var(--primary);
-}
-.member p{font-size:1.1rem;color:var(--text-muted);line-height:1.6;font-weight:300;}
-.member .av{
-  width:100px;height:100px;border-radius:50%;margin-bottom:1.5rem;
-  background:var(--bg-subtle);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.member .av svg{width:40px;height:40px;fill:var(--text-light)}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:36px}
+.member{transition:transform .3s var(--ease)}
+.member:hover{transform:translateY(-4px)}
+.member .role{font-family:var(--f-mono);font-size:14px;letter-spacing:.06em;color:var(--accent-deep);
+  text-transform:uppercase;font-weight:400}
+.member h4{font-family:var(--f-display);font-weight:400;font-size:23px;margin:8px 0 12px;color:var(--ink)}
+.member p{font-size:17px;color:var(--ink-soft);line-height:1.58;font-weight:300}
+.member .av{width:104px;height:104px;border-radius:50%;margin-bottom:22px;background:var(--bg-subtle);
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.member:hover .av{border-color:var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
+.member .av svg{width:42px;height:42px;fill:var(--faint)}
 
-/* funnel minimal */
-.funnel{display:flex;flex-direction:column;gap:1.2rem; width: 100%;}
-.frow{display:flex;align-items:center;gap:1.5rem}
-.fbar{
-  height:48px;display:flex;align-items:center;
-  padding-left:1.5rem;font-family:var(--f-mono);font-weight:300;color:var(--bg);
-  font-size:1rem;letter-spacing:0.05em;
-}
-.fmeta{font-size:1.1rem;color:var(--primary);line-height:1.4;padding-left:2px; font-weight:300;}
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:20px;width:100%}
+.frow{display:flex;align-items:center;gap:20px}
+.fbar{height:56px;display:flex;align-items:center;padding-left:22px;font-family:var(--f-mono);
+  font-weight:400;color:#fff;font-size:17px;letter-spacing:.04em;border-radius:3px;
+  white-space:nowrap;overflow:hidden;
+  width:0!important;transition:width 1.1s var(--ease-soft)}
+.slide.active .fbar[data-w]{width:var(--tw)!important}
+.fmeta{font-size:17px;color:var(--ink);line-height:1.45;padding-left:2px;font-weight:300}
 
-/* footer chrome */
-.brand{
-  position:fixed;left:clamp(1.5rem,4vw,3rem);bottom:2rem;z-index:5;
-  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;color:var(--text-light);font-weight:300;
-}
-.brand span{color:var(--accent);margin-right:8px}
-.counter{
-  position:fixed;right:clamp(1.5rem,4vw,3rem);bottom:2rem;z-index:5;
-  font-family:var(--f-mono);font-size:0.85rem;letter-spacing:0.15em;color:var(--text-light);font-weight:300;
-}
-.counter em{color:var(--primary);font-style:normal;}
-.progress{
-  position:fixed;left:0;top:0;height:2px;background:var(--accent);
-  z-index:6;transition:width .5s var(--ease);width:0;
+/* footer chrome (outside scaled stage — always crisp) */
+.footerbar{position:fixed;left:0;right:0;bottom:0;height:44px;z-index:6;
+  display:flex;align-items:center;justify-content:space-between;padding:0 34px;
+  font-family:var(--f-mono);font-size:13px;letter-spacing:.12em;color:var(--faint);
+  background:var(--bg);border-top:1px solid var(--line)}
+.footerbar .brand{color:var(--faint)}
+.footerbar .brand span{color:var(--accent);margin-right:8px}
+.footerbar .hint{color:var(--faint);opacity:.85}
+.footerbar .counter em{color:var(--ink);font-style:normal}
+.progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:7;
+  transition:width .5s var(--ease);width:0}
+
+/* nav click zones (subtle corner arrows on hover) */
+.navzone{position:fixed;top:0;bottom:44px;width:9%;z-index:5;cursor:pointer;
+  display:flex;align-items:center;opacity:0;transition:opacity .25s var(--ease)}
+.navzone:hover{opacity:1}
+.navzone.left{left:0;justify-content:flex-start;padding-left:18px}
+.navzone.right{right:0;justify-content:flex-end;padding-right:18px}
+.navzone svg{width:30px;height:30px;stroke:var(--ink);opacity:.55}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 
-@media(max-width:820px){
-  body{overflow:auto}
-  .stage{height:auto}
-  .slide{position:relative;opacity:1;visibility:visible;transform:none;
-    min-height:100vh;overflow:visible;padding-top:6rem}
-  .g3,.g2,.g-problem,.g-wide,.team,.road{grid-template-columns:1fr}
-  .road::before{display:none}.milestone{padding-top:10px}
-  .milestone .dot{display:none}
-  .cover-title{font-size:clamp(3rem,12vw,5rem)}
-  .brand, .counter, .progress, .footnotes {display:none}
-}
+/* narrow-screen safety fallback (phones/tablets in portrait) */
+body.flow-mode{overflow:auto}
+body.flow-mode .deck{position:static;height:auto;display:block;bottom:0;padding-bottom:44px}
+body.flow-mode .stage{transform:none!important;width:100%;height:auto}
+body.flow-mode .slide{position:relative;width:100%;height:auto;min-height:100vh;
+  opacity:1;visibility:visible;transform:none;padding:64px 28px 48px}
+body.flow-mode .grid.g3,body.flow-mode .grid.g2,body.flow-mode .grid.g-problem,
+body.flow-mode .grid.g-wide,body.flow-mode .team,body.flow-mode .road{grid-template-columns:1fr}
+body.flow-mode .road::before{display:none}
+body.flow-mode .milestone{padding-top:14px}
+body.flow-mode .milestone .dot{display:none}
+body.flow-mode .cover-title{font-size:64px}
+body.flow-mode .navzone{display:none}
+body.flow-mode .footnotes{position:relative;left:0;bottom:0;margin-top:24px;flex-direction:column;gap:8px}
 </style>
 </head>
 <body>
 
-<div class="myco-bg">
-  <svg id="myco" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-</div>
+<div class="bg-layer"><svg id="myco" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
 
-<main class="stage" id="stage">
+<div class="navzone left" id="navL"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></div>
+<div class="navzone right" id="navR"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg></div>
+
+<div class="deck" id="deck">
+<div class="stage" id="stage">
 
   <!-- 01 COVER -->
   <section class="slide cover active">
-    <div class="inner" style="justify-content:center;">
-      <div class="eyebrow reveal">TÜBİTAK 1812 · BİGG · AGY-112 İŞ PLANI</div>
+    <div class="inner" style="justify-content:center">
+      <div class="eyebrow reveal"><span class="dot"></span>TÜBİTAK 1812 · BİGG · AGY-112 İŞ PLANI</div>
       <h1 class="cover-title reveal">Mycellium-Aegis</h1>
       <div class="cover-sub reveal">Orman kendi yangınını, daha duman çıkmadan haber versin.</div>
       <div class="cover-meta reveal">
-        <div>
-          <span class="title">Ürün</span>
-          <span class="val">Miselyum tabanlı biyo-hibrit uyarı sistemi</span>
-        </div>
-        <div>
-          <span class="title">Ekip</span>
-          <span class="val">Çetin · Yağcıoğlu · Ünal · Göçlü</span>
-        </div>
-        <div>
-          <span class="title">Ekosistem</span>
-          <span class="val">İzmir Yüksek Teknoloji Enstitüsü</span>
-        </div>
+        <div><span class="title">Ürün</span><span class="val">Miselyum tabanlı biyo-hibrit uyarı sistemi</span></div>
+        <div><span class="title">Ekip</span><span class="val">Çetin · Yağcıoğlu · Ünal · Göçlü</span></div>
+        <div><span class="title">Ekosistem</span><span class="val">İzmir Yüksek Teknoloji Enstitüsü</span></div>
       </div>
     </div>
   </section>
@@ -340,20 +349,20 @@ ul.clean li::before{
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">00 · NE YAPIYORUZ</div>
-      <h1 class="title reveal" style="max-width:24ch">
+      <h1 class="title reveal" style="max-width:23ch">
         Ormanın <span class="accent">biyolojik ağını</span> canlı bir sensöre dönüştürüyoruz.
       </h1>
-      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
-        <div style="max-width: 1200px;">
-          <p class="lead" style="text-align: center; margin-bottom: 0;">
-            Saha çalışmalarımızda hep aynı sorunu gördük: Sistemler alevi görmeden harekete geçemiyor. 
+      <div class="reveal" style="margin-top:14px;display:flex;flex-direction:column;gap:26px;align-items:center;flex:1;min-height:0">
+        <div style="max-width:1250px">
+          <p class="lead" style="text-align:center;margin-bottom:0">
+            Saha çalışmalarımızda hep aynı sorunu gördük: Sistemler alevi görmeden harekete geçemiyor.
             Toprak altındaki mantar ağı ısıya anında tepki verir. Bu sinyali duman çıkmadan yakalıyoruz.
           </p>
         </div>
-        <div class="photo-wrap" style="width: 100%; max-width: 1200px; text-align: center;">
-          <img src="../media/teraryum.png" alt="Mycellium-Aegis sistem mimarisi" loading="lazy" style="max-height: 60vh; object-fit: contain; margin: 0 auto; width: 100%;">
-          <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Biyoelektrotlu prototip teraryum düzeneği ve sistem bileşenleri.</div>
+        <div class="photo-wrap" style="width:100%;max-width:980px;text-align:center;flex:1;min-height:0;display:flex;align-items:center;justify-content:center">
+          <img src="figures/ilk.jpeg" alt="Mycellium-Aegis sistem mimarisi" loading="lazy" style="max-height:520px;object-fit:contain;margin:0 auto;width:auto;max-width:100%">
         </div>
+        <div class="figcap"><span class="caption-lbl">Şekil 1:</span> Biyoelektrotlu prototip teraryum düzeneği ve sistem bileşenleri.</div>
       </div>
     </div>
   </section>
@@ -363,8 +372,8 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">01 · PROBLEM</div>
       <h1 class="title reveal">Bugünün sistemleri <span class="warn">görüş hattına</span> mahkûm.</h1>
-      <div class="grid g-problem reveal" style="margin-top:2.5rem">
-        <div class="grid" style="gap:3.5rem">
+      <div class="grid reveal" style="grid-template-columns:0.85fr 1.35fr;gap:40px;margin-top:30px;flex:1;min-height:0;align-items:center">
+        <div class="grid" style="gap:30px">
           <div class="block">
             <span class="num-ix">01</span>
             <h3>Görüntü İşleme Yetersizliği</h3>
@@ -375,15 +384,15 @@ ul.clean li::before{
             <h3>45–90 Dakika Kayıp</h3>
             <p>Gaz sensörleri rüzgârın dumanı taşımasını bekler, müdahale oldukça gecikir<span class="ref">[1]</span>.</p>
           </div>
-          <div class="block" style="border-left-color: var(--warn);">
-            <span class="num-ix" style="color:var(--warn);">03</span>
+          <div class="block" style="border-left-color:var(--ember)">
+            <span class="num-ix" style="color:var(--ember)">03</span>
             <h3>Ormana Bırakılan Çöp</h3>
             <p>Pil ve plastik tabanlı elektronikler hızla korozyona uğrayıp atıklaşır.</p>
           </div>
         </div>
-        <div class="photo-wrap" style="align-self: center;">
-          <img src="../media/3.jpg" alt="İzmir orman yangınları haritası" loading="lazy">
-          <div class="figcap"><span class="caption-lbl">Şekil 2:</span> İzmir 2025 Yangın Verisi (26.260 ha kayıp)<span class="ref">[2]</span></div>
+        <div class="fig-wrap" style="align-items:center">
+          <img src="figures/yangin.jpg" alt="İzmir orman yangınları haritası" loading="lazy" style="max-height:720px;width:auto;max-width:100%;object-fit:contain;margin:0 auto;border-radius:6px;box-shadow:0 18px 50px -22px rgba(20,30,25,.35)">
+          <div class="figcap" style="text-align:center;width:100%"><span class="caption-lbl">Şekil 2:</span> İzmir 2025 Yangın Verisi (26.260 ha kayıp)<span class="ref">[2]</span></div>
         </div>
       </div>
     </div>
@@ -399,55 +408,53 @@ ul.clean li::before{
       <div class="eyebrow reveal">02 · BİLİMSEL TEMEL</div>
       <h1 class="title reveal">Trilyonlarca metrelik sensör ağı: <span class="accent">Wood Wide Web</span></h1>
       <p class="lead reveal">
-        Biz yeni bir altyapı kurmuyoruz. Ağaçları birbirine bağlayan miselyum ağının, 
-        ısı şokunda ürettiği <span class="primary">aksiyon potansiyellerini</span> dinliyoruz.
+        Biz yeni bir altyapı kurmuyoruz. Ağaçları birbirine bağlayan miselyum ağının,
+        ısı şokunda ürettiği <span class="serif">aksiyon potansiyellerini</span> dinliyoruz.
       </p>
-      
-      <div class="grid g2 reveal" style="margin-top:2.5rem; align-items: start;">
+      <div class="grid g2 reveal" style="margin-top:30px;align-items:start;flex:1;min-height:0">
         <div class="fig-wrap">
-          <img src="figures/heat_diffusion.png" alt="Toprakta Isı Yayılımı Modeli" style="max-height: 40vh;">
-          <div class="figcap"><span class="caption-lbl">Şekil 3:</span> Toprakta ısı yayılım modeli ve türev tabanlı ivme (<span class="math">dT/dt > &beta;</span>) tahmini<span class="ref">[3]</span>.</div>
+          <img src="figures/heat_diffusion.svg" alt="Toprakta Isı Yayılımı Modeli">
+          <div class="figcap"><span class="caption-lbl">Şekil 3:</span> Toprakta ısı yayılım modeli ve türev tabanlı ivme (<span class="math">dT/dt &gt; &beta;</span>) tahmini<span class="ref">[3]</span>.</div>
         </div>
         <div>
-          <div class="fig-wrap" style="margin-bottom: 2rem;">
-            <img src="figures/signal_time.png" alt="Biyoelektrik sinyal: normal vs ateş stresi" style="max-height: 25vh;">
+          <div class="fig-wrap" style="margin-bottom:24px">
+            <img src="figures/signal_time.svg" alt="Biyoelektrik sinyal: normal vs ateş stresi">
             <div class="figcap"><span class="caption-lbl">Şekil 4:</span> <i>P. ostreatus</i> üzerinde ölçülen ateş stresi aksiyon potansiyelleri.</div>
           </div>
           <div class="chips">
-            <span class="chip"><span class="math">0.5–5 Hz</span> spesifik bant aralığı</span>
-            <span class="chip"><span class="math">5–50 mV</span> aksiyon genliği</span>
-            <span class="chip amb"><span class="math">−33.4 mV</span> alt eşik imzası</span>
+            <span class="chip"><span class="math">0.5–5 Hz</span>&nbsp;spesifik bant aralığı</span>
+            <span class="chip"><span class="math">5–50 mV</span>&nbsp;aksiyon genliği</span>
+            <span class="chip amb"><span class="math">−33.4 mV</span>&nbsp;alt eşik imzası</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="footnotes">
-      <span>[3] 1-B Geçiçi Isı İletim Denklemi (Transient Heat Conduction Equation).</span>
-    </div>
+    <div class="footnotes"><span>[3] 1-B Geçici Isı İletim Denklemi (Transient Heat Conduction Equation).</span></div>
   </section>
 
-  <!-- 05 DONANIM 1 (MİMARİ) -->
+  <!-- 05 DONANIM 1 (MATERYAL) -->
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">03.1 · TEKNOLOJİ · DONANIM (MATERYAL)</div>
-      <h1 class="title reveal">Doğayla bütünleşen <span class="accent">Korozyonsuz</span> Kök-Elektrot</h1>
-      <div class="grid g2 reveal" style="margin-top:3rem">
+      <h1 class="title reveal">Doğayla bütünleşen <span class="accent">korozyonsuz</span> kök-elektrot</h1>
+      <div class="grid g2 reveal" style="margin-top:38px;flex:1;min-height:0;align-items:center">
         <div class="block hi">
           <h3>Biyomimetik Üç Katmanlı Tasarım</h3>
-          <p style="margin-bottom: 2rem;">
-            Orman zemininde plastik kılıflı metal kablolar aylar içinde oksitlenir. 
-            Çözümümüz; çelik çekirdek, iletken grafit matris ve sodyum aljinat hidrojelden oluşan 
+          <p style="margin-bottom:22px">
+            Orman zemininde plastik kılıflı metal kablolar aylar içinde oksitlenir.
+            Çözümümüz; çelik çekirdek, iletken grafit matris ve sodyum aljinat hidrojelden oluşan
             paslanmaz ve mantar ağını kendine çeken biyo-uyumlu elektrottur.
           </p>
           <ul class="clean">
-            <li>Sodyum Aljinat Hidrojel: Canlı dokuyu simüle eder.</li>
-            <li>İletken Grafit Matris: Korozyonu önler, empedansı düşürür.</li>
-            <li>316L Çelik Çekirdek: Fiziksel dayanım ve yeraltı penetrasyonu.</li>
+            <li><b>Sodyum Aljinat Hidrojel:</b> Canlı dokuyu simüle eder.</li>
+            <li><b>İletken Grafit Matris:</b> Korozyonu önler, empedansı düşürür.</li>
+            <li><b>316L Çelik Çekirdek:</b> Fiziksel dayanım ve yeraltı penetrasyonu.</li>
           </ul>
         </div>
-        <div class="fig-wrap">
-          <img src="figures/electrode_cross_section.png" alt="Kök-elektrot kesiti" style="width:100%;margin: 0 auto;">
-          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 5:</span> Geliştirilen üç katmanlı biyomimetik elektrot kesiti.</div>
+        <div class="fig-wrap" style="align-items:center">
+          <!-- Görselin içinde zaten "Şekil 5" başlığı gömülü; ikinci bir
+               HTML altyazısı çift görünüyordu, o yüzden kaldırıldı. -->
+          <img src="figures/elektrod.jpeg" alt="Kök-elektrot kesiti: sodyum aljinat hidrojel, gözenekli grafit matris ve 316L paslanmaz çelik çekirdek" style="max-height:620px;width:auto;max-width:100%;margin:0 auto;border-radius:6px;box-shadow:0 18px 50px -22px rgba(20,30,25,.35)">
         </div>
       </div>
     </div>
@@ -457,23 +464,17 @@ ul.clean li::before{
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">03.2 · TEKNOLOJİ · DONANIM (ELEKTRONİK AĞ)</div>
-      <h1 class="title reveal">Toprak altından buluta: <span class="accent">Mesh Gateway Mimari</span></h1>
-      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 2rem; align-items: center;">
-        <div class="block" style="max-width: 1000px;">
-          <p style="margin-bottom: 1.5rem; font-size: 1.2rem; text-align: center;">
-            Biyoelektrik sinyaller yüksek hassasiyetli 16-bit ADC (ADS1115) ile dijitalleştirilir 
-            ve mikrodenetleyici (ESP32) üzerinde ön işleme tabi tutulur. 
-            Veriler, orman örtüsünü aşabilen Sub-GHz LoRaWAN ağı ile merkeze iletilir.
+      <h1 class="title reveal">Toprak altından buluta: <span class="accent">mesh gateway mimari</span></h1>
+      <div class="reveal" style="margin-top:16px;display:flex;flex-direction:column;gap:20px;align-items:center;flex:1;min-height:0">
+        <div class="block" style="max-width:1250px;border:none;padding-left:0">
+          <p style="margin-bottom:14px;font-size:18px;text-align:center;color:var(--ink-soft);line-height:1.5">
+            Biyoelektrik sinyaller yüksek hassasiyetli ADC ile dijitalleştirilir ve mikrodenetleyici üzerinde ön işleme tabi tutulur.
+            Veriler, orman örtüsünü aşabilen Sub-GHz LoRaWAN ağı ile merkez kuleye, oradan hücresel bağlantıyla buluta iletilir.
           </p>
-          <ul class="clean" style="flex-direction: row; justify-content: center; gap: 3rem;">
-            <li><b>Uçta İşlem (Edge Computing)</b></li>
-            <li><b>LoRaWAN 868 MHz</b></li>
-            <li><b>Enerji Verimliliği</b></li>
-          </ul>
         </div>
-        <div class="fig-wrap" style="width: 100%; max-width: 1200px;">
-          <img src="figures/system_architecture.png" alt="Sistem Mimarisi" style="width:100%; max-height: none;">
-          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 6:</span> Teraryumdan bulut SaaS paneline tam yığın (full-stack) haberleşme mimarisi.</div>
+        <div class="fig-wrap" style="width:100%;max-width:1700px;flex:1;min-height:0;justify-content:center;align-items:center">
+          <img src="figures/donanim.jpeg" alt="Elektronik donanım" style="max-width:100%;max-height:640px;width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 18px 50px -22px rgba(20,30,25,.35)">
+          <div class="figcap" style="text-align:center;width:100%;margin-top:12px"><span class="caption-lbl">Şekil 6:</span> Sensör düğümü ve mesh gateway elektronik donanımı — üretilmiş prototip.</div>
         </div>
       </div>
     </div>
@@ -483,22 +484,22 @@ ul.clean li::before{
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">03.3 · TEKNOLOJİ · YAPAY ZEKA (SİNYAL İŞLEME)</div>
-      <h1 class="title reveal">Saf Gürültüden <span class="accent">Öznitelik</span> Çıkarımı</h1>
-      <div class="reveal" style="margin-top:2rem; display: flex; flex-direction: column; gap: 2rem; align-items: center;">
-        <div class="block hi" style="max-width: 1000px;">
-          <p style="margin-bottom: 1.5rem; font-size: 1.2rem; text-align: center;">
-            Doğal ortamdaki toprak empedansı ve nem dalgalanmaları sinyali kirletir. 
+      <h1 class="title reveal">Saf gürültüden <span class="accent">öznitelik</span> çıkarımı</h1>
+      <div class="reveal" style="margin-top:20px;display:flex;flex-direction:column;gap:30px;align-items:center;flex:1;min-height:0">
+        <div class="block hi" style="max-width:1150px">
+          <p style="margin-bottom:22px;font-size:20px;text-align:center;color:var(--ink-soft)">
+            Doğal ortamdaki toprak empedansı ve nem dalgalanmaları sinyali kirletir.
             Ham DC gerilim üzerinden 5-tap FIR filtresi geçirilerek çevresel parazitler sönümlenir.
           </p>
-          <ul class="clean" style="flex-direction: row; justify-content: center; gap: 3rem;">
-            <li>DC offset kalibrasyonu (<span class="math">x̄_50</span>)</li>
+          <ul class="clean inline" style="gap:48px">
+            <li>DC offset kalibrasyonu (<span class="math">x̄₅₀</span>)</li>
             <li>FFT ile frekans domeni</li>
             <li>Dominant frekans tespiti</li>
           </ul>
         </div>
-        <div class="fig-wrap" style="width: 100%; max-width: 1200px;">
-          <img src="figures/ai_pipeline.png" alt="Sinyal işleme boru hattı" style="width:100%; max-height: none;">
-          <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 7:</span> Sensör donanımından karar mekanizmasına uzanan uçtan uca (end-to-end) işleme hattı.</div>
+        <div class="fig-wrap" style="width:100%;max-width:1650px;flex:1;min-height:0;justify-content:center">
+          <img src="figures/ai_pipeline.svg" alt="Sinyal işleme boru hattı">
+          <div class="figcap" style="text-align:center;width:100%"><span class="caption-lbl">Şekil 7:</span> Sensör donanımından karar mekanizmasına uzanan uçtan uca (end-to-end) işleme hattı.</div>
         </div>
       </div>
     </div>
@@ -508,26 +509,27 @@ ul.clean li::before{
   <section class="slide">
     <div class="inner">
       <div class="eyebrow reveal">03.4 · TEKNOLOJİ · YAPAY ZEKA (KARAR MODELİ)</div>
-      <h1 class="title reveal">Sensör Füzyonu ile <span class="warn">&lt; %1 Yanlış Alarm</span></h1>
-      <div class="grid g2 reveal" style="margin-top:3rem">
+      <h1 class="title reveal">Sensör füzyonu ile <span class="warn">&lt; %1 yanlış alarm</span></h1>
+      <div class="grid g2 reveal" style="margin-top:32px;flex:1;min-height:0">
         <div class="block">
-          <h3>Çok Boyutlu Karar: AND-Gate & LSTM</h3>
-          <p style="margin-bottom: 1.5rem;">
-            Yanlış alarm, orman sistemlerinde operasyonel maliyeti yıkıcı derecede artırır. 
-            Tek bir voltaj eşiği kullanmak yerine; LSTM tabanlı zaman serisi tahmini ve mantıksal 
+          <h3>Çok Boyutlu Karar: AND-Gate &amp; LSTM</h3>
+          <p style="margin-bottom:18px">
+            Yanlış alarm, orman sistemlerinde operasyonel maliyeti yıkıcı derecede artırır.
+            Tek bir voltaj eşiği kullanmak yerine; LSTM tabanlı zaman serisi tahmini ve mantıksal
             AND-gate füzyonu ile kesinlik (precision) maksimize edilir.
           </p>
-          <p class="data" style="margin-bottom: 1.5rem; font-family: var(--f-serif);">
-            Alarm Koşulu = (dT/dt > &beta;) &and; (dR/dt > &gamma;) &and; (f_spike &isin; [0.5, 5] Hz)
+          <p class="serif" style="margin-bottom:20px;font-size:19px;line-height:1.5;color:var(--ink)">
+            Alarm Koşulu = (<i>dT</i>/<i>dt</i> &gt; <i>&beta;</i>) &and; (<i>dR</i>/<i>dt</i> &gt; <i>&gamma;</i>)
+            &and; (<i>f</i><sub style="font-size:.72em">spike</sub> &isin; [0,5&ndash;5] Hz)
           </p>
           <div class="fig-wrap">
-            <img src="figures/fusion_separability.png" alt="Karar sınırları" style="max-height: 25vh; margin: 0 auto;">
-            <div class="figcap" style="text-align: center; width: 100%;"><span class="caption-lbl">Şekil 8:</span> Ayırt edici öznitelik uzayında LSTM karar sınırı.</div>
+            <img src="figures/fusion_separability.svg" alt="Karar sınırları" style="width:auto;height:500px;max-width:100%;margin:0 auto">
+            <div class="figcap" style="text-align:center;width:100%"><span class="caption-lbl">Şekil 8:</span> Ayırt edici öznitelik uzayında LSTM karar sınırı.</div>
           </div>
         </div>
         <div class="fig-wrap">
-          <img src="figures/roc.png" alt="ROC Eğrisi" style="max-height: 45vh;">
-          <div class="figcap"><span class="caption-lbl">Şekil 9:</span> Tek eşik değerine kıyasla Füzyon modelinin Performans Karakteristiği (ROC). Eğri altında kalan alan (AUC) füzyon ile belirgin şekilde artmıştır.</div>
+          <img src="figures/roc.svg" alt="ROC Eğrisi">
+          <div class="figcap"><span class="caption-lbl">Şekil 9:</span> Tek eşik değerine kıyasla füzyon modelinin performans karakteristiği (ROC). Eğri altında kalan alan (AUC) füzyon ile belirgin şekilde artmıştır.</div>
         </div>
       </div>
     </div>
@@ -538,23 +540,23 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">04 · DOĞRULAMA KANITI · TRL 3 → 4</div>
       <h1 class="title reveal">Hipotezi laboratuvar ortamında <span class="accent">doğruladık.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:2.5rem">
-        <div>
-          <div class="grid g2" style="gap:1rem;margin-bottom:3rem">
+      <div class="grid g2 reveal" style="margin-top:34px;flex:1;min-height:0">
+        <div style="display:flex;flex-direction:column">
+          <div class="grid g2" style="gap:20px;margin-bottom:34px">
             <div><div class="stat">20<span class="u">→ 5 Hz</span></div><div class="tile-lbl">Frekans Kayması</div></div>
-            <div><div class="stat warn">−33<span class="u">mV</span></div><div class="tile-lbl">Ateş İmzası</div></div>
+            <div><div class="stat" style="color:var(--ember)" data-count="-33">−33<span class="u">mV</span></div><div class="tile-lbl">Ateş İmzası</div></div>
           </div>
           <div class="fig-wrap">
-            <img src="figures/fft_spectrum.png" alt="FFT genlik spektrumu">
+            <img src="figures/fft_spectrum.svg" alt="FFT genlik spektrumu">
             <div class="figcap"><span class="caption-lbl">Şekil 10:</span> FFT spektrumunda ateş stresi altındaki frekans tepkisi.</div>
           </div>
         </div>
-        <div>
-          <div class="photo-wrap" style="margin-bottom:1rem">
-            <img src="../media/Deney.png" alt="Laboratuvar deney düzeneği" loading="lazy">
+        <div style="display:flex;flex-direction:column">
+          <div class="photo-wrap" style="margin-bottom:18px;flex:1;min-height:0">
+            <img src="figures/deney.jpeg" alt="Laboratuvar deney düzeneği" loading="lazy" style="height:100%;object-fit:cover;width:100%">
           </div>
           <p class="figcap">
-            <span class="caption-lbl">Şekil 11:</span> İklim kabini termal şok testleri. Pleurotus ostreatus ağı üzerinde 
+            <span class="caption-lbl">Şekil 11:</span> İklim kabini termal şok testleri. <i>Pleurotus ostreatus</i> ağı üzerinde
             ESP32 ve yüksek çözünürlüklü ADC kullanılarak canlı veri elde edilmiştir.
           </p>
         </div>
@@ -567,39 +569,27 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">05 · TİCARİLEŞME</div>
       <h1 class="title reveal">Global ihtiyaç, <span class="accent">odaklanmış</span> pazara giriş.</h1>
-      <div class="grid g2 reveal" style="margin-top:3rem">
+      <div class="grid g2 reveal" style="margin-top:38px;flex:1;min-height:0;align-items:center">
         <div class="funnel">
-          <div class="frow">
-            <div class="fbar" style="width:100%;background:var(--primary)">TAM · $2.4 Milyar</div>
-          </div>
+          <div class="frow"><div class="fbar" data-w style="--tw:100%;background:var(--ink)">TAM · $2.4 Milyar</div></div>
           <div class="fmeta">Küresel Orman Yangını Tespit Sistemleri Pazarı<span class="ref">[4]</span><br>
-             <span style="color:var(--text-light); font-size: 0.9em;">(Büyüme Oranı: %8.5 CAGR)</span></div>
-          
-          <div class="frow" style="margin-top:1rem">
-            <div class="fbar" style="width:65%;background:#52525B">SAM · $450 Milyon</div>
-          </div>
-          <div class="fmeta">Akdeniz İklim Kuşağı, Batı ABD & Avustralya</div>
-          
-          <div class="frow" style="margin-top:1rem">
-            <div class="fbar" style="width:30%;background:var(--accent)">SOM · $35 Milyon</div>
-          </div>
-          <div class="fmeta">Türkiye B2B & B2G Yangın Savunma Pazarı</div>
+             <span style="color:var(--faint);font-size:.88em">(Büyüme Oranı: %8.5 CAGR)</span></div>
+          <div class="frow" style="margin-top:8px"><div class="fbar" data-w style="--tw:65%;background:var(--ink-soft)">SAM · $450 Milyon</div></div>
+          <div class="fmeta">Akdeniz İklim Kuşağı, Batı ABD &amp; Avustralya</div>
+          <div class="frow" style="margin-top:8px"><div class="fbar" data-w style="--tw:30%;background:var(--accent)">SOM · $35 Milyon</div></div>
+          <div class="fmeta">Türkiye B2B &amp; B2G Yangın Savunma Pazarı</div>
         </div>
-        <div>
-          <div class="block hi">
-            <h3>Pazara Giriş Stratejisi</h3>
-            <ul class="clean" style="margin-top:1.5rem">
-              <li>Aşama 1: Enerji ve madencilik alanları (Zorunlu ESG risk raporlamaları nedeni ile alıma en hazır segment).</li>
-              <li>Aşama 2: Avrupa Ormancılık Kooperatifleri (İklim krizinden en çok etkilenen pilot bölgeler).</li>
-              <li>Aşama 3: TRL 8 saha kanıtı sonrası ABD ve Avustralya kamu ihaleleri.</li>
-            </ul>
-          </div>
+        <div class="block hi">
+          <h3>Pazara Giriş Stratejisi</h3>
+          <ul class="clean" style="margin-top:20px">
+            <li>Aşama 1: Enerji ve madencilik alanları (zorunlu ESG risk raporlamaları nedeniyle alıma en hazır segment).</li>
+            <li>Aşama 2: Avrupa ormancılık kooperatifleri (iklim krizinden en çok etkilenen pilot bölgeler).</li>
+            <li>Aşama 3: TRL 8 saha kanıtı sonrası ABD ve Avustralya kamu ihaleleri.</li>
+          </ul>
         </div>
       </div>
     </div>
-    <div class="footnotes">
-      <span>[4] Grand View Research, Forest Fire Detection Market Report, 2024.</span>
-    </div>
+    <div class="footnotes"><span>[4] Grand View Research, Forest Fire Detection Market Report, 2024.</span></div>
   </section>
 
   <!-- 11 COMPETITION -->
@@ -607,51 +597,30 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">06 · REKABET</div>
       <h1 class="title reveal">Onlar rüzgârı bekliyor, <span class="accent">biz ısıyı okuyoruz.</span></h1>
-      <div class="reveal" style="margin-top:2rem">
-        <table class="cmp" style="margin-top: 1.5rem; font-size: 1.2rem;">
+      <div class="reveal" style="margin-top:22px;flex:1;min-height:0;display:flex;flex-direction:column">
+        <table class="cmp">
           <thead>
             <tr>
-              <th style="width: 25%;">Kriter</th>
-              <th style="width: 25%;">Mycellium-Aegis</th>
-              <th style="width: 25%;">Dryad Networks (IoT)</th>
-              <th style="width: 25%;">Pano AI (Kamera)</th>
+              <th style="width:25%">Kriter</th>
+              <th style="width:25%">Mycellium-Aegis</th>
+              <th style="width:25%">Dryad Networks (IoT)</th>
+              <th style="width:25%">Pano AI (Kamera)</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>Tespit Yaklaşımı</th>
-              <td class="us">Proaktif, Hücresel İletim</td>
-              <td class="no">Reaktif, Partikül/Gaz</td>
-              <td class="no">Reaktif, Optik Görüntü</td>
-            </tr>
-            <tr>
-              <th>Kör Nokta Tespit Yeteneği</th>
-              <td class="us">✓ Tamamen Kapalı, Sınır Yok</td>
-              <td class="no">✗ Rüzgâr ve Topografyaya Bağımlı</td>
-              <td class="no">✗ Kesin Görüş Hattı (LoS) Şart</td>
-            </tr>
-            <tr>
-              <th>Donanım Korozyon Direnci</th>
-              <td class="us">✓ Biyo-uyumlu Aljinat, Korozyonsuz</td>
-              <td class="no">✗ Lityum Pil ve Plastik Gövde</td>
-              <td class="no">✗ Metal Kule ve Güneş Paneli</td>
-            </tr>
-            <tr>
-              <th>Bildirim Gecikme Süresi</th>
-              <td class="us">Isı Şokunda (Duman Çıkmadan)</td>
-              <td class="no">30–60 Dakika Kayıp</td>
-              <td class="no">Duman Görünür Hale Geldiğinde</td>
-            </tr>
+            <tr><th>Tespit Yaklaşımı</th><td class="us">Proaktif, hücresel iletim</td><td class="no">Reaktif, partikül/gaz</td><td class="no">Reaktif, optik görüntü</td></tr>
+            <tr><th>Kör Nokta Tespit Yeteneği</th><td class="us">✓ Tamamen kapalı, sınır yok</td><td class="no">✗ Rüzgâr ve topografyaya bağımlı</td><td class="no">✗ Kesin görüş hattı (LoS) şart</td></tr>
+            <tr><th>Donanım Korozyon Direnci</th><td class="us">✓ Biyo-uyumlu aljinat, korozyonsuz</td><td class="no">✗ Lityum pil ve plastik gövde</td><td class="no">✗ Metal kule ve güneş paneli</td></tr>
+            <tr><th>Bildirim Gecikme Süresi</th><td class="us">Isı şokunda (duman çıkmadan)</td><td class="no">30–60 dakika kayıp</td><td class="no">Duman görünür hale geldiğinde</td></tr>
           </tbody>
         </table>
-        
-        <div class="grid g2" style="margin-top: 3rem; gap: 2rem;">
-          <p style="color: var(--text-muted); font-size: 1.1rem; padding-left: 1.5rem; border-left: 3px solid var(--accent); line-height: 1.6;">
+        <div class="grid g2" style="margin-top:34px;gap:34px;flex:1;min-height:0;align-items:center">
+          <p style="color:var(--ink-soft);font-size:18px;padding-left:22px;border-left:3px solid var(--accent);line-height:1.6">
             <span class="caption-lbl">Tablo 1:</span> Ticarileşmiş alternatif orman yangını tespit sistemlerinin karşılaştırması. Görüldüğü üzere, yer altından bağımsız ve proaktif ölçüm yapabilen tek teknoloji biyolojik sinyal tabanlı tasarımdır.
           </p>
-          <div class="block hi" style="padding: 1.5rem; background: var(--bg-subtle);">
-            <h4 style="font-family: var(--f-display); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--primary);">Neden Mycellium-Aegis?</h4>
-            <p style="font-size: 1.05rem; color: var(--text-muted);">
+          <div class="block hi" style="padding:24px 26px;background:var(--bg-card);border-radius:6px;box-shadow:0 14px 40px -24px rgba(20,30,25,.3)">
+            <h4 style="font-family:var(--f-display);font-size:21px;margin-bottom:10px;color:var(--ink);font-weight:400">Neden Mycellium-Aegis?</h4>
+            <p style="font-size:17px;color:var(--ink-soft);line-height:1.6">
               Rakipler alevi veya dumanı görmeye ihtiyaç duyar, bu nedenle müdahale için kritik süreler kaybedilir. Biz ise ormanın sinir ağlarını kullanarak duman daha oluşmadan reaksiyon verebiliyoruz.
             </p>
           </div>
@@ -665,22 +634,22 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">07 · İŞ MODELİ</div>
       <h1 class="title reveal">Donanımla gir, <span class="accent">SaaS ile büyü.</span></h1>
-      <div class="grid g2 reveal" style="margin-top:3rem">
+      <div class="grid g2 reveal" style="margin-top:40px;flex:1;min-height:0;align-items:center">
         <div class="block">
           <h3>Aegis-Nexus Kurulumu (CAPEX: B2G)</h3>
           <p>
-            1 Ağ Geçidi + 100 Sensör Düğümünden oluşan sistem kamuya tek seferlik satışla kurulur. 
+            1 Ağ Geçidi + 100 Sensör Düğümünden oluşan sistem kamuya tek seferlik satışla kurulur.
             Maliyetin hızlı geri dönüşünü (payback) sağlar ve sahada fiziksel tutunma (lock-in) yaratır.
           </p>
-          <div class="data" style="margin-top:1.5rem;font-size:1.4rem">360.000 TL / Referans Paket</div>
+          <div class="data" style="margin-top:22px;font-size:27px">360.000 TL / Referans Paket</div>
         </div>
         <div class="block hi">
           <h3>Yıllık Risk SaaS Analitiği (ARR: B2B)</h3>
           <p>
-            Özel sektör (Enerji tesisleri, Kağıt, Maden) için donanım düşük kâr marjıyla sahaya verilir. 
+            Özel sektör (enerji tesisleri, kağıt, maden) için donanım düşük kâr marjıyla sahaya verilir.
             Asıl ölçeklenebilir kârlılık, yapay zeka yangın analitik panosunun yıllık yenilenen bulut lisansından elde edilir.
           </p>
-          <div class="chips" style="margin-top:1.5rem">
+          <div class="chips" style="margin-top:22px">
             <span class="chip hi">Gelecek Vizyonu: Biyoçeşitlilik ve Karbon Kredisi İzleme Entegrasyonu</span>
           </div>
         </div>
@@ -693,18 +662,18 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">08 · FİNANSAL PROJEKSİYON</div>
       <h1 class="title reveal">Ticari bağımsızlık için <span class="accent">5 paket yeterli.</span></h1>
-      <div class="grid g-wide reveal" style="margin-top:2.5rem">
+      <div class="grid g-wide reveal" style="margin-top:32px;flex:1;min-height:0;align-items:center">
         <div class="fig-wrap">
-          <img src="figures/breakeven.png" alt="Başa baş analizi" style="max-height: 48vh;">
+          <img src="figures/breakeven.svg" alt="Başa baş analizi">
           <div class="figcap"><span class="caption-lbl">Şekil 12:</span> Gelir-Maliyet ve başa baş (break-even) noktası projeksiyonu.</div>
         </div>
         <div class="block">
           <ul class="clean">
-            <li>Birim Paket Kâr Marjı: <span class="data">200.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(360k Satış Fiyatı - 160k Üretim/Kurulum)</span></li>
-            <li>18 Aylık Sabit Gider Planı: <span class="data">≈ 880.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(AR-GE Sarf Malzeme, IP, Bulut Sunucu, Kira)</span></li>
-            <li>Çekirdek Fon İhtiyacı: <span class="data">1.350.000 TL</span> <br><span style="font-size: 0.85em; color: var(--text-light)">(TÜBİTAK 1812 BİGG Desteği ile Karşılanacaktır)</span></li>
+            <li>Birim Paket Kâr Marjı: <span class="data">200.000 TL</span><br><span style="font-size:.85em;color:var(--faint)">(360k satış fiyatı − 160k üretim/kurulum)</span></li>
+            <li>18 Aylık Sabit Gider Planı: <span class="data">≈ 880.000 TL</span><br><span style="font-size:.85em;color:var(--faint)">(AR-GE sarf malzeme, IP, bulut sunucu, kira)</span></li>
+            <li>Çekirdek Fon İhtiyacı: <span class="data">1.350.000 TL</span><br><span style="font-size:.85em;color:var(--faint)">(TÜBİTAK 1812 BİGG desteği ile karşılanacaktır)</span></li>
           </ul>
-          <p style="margin-top:3rem;color:var(--primary);font-size:1.3rem;">
+          <p style="margin-top:32px;color:var(--ink);font-size:19px;line-height:1.6">
             Sonuç: Piyasaya sürülen sadece ilk 5 referans paket satışı ile projemiz kârlılığa geçmekte ve dış yatırıma ihtiyaç duymadan kendini idame ettirebilmektedir.
           </p>
         </div>
@@ -717,27 +686,17 @@ ul.clean li::before{
     <div class="inner">
       <div class="eyebrow reveal">09 · YOL HARİTASI</div>
       <h1 class="title reveal">Laboratuvardan satışa: 18 aylık plan.</h1>
-      <div class="road reveal" style="margin-top:4rem">
-        <div class="milestone"><div class="dot"></div>
-          <div class="ip">Aşama 1</div><div class="mo">Ay 1–6</div>
-          <h4>Biyomimetik Donanım</h4>
-          <p>Aljinat-grafit elektrot üretimi, iklim kabini optimizasyonu.</p><span class="trl">TRL 4</span></div>
-        <div class="milestone"><div class="dot"></div>
-          <div class="ip">Aşama 2</div><div class="mo">Ay 6–9</div>
-          <h4>YZ Füzyonu Eğitimi</h4>
-          <p>LSTM modellerinin eğitilmesi, %99 gürültü izolasyon testi.</p><span class="trl">TRL 5</span></div>
-        <div class="milestone"><div class="dot"></div>
-          <div class="ip">Aşama 3</div><div class="mo">Ay 9–12</div>
-          <h4>Saha Mesh Doğrulaması</h4>
-          <p>Orman zemininde 3 ay kesintisiz açık hava LoRaWAN verisi.</p><span class="trl">TRL 6</span></div>
-        <div class="milestone"><div class="dot"></div>
-          <div class="ip">Aşama 4</div><div class="mo">Ay 12–15</div>
-          <h4>IP & Regülasyon</h4>
-          <p>Patent başvurusu ve OGM saha entegrasyon izinleri.</p></div>
-        <div class="milestone"><div class="dot"></div>
-          <div class="ip">Aşama 5</div><div class="mo">Ay 15–18</div>
-          <h4>MVP & İlk Ticari Fatura</h4>
-          <p>Pilot B2B müşteriye kurulum ve SaaS sisteminin yayına alınması.</p><span class="trl">TRL 8</span></div>
+      <div class="road reveal">
+        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 1</div><div class="mo">Ay 1–6</div>
+          <h4>Biyomimetik Donanım</h4><p>Aljinat-grafit elektrot üretimi, iklim kabini optimizasyonu.</p><span class="trl">TRL 4</span></div>
+        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 2</div><div class="mo">Ay 6–9</div>
+          <h4>YZ Füzyonu Eğitimi</h4><p>LSTM modellerinin eğitilmesi, %99 gürültü izolasyon testi.</p><span class="trl">TRL 5</span></div>
+        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 3</div><div class="mo">Ay 9–12</div>
+          <h4>Saha Mesh Doğrulaması</h4><p>Orman zemininde 3 ay kesintisiz açık hava LoRaWAN verisi.</p><span class="trl">TRL 6</span></div>
+        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 4</div><div class="mo">Ay 12–15</div>
+          <h4>IP &amp; Regülasyon</h4><p>Patent başvurusu ve OGM saha entegrasyon izinleri.</p></div>
+        <div class="milestone"><div class="dot"></div><div class="ip">Aşama 5</div><div class="mo">Ay 15–18</div>
+          <h4>MVP &amp; İlk Ticari Fatura</h4><p>Pilot B2B müşteriye kurulum ve SaaS sisteminin yayına alınması.</p><span class="trl">TRL 8</span></div>
       </div>
     </div>
   </section>
@@ -745,79 +704,205 @@ ul.clean li::before{
   <!-- 15 TEAM & CLOSE -->
   <section class="slide">
     <div class="inner">
-      <div class="eyebrow reveal">10 · EKİP & KAPANIŞ</div>
+      <div class="eyebrow reveal">10 · EKİP &amp; KAPANIŞ</div>
       <h1 class="title reveal">Bu işi neden biz yapabiliriz?</h1>
-      <p class="lead reveal" style="margin-bottom:3.5rem;max-width:80ch">
+      <p class="lead reveal" style="margin-bottom:8px;max-width:82ch">
         Çünkü biyomateryal tasarımı, IoT sensör mimarisi, yapay zeka bulut analitiği ve B2B ticari süreçlerini dışarıdan bağımsız olarak çekirdek ekibimizle uçtan uca yönetiyoruz.
       </p>
-      
       <div class="team reveal">
         <div class="member">
-          <div class="av">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          </div>
-          <div class="role">CEO · Sistem Mimarı</div>
-          <h4>Mehmet Çetin</h4>
+          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="role">CEO · Sistem Mimarı</div><h4>Mehmet Çetin</h4>
           <p>Proje yönetimi, endüstriyel tasarım, B2G ihale stratejisi.</p>
         </div>
         <div class="member">
-          <div class="av">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          </div>
-          <div class="role">CTO · Yapay Zeka</div>
-          <h4>Muhammet Yağcıoğlu</h4>
+          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="role">CTO · Yapay Zeka</div><h4>Muhammet Yağcıoğlu</h4>
           <p>Biyosinyal işleme, PyTorch, zaman serisi makine öğrenmesi (LSTM).</p>
         </div>
         <div class="member">
-          <div class="av">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          </div>
-          <div class="role">COO · Donanım & IoT</div>
-          <h4>Ömer Ünal</h4>
+          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="role">COO · Donanım &amp; IoT</div><h4>Ömer Ünal</h4>
           <p>Elektronik tasarımı, LoRaWAN mesh ağları, düşük güç tüketimli gömülü sistemler.</p>
         </div>
         <div class="member">
-          <div class="av">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          </div>
-          <div class="role">CRO · Biyomateryal</div>
-          <h4>Mahmut Can Göçlü</h4>
+          <div class="av"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="role">CRO · Biyomateryal</div><h4>Mahmut Can Göçlü</h4>
           <p>Biyopolimer sentezi, aljinat-grafit kompozitleri, miselyum inokülasyonu.</p>
         </div>
       </div>
-      
-      <div class="reveal" style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border)">
-        <h1 class="title accent" style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:0.5rem">
+      <div class="reveal" style="margin-top:40px;padding-top:26px;border-top:1px solid var(--line)">
+        <h1 class="title accent" style="font-size:44px;margin-bottom:10px;color:var(--accent)">
           Orman kendi yangınını haber versin.
         </h1>
-        <p style="font-size:1.1rem;font-family:var(--f-mono);color:var(--text-light);font-weight:300;">
-          Teknik sorularınız için Yedek Slaytlar'a geçebiliriz. Dinlediğiniz için teşekkürler.
+        <p style="font-size:16px;font-family:var(--f-mono);color:var(--faint);font-weight:400">
+          Sırada sistemin çalışan sayısal ikizi var; teknik sorular için Yedek Slaytlar hazır. Dinlediğiniz için teşekkürler.
         </p>
       </div>
     </div>
   </section>
 
-</main>
+  <!-- 16 SAYISAL İKİZ -->
+  <section class="slide" id="slide-twin">
+    <div class="inner">
+      <div class="eyebrow reveal"><span class="dot"></span>11 · SAYISAL İKİZ · CANLI MODEL</div>
+      <h1 class="title reveal" style="font-size:44px;margin-bottom:14px">
+        Anlatmakla kalmıyoruz: sistem <span class="accent">çalışır hâlde</span> burada.
+      </h1>
+      <div class="twin-stage reveal">
+        <div class="twin-frame" id="twinFrame">
+          <iframe id="twinEmbed"
+                  data-src="../digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html"
+                  title="Mycellium-Aegis Sayısal İkiz — etkileşimli model"
+                  loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <div class="twin-idle">
+            <div class="spin"></div>
+            <div>sayısal ikiz yükleniyor</div>
+          </div>
+        </div>
+      </div>
+      <div class="figcap reveal" style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+        <span style="max-width:118ch">
+          <span class="caption-lbl">Şekil 13:</span> Sayısal ikiz — PBR dokulu üç boyutlu toprak kesiti üzerinde bağlı
+          <span class="math">1</span>-B ısı iletimi, toprak nemi, Archie yasasıyla elektrot direnci ve biyoelektrik sinyal
+          çözücüsü. Alarm kuralı, güç bütçesi ve maliyet modeli canlı hesaplanır; senaryolar kaydırıcıyla değiştirilebilir.
+        </span>
+        <a class="twin-open" href="../digital-twin/Mycellium-Aegis_Sayisal_Ikiz.html" target="_blank" rel="noopener">tam ekran aç ↗</a>
+      </div>
+    </div>
+  </section>
 
-<div class="brand"><span>◆</span> MYCELLIUM-AEGIS</div>
-<div class="counter"><em id="cnum">01</em> / <span id="ctot">15</span></div>
+</div>
+</div>
+
+<div class="footerbar">
+  <div class="brand"><span>◆</span>MYCELLIUM-AEGIS</div>
+  <div class="hint">← → İLERLET&nbsp;&nbsp;·&nbsp;&nbsp;F TAM EKRAN</div>
+  <div class="counter"><em id="cnum">01</em> / <span id="ctot">16</span></div>
+</div>
 <div class="progress" id="prog"></div>
 
 <script>
 (function(){
-  const slides=[...document.querySelectorAll('.slide')];
-  const prog=document.getElementById('prog');
-  const cnum=document.getElementById('cnum');
-  const ctot=document.getElementById('ctot');
-  let cur=0;
-  const total=slides.length;
+  /* ---------- generative mycelium background ---------- */
+  function buildMycelium(){
+    var svg = document.getElementById('myco');
+    var ns = 'http://www.w3.org/2000/svg';
+    var W = 1920, H = 1080;
+    var branches = [];
+    var seeds = [
+      [60,120],[1860,90],[40,900],[1880,960],[960,30],
+      [960,1050],[200,540],[1720,540],[600,980],[1400,140]
+    ];
+    function rnd(a,b){ return a + Math.random()*(b-a); }
+
+    seeds.forEach(function(seed, i){
+      var pts = [seed.slice()];
+      var angle = rnd(0, Math.PI*2);
+      var x = seed[0], y = seed[1];
+      var segs = 4 + Math.floor(rnd(0,3));
+      for(var s=0;s<segs;s++){
+        angle += rnd(-0.7,0.7);
+        var len = rnd(120,240);
+        x += Math.cos(angle)*len;
+        y += Math.sin(angle)*len;
+        x = Math.max(-40,Math.min(W+40,x));
+        y = Math.max(-40,Math.min(H+40,y));
+        pts.push([x,y]);
+      }
+      var d = 'M'+pts[0][0].toFixed(1)+','+pts[0][1].toFixed(1)+' ';
+      for(var p=1;p<pts.length;p++){
+        var prev = pts[p-1], cur = pts[p];
+        var mx = (prev[0]+cur[0])/2, my=(prev[1]+cur[1])/2;
+        d += 'Q'+prev[0].toFixed(1)+','+prev[1].toFixed(1)+' '+mx.toFixed(1)+','+my.toFixed(1)+' ';
+      }
+      var path = document.createElementNS(ns,'path');
+      path.setAttribute('d', d);
+      path.setAttribute('class', 'hypha'+(i%3===0?' alt':''));
+      path.setAttribute('id', 'hy'+i);
+      svg.appendChild(path);
+      branches.push({id:'hy'+i, pts:pts});
+
+      pts.forEach(function(pt, idx){
+        if(idx===0 || Math.random()>0.55) return;
+        var c = document.createElementNS(ns,'circle');
+        c.setAttribute('cx', pt[0]); c.setAttribute('cy', pt[1]);
+        c.setAttribute('r', rnd(2,3.6));
+        c.setAttribute('class','myco-node');
+        svg.appendChild(c);
+      });
+    });
+
+    /* traveling signal pulses along a few branches */
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduce){
+      var chosen = branches.filter(function(_,i){return i%2===0;}).slice(0,5);
+      chosen.forEach(function(b, i){
+        var pulse = document.createElementNS(ns,'circle');
+        pulse.setAttribute('r','3'); pulse.setAttribute('class','myco-pulse');
+        svg.appendChild(pulse);
+        var anim = document.createElementNS(ns,'animateMotion');
+        anim.setAttribute('dur', (7+ i*1.6).toFixed(1)+'s');
+        anim.setAttribute('repeatCount','indefinite');
+        anim.setAttribute('begin', (i*1.4).toFixed(1)+'s');
+        anim.setAttribute('keyPoints','0;1'); anim.setAttribute('keyTimes','0;1');
+        var mpath = document.createElementNS(ns,'mpath');
+        mpath.setAttributeNS('http://www.w3.org/1999/xlink','href','#'+b.id);
+        anim.appendChild(mpath);
+        pulse.appendChild(anim);
+      });
+    }
+  }
+  buildMycelium();
+
+  /* ---------- scale-to-fit ---------- */
+  var DESIGN_W = 1920, DESIGN_H = 1080;
+  var deck = document.getElementById('deck');
+  var stage = document.getElementById('stage');
+  function fit(){
+    if(document.body.classList.contains('flow-mode')) return;
+    var vw = deck.clientWidth, vh = deck.clientHeight;
+    var s = Math.min(vw/DESIGN_W, vh/DESIGN_H);
+    stage.style.setProperty('--scale', s);
+  }
+  function checkMode(){
+    var narrow = window.innerWidth < 860;
+    document.body.classList.toggle('flow-mode', narrow);
+    if(!narrow) fit();
+  }
+  window.addEventListener('resize', checkMode);
+  checkMode();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  setTimeout(fit,150); setTimeout(fit,500);
+
+  /* ---------- navigation ---------- */
+  var slides=[...document.querySelectorAll('.slide')];
+  var prog=document.getElementById('prog');
+  var cnum=document.getElementById('cnum');
+  var ctot=document.getElementById('ctot');
+  var cur=0, total=slides.length;
   ctot.textContent=total;
-  
+
   function update(){
     prog.style.width=((cur+1)/total*100)+'%';
     cnum.textContent=String(cur+1).padStart(2,'0');
   }
-  
+  /* Sayısal ikiz ~2 MB'lık tek dosya. Sunumun açılışını yavaşlatmasın diye
+     iframe'i ancak o slayta yaklaşınca yüklüyoruz. */
+  function primeTwin(){
+    var f = document.getElementById('twinEmbed');
+    if(!f || f.src) return;
+    f.src = f.dataset.src;
+    f.addEventListener('load', function(){
+      var w = document.getElementById('twinFrame');
+      if(w) w.classList.add('loaded');
+    });
+  }
+  function maybePrimeTwin(i){
+    var twinIx = slides.indexOf(document.getElementById('slide-twin'));
+    if(twinIx >= 0 && i >= twinIx-1) primeTwin();
+  }
+
   function go(i){
     i=Math.max(0,Math.min(total-1,i));
     if(i===cur) return;
@@ -825,33 +910,73 @@ ul.clean li::before{
     slides[i].classList.add('active');
     cur=i; update();
     history.replaceState(null,'','#'+(i+1));
+    runCounters(slides[cur]);
+    maybePrimeTwin(i);
   }
-  
   window.go = go;
-  
-  const start=parseInt(location.hash.replace('#',''),10);
+
+  var start=parseInt(location.hash.replace('#',''),10);
   if(start>=1&&start<=total){
     slides[0].classList.remove('active');
     slides[start-1].classList.add('active');
     cur=start-1;
   }
-  
-  document.addEventListener('keydown',e=>{
+  maybePrimeTwin(cur);
+
+  document.addEventListener('keydown',function(e){
     if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1);}
     else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
     else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(total-1);}
     else if(e.key==='f'||e.key==='F'){
-      if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-      else document.exitFullscreen?.();
+      if(!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+      else document.exitFullscreen&&document.exitFullscreen();
     }
   });
-  
-  document.addEventListener('click', e => {
-    if(e.clientX > window.innerWidth/2) go(cur+1);
-    else go(cur-1);
+
+  document.getElementById('navL').addEventListener('click', function(){go(cur-1);});
+  document.getElementById('navR').addEventListener('click', function(){go(cur+1);});
+  deck.addEventListener('click', function(e){
+    if(e.target.closest('.navzone')) return;
+    /* İkizle oynarken yanlışlıkla slayt değişmesin. */
+    if(e.target.closest('.twin-stage') || e.target.closest('.twin-open')) return;
+    var half = deck.clientWidth/2;
+    if(e.clientX > half) go(cur+1); else go(cur-1);
   });
-  
+
+  var tx=0;
+  document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>60) go(cur+(dx<0?1:-1));
+  });
+
+  /* ---------- count-up stats ---------- */
+  function runCounters(slide){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = slide.querySelectorAll('.stat[data-count]');
+    els.forEach(function(el){
+      if(el.dataset.done) return;
+      el.dataset.done='1';
+      var target = parseFloat(el.dataset.count);
+      var suffix = el.dataset.suffix || '';
+      var uEl = el.querySelector('.u');
+      var uHtml = uEl ? uEl.outerHTML : '';
+      function fmt(v){ return v<0 ? '\u2212'+Math.abs(v) : String(v); }
+      if(reduce){ el.innerHTML = fmt(target) + uHtml; return; }
+      var dur = 900, t0 = performance.now();
+      function tick(now){
+        var p = Math.min(1,(now-t0)/dur);
+        var ease = 1-Math.pow(1-p,3);
+        var val = Math.round(target*ease);
+        el.innerHTML = fmt(val) + uHtml;
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
   update();
+  runCounters(slides[cur]);
 })();
 </script>
 </body>
