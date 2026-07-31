@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+\begin{axis}[aegismap, width=10.4cm, height=6.6cm,
+  colorbar, colormap name=aegisterrain, point meta min=-120, point meta max=1500,
+  colorbar style={ylabel={Yükseklik [m]}},
+  unbounded coords=jump]
+\addplot[matrix plot*, point meta=explicit, mesh/cols=139]
+  table[x=x,y=y,meta=z] {\dataroot/geo_dem.dat};
+\addplot[aegismuted, line width=.25pt, opacity=.55] table[x=x,y=y] {\dataroot/geo_graticule.dat};
+\addplot[aegisink, line width=.5pt] table[x=x,y=y] {\dataroot/geo_coast.dat};
+\addplot[aegismuted, line width=.35pt, dashed] table[x=x,y=y] {\dataroot/geo_prov_lines.dat};
+\addplot[only marks, mark=*, mark size=2.0, aegisember,
+  mark options={draw=white, line width=.4pt}]
+  table[x=x,y=y] {\dataroot/geo_sites.dat};
+\end{axis}
+\end{tikzpicture}

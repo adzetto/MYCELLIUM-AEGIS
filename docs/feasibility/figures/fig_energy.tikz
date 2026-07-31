@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=2.6cm},
+  aegis, width=5.2cm, height=5.0cm]
+\nextgroupplot[xlabel={Görev döngüsü}, ylabel={Kanopi geçirgenliği},
+  title={(a) Yük kaybı olasılığı}, grid=none,
+  colorbar, colormap/viridis, point meta min=0, point meta max=0.4]
+\addplot[matrix plot*, point meta=explicit, mesh/cols=40]
+  table[x=duty,y=canopy,meta=lolp] {\dataroot/energy_lolp.dat};
+\nextgroupplot[xlabel={Gün}, ymin=0, ymax=1.06,
+  xmin=0, xmax=365, title={(b) Şarj durumu, \%50 görev döngüsü},
+  legend style={at={(0.03,0.05)}, anchor=south west}]
+\addplot[aegisteal, thick] table[x=day,y=soc_ref] {\dataroot/energy_soc.dat};
+\addlegendentry{referans gölgelenme}
+\addplot[aegisember, thick] table[x=day,y=soc_shade] {\dataroot/energy_soc.dat};
+\addlegendentry{derin gölge (\%4)}
+\end{groupplot}
+\end{tikzpicture}

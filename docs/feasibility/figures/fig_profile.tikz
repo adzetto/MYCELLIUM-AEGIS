@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.7cm},
+  aegis, width=5.2cm, height=6.0cm, y dir=reverse, ymin=0, ymax=32]
+\nextgroupplot[xlabel={Sıcaklık [$^\circ$C]}, ylabel={Derinlik [cm]},
+  legend pos=south east, xmin=0, xmax=340, title={(a) $T(z)$}]
+\addplot table[x=T3p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=3{,}0$ sa}
+\addplot table[x=T4p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=4{,}0$ sa}
+\addplot table[x=T4p5,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=4{,}5$ sa}
+\addplot table[x=T6p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=6{,}0$ sa}
+\draw[aegisink, dashed, thin] (axis cs:100,0) -- (axis cs:100,32);
+\nextgroupplot[xlabel={Hacimsel su içeriği $\theta$}, ylabel={Derinlik [cm]},
+  legend pos=south east, xmin=0, xmax=0.30, title={(b) $\theta(z)$}]
+\addplot table[x=th3p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=3{,}0$ sa}
+\addplot table[x=th4p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=4{,}0$ sa}
+\addplot table[x=th4p5,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=4{,}5$ sa}
+\addplot table[x=th6p0,y=z] {\dataroot/nominal_profile.dat}; \addlegendentry{$t=6{,}0$ sa}
+\end{groupplot}
+\end{tikzpicture}

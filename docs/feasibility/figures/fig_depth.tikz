@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Prob derinliği [cm]}, ylabel={Öncü süre [dk]},
+  legend pos=north east, xmin=2, xmax=22, ymin=-15, ymax=105,
+  width=10.4cm, height=5.4cm, restrict y to domain=-20:110]
+\fill[aegisteal, opacity=.07] (axis cs:15,-15) rectangle (axis cs:20,105);
+\node[font=\scriptsize, aegismuted, anchor=south, align=center]
+  at (axis cs:17.5,-13) {miselyumun yaşadığı bant};
+\addplot[aegisteal, thick, mark=*, mark size=1.5]
+  table[x=z,y=lead_two] {\dataroot/depth_sweep.dat};
+\addlegendentry{iki yönlü kural $|\mathrm{d}\ln R/\mathrm{d}t|>\gamma$}
+\addplot[aegisember, thick, dashed, mark=square*, mark size=1.5]
+  table[x=z,y=lead_one] {\dataroot/depth_sweep.dat};
+\addlegendentry{belgedeki kural $\mathrm{d}\ln R/\mathrm{d}t>\gamma$}
+\addplot[aegismuted, dotted, domain=2:22] {0};
+\end{axis}
+\end{tikzpicture}

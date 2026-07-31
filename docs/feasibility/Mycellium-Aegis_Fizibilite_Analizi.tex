@@ -1,0 +1,1074 @@
+% =============================================================================
+% MYCELLIUM-AEGIS · SAYISAL FİZİBİLİTE ANALİZİ
+% Derleme:  pdflatex -shell-escape yok, iki geçiş yeterli
+%   1) python numeric/run_all.py      (data/*.dat + summary.json)
+%   2) python numeric/geo.py          (data/geo_*.dat + summary_geo.json)
+%   3) python numeric/make_tikz.py    (figures/*.tikz)
+%   4) python numeric/make_numbers.py (numbers.tex)
+%   5) pdflatex ... ×2
+% =============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[shorthands=off,turkish]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\input{preamble}
+\input{numbers}
+
+\captionsetup{font=small, labelfont={sc}, width=.92\linewidth}
+\setlength{\parskip}{0.35em}
+\renewcommand{\arraystretch}{1.15}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Div}{\nabla\!\cdot\!}
+\newcommand{\bK}{\mathbf{K}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\bn}{\mathbf{n}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bD}{\bm{\mathcal{D}}}
+\newcommand{\bsig}{\bm{\sigma}}
+
+\title{\vspace{-1.5cm}\Large Mycellium-Aegis\\[.25em]
+\huge Sayısal Fizibilite Analizi\\[.5em]
+\large\normalfont Bağlaşık tensör--kısmi diferansiyel denklem modeli,\\
+doğrulanmış sayısal çözüm ve coğrafi uygulanabilirlik}
+\author{\normalsize TÜBİTAK 1812 BİGG · AGY-112 eki}
+\date{\normalsize Temmuz 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}\noindent
+Bu belge, Mycellium-Aegis erken uyarı sisteminin yapılabilirliğini niteliksel
+gerekçelerle değil, çözülmüş bir fiziksel modelin sayısal sonuçlarıyla
+değerlendirir. Toprakta ısı ve nemin bağlaşık taşınımı, ikinci mertebe bir
+iletkenlik tensörü ve dört indisli bir yayınım nesnesi üzerinden kurulan bir
+kısmi diferansiyel denklem sistemi olarak yazılmış; sonlu hacim ayrıklaştırması
+üretilmiş çözümlerle doğrulanmış; ölçülen elektriksel büyüklük, eksenel simetrik
+bir potansiyel probleminin Fréchet türevi üzerinden tanımlanmıştır. Sistemin
+alarm kuralı, \mcPos\ örneklik bir Monte Carlo tasarımı ve \sobolRuns\ koşumluk
+bir Sobol duyarlılık çözümlemesiyle sınanmış; enerji, haberleşme ve ekonomik
+katmanlar aynı belirsizlik çerçevesine bağlanmıştır. Son bölüm, modeli İzmir
+Orman Bölge Müdürlüğü kapsama alanının otuz metrelik sayısal yükseklik modeli
+üzerine oturtarak öncü sürenin mekânsal dağılımını ve kesitler üzerinden
+yeraltı sıcaklık alanını verir. Analizin iki temel bulgusu şudur: belgelerde
+tanımlı tek yönlü direnç kuralı, prob derinleştikçe öncü sürenin neredeyse
+tamamını yitirmektedir ve mutlak değer üzerinden yeniden yazılmalıdır; sistemin
+mekânsal kapsama fizibilitesi ise miselyum ağının elektrotonik uzunluk sabitine
+doğrudan bağlıdır ve bu büyüklüğün ölçülmesi WP-2'nin birincil çıktısı
+olmalıdır.
+\end{abstract}
+
+\vspace{.4em}
+{\small\tableofcontents}
+\newpage
+
+% =============================================================================
+\section{Kapsam, soru ve yöntem}
+
+Bir erken uyarı sisteminin fizibilitesi tek bir soru değildir. Sistemin
+ölçmeyi iddia ettiği fiziksel büyüklüğün, alev görünmeden önce ölçülebilir
+bir değişim gösterip göstermediği bir sorudur; bu değişimin, aynı toprakta
+yangın olmadan da meydana gelen değişimlerden ayrılabilir olup olmadığı ikinci
+ve bağımsız bir sorudur. Ölçüm zincirinin bu ayrımı taşıyacak duyarlılığa ve
+enerjiye sahip olup olmadığı üçüncü, kurulacak düğüm yoğunluğunun kapsamak
+istenen alanı ekonomik biçimde örtüp örtmediği dördüncü sorudur. Bu belge
+dördünü de aynı fiziksel modelden türetilen sayılarla ele alır ve her birine
+sayısal bir eşik atar.
+
+Yöntem tercihinin gerekçesi şudur. Toprak altında alev öncesi ısınmanın ve
+kurumanın birbirine bağlı iki taşınım süreci olduğu, laboratuvar ölçeğinde
+zaten gözlenmiştir; ancak bu iki sürecin bir prob derinliğinde hangi sırayla
+ve hangi işaretle görüneceği, kurucu bağıntıların birlikte çözülmesini
+gerektirir. Fenomenolojik bir kuruma katsayısı, ölçülen büyüklüğün işaretini
+baştan varsaydığı için, tam da fizibilitenin dayandığı noktayı ispat yerine
+kabul eder. Bu yüzden burada, buhar taşınımını ve gizli ısıyı içeren bağlaşık
+sistemin kendisi çözülmüş, kurucu bağıntılar literatürden alınmış, çözücü
+üretilmiş çözümlerle doğrulanmış ve sonuçların ayrıklaştırma seçimlerine
+duyarsızlığı ölçülmüştür.
+
+Bütün sayısal çalışma \texttt{docs/feasibility/numeric/} altındadır ve sabit
+tohumludur. Metindeki her sayı, \texttt{summary.json} dosyasından üretilen
+makrolarla yerleştirilmiştir; çözücü yeniden koşturulduğunda metin de
+güncellenir. Şekiller pgfplots ile aynı veri dosyalarından çizilir, yani
+gövde metni ile grafikler arasında elle kopyalanmış hiçbir sayı yoktur.
+
+% =============================================================================
+\section{Fiziksel model: tensör formülasyonu}
+
+\subsection{Bağlaşık ısı ve nem taşınımı}
+
+Toprak sütununda durum değişkeni, sıcaklık ve hacimsel su içeriğinden oluşan
+iki bileşenli bir alan olarak alınır: $\bu = (T,\theta)^{\!\top}$. Philip ve
+de Vries'in bağlaşık taşınım kuramında bu iki alan, ayrı ayrı difüzyon
+denklemleri değil, çapraz terimlerle bağlanmış bir sistem sağlar:
+\begin{equation}
+\frac{\partial u_a}{\partial t}
+   \;=\; \partial_i\!\left( \mathcal{D}_{abij}\,\partial_j u_b \right) + s_a ,
+\qquad a,b\in\{1,2\},\quad i,j\in\{1,2,3\},
+\label{eq:coupled}
+\end{equation}
+burada toplama yinelenen indisler üzerinden yapılır. Dört indisli
+$\mathcal{D}_{abij}$ nesnesi, alanlar arası bağlaşımı taşıyan $2\times2$ bir
+blok ile uzaysal anizotropiyi taşıyan $3\times3$ bir tensörün çarpımına ayrılır:
+\begin{equation}
+\mathcal{D}_{abij} \;=\; D_{ab}\,\hat{K}_{ij},
+\qquad
+D \;=\;
+\begin{pmatrix}
+\dfrac{\lambda_{\mathrm{ef}}(\theta,T)}{C(\theta)} &
+\dfrac{L\rho_w D_{\theta v}(\theta,T)}{C(\theta)}\\[1.1em]
+D_{Tv}(\theta,T) & D_{\theta \ell}(\theta) + D_{\theta v}(\theta,T)
+\end{pmatrix}.
+\label{eq:Dblock}
+\end{equation}
+Köşegen dışı terimler modelin özüdür. Sağ üstteki terim, nem gradyanının
+buhar taşınımı yoluyla taşıdığı gizli ısıyı; sol alttaki terim ise sıcaklık
+gradyanının suyu sürüklemesini temsil eder. İkincisi işaret bakımından
+belirleyicidir: buhar sıcaktan soğuğa göç ettiği için, yüzeyde ısınan bir
+toprakta ısıl cephenin \emph{önünde} bir yoğuşma bölgesi oluşur ve prob
+derinliğindeki su içeriği, kuruma cephesi oraya varmadan önce artar. Bu
+davranış dördüncü bölümdeki en önemli bulgunun kaynağıdır.
+
+Kurucu bağıntılar literatürden alınmıştır. Su tutma eğrisi ve doymamış
+hidrolik iletkenlik van Genuchten--Mualem biçiminde, parametreleri Carsel ve
+Parrish'in kumlu tın sınıfına aittir; ısıl iletkenlik Côté ve Konrad'ın
+normalize modeliyle, $\lambda(\theta) = \lambda_{\mathrm{kuru}} +
+(\lambda_{\mathrm{doygun}}-\lambda_{\mathrm{kuru}})\,\kappa S_r/(1+(\kappa-1)S_r)$
+olarak; buhar yayınımları de Vries'in $D_{Tv}$ ve $D_{\theta v}$ ifadeleriyle,
+Millington--Quirk tortuozitesi ve Cass ve arkadaşlarının artırma katsayısıyla
+hesaplanır. Gizli ısı taşınımı, ısı denkleminde etkin iletkenliği
+$\lambda_{\mathrm{ef}} = \lambda + L\rho_w D_{Tv}$ biçiminde büyütür; sıcak ve
+nemli toprakta bu terim iletimden büyük olabilir ve modelin ısıyı derine
+taşıyan asıl mekanizmasıdır.
+
+Yüz santigrat derecede sıvı suyun ortamda kalamayacağı, ayrı bir kaynama
+kinetiğiyle zorlanır. Birim hacimde su kaybı hızı
+$\dot S = k_0\,\max(0,T-T_b)\,(\theta-\theta_{\mathrm{kuru}})/\Delta T$ alınır
+ve ısı denkleminden $L\rho_w \dot S$ kadar gizli ısı çekilir. Bu, ölçümlerde
+belgelenmiş yüz derece civarındaki sıcaklık düzlüğünü üretir; düzlüğün süresi
+$k_0$'a değil enerji arzına, yani $L\rho_w \Delta\theta / q$ oranına bağlıdır.
+$k_0$ ve $\Delta T$ sayısal gevşeme parametreleridir ve sonuçların bunlara
+duyarsızlığı Bölüm~\ref{sec:reg}'te ölçülmüştür.
+
+\subsection{Anizotropi, yatak eğimi ve akı yönelim sapması}
+
+Orman toprağı yatay katmanlıdır; ısıl iletkenlik katman düzleminde ve düzleme
+dik yönde farklıdır. Bu, yatak normali $\bn$ etrafında enine izotrop bir
+ikinci mertebe tensörle temsil edilir:
+\begin{equation}
+\bK(\bn) \;=\; k_\parallel\left(\mathbf{I}-\bn\otimes\bn\right)
+              \;+\; k_\perp\,\bn\otimes\bn .
+\label{eq:Ktensor}
+\end{equation}
+Arazi eğimli olduğunda yatak normali de eğilir. Eğim açısı $\psi$ için
+$\bn(\psi) = \mathbf{R}(\psi)\,\mathbf{e}_3$ alınırsa tensör
+$\bK(\psi) = \mathbf{R}\bK_0\mathbf{R}^{\!\top}$ olarak dönüşür ve bileşenleri
+\begin{equation}
+K_{xx} = k_\parallel\cos^2\!\psi + k_\perp\sin^2\!\psi,\quad
+K_{zz} = k_\parallel\sin^2\!\psi + k_\perp\cos^2\!\psi,\quad
+K_{xz} = (k_\perp-k_\parallel)\sin\psi\cos\psi
+\end{equation}
+biçimini alır. Değişmezler $\operatorname{tr}\bK = k_\parallel+k_\perp$ ve
+$\det\bK = k_\parallel k_\perp$ eğimden bağımsızdır; sayısal çözümde bu
+özdeğer değişmezliği bir tutarlılık denetimi olarak kullanılmıştır.
+
+Çapraz bileşenin varlığı, ısı akısının sıcaklık gradyanına paralel olmadığı
+anlamına gelir. Düşey bir gradyan altında akı ile gradyan arasındaki açı
+$\tan\vartheta = |K_{xz}|/K_{zz}$ olup, eğime göre en büyük değerini
+\begin{equation}
+\tan\vartheta_{\max} = \frac{k_\parallel-k_\perp}{2\sqrt{k_\parallel k_\perp}},
+\qquad
+\psi^\star = \arctan\sqrt{k_\perp/k_\parallel}
+\end{equation}
+noktasında alır. $k_\parallel = \tKpar$ ve $k_\perp = \tKperp$
+W\,m$^{-1}$K$^{-1}$ için bu, $\psi^\star \approx \tDipMax^\circ$ eğimde
+$\vartheta_{\max} = \tMisMax^\circ$ demektir. Şekil~\ref{fig:tensor} bu
+davranışı sayısal olarak verir ve analitik en büyük değerle örtüşür.
+Uygulamadaki karşılığı somuttur: eğimli arazide bir sıcak nokta, düğümü
+düşeyde değil, yamaç yönünde kaydırılmış bir noktada en erken uyarır; bu da
+Bölüm~\ref{sec:lateral}'te ölçülen tespit ayak izinin asimetrisini açıklar.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_tensor.tikz}
+\caption{Enine izotrop ısıl iletkenlik tensörünün bileşenleri ve düşey
+sıcaklık gradyanı altında ısı akısının gradyanla yaptığı açı, yatak eğimine
+göre. Çapraz bileşen $K_{xz}$ eğimle birlikte doğar ve akıyı yamaç yönünde
+sapmaya zorlar.}
+\label{fig:tensor}
+\end{figure}
+
+\subsection{Elektriksel iletkenlik tensörü ve ölçülen büyüklük}
+
+Sistemin ikinci ölçüm kanalı, elektrot çifti arasındaki transfer direncidir.
+Toprağın elektriksel iletkenliği Archie yasasıyla su içeriğine, Arps
+düzeltmesiyle sıcaklığa bağlanır:
+\begin{equation}
+\sigma(\theta,T) \;=\; \sigma_w^{25}\left[1+\alpha_T (T-25)\right]\,
+\phi^{m}\left(\frac{\theta}{\phi}\right)^{\! n_A}.
+\label{eq:archie}
+\end{equation}
+Katmanlı ortamda iletkenlik de tensöreldir; düşey simetri ekseni için
+$\bsig = \operatorname{diag}(\sigma_h,\sigma_h,\sigma_v)$ ve anizotropi oranı
+$\Lambda^2 = \sigma_h/\sigma_v$ yazılır. Elektrot çiftinin gördüğü potansiyel,
+\begin{equation}
+\Div\!\left(\bsig\nabla\varphi\right) \;=\; -I\left[\delta(\mathbf{x}-\mathbf{x}_+)
+- \delta(\mathbf{x}-\mathbf{x}_-)\right]
+\label{eq:poisson}
+\end{equation}
+denkleminin çözümüdür. Bütün elektrotlar tek bir düşey çubuk üzerinde
+olduğundan problem eksenel simetriktir ve silindirik koordinatlarda
+\begin{equation}
+\frac{1}{r}\,\partial_r\!\left(r\,\sigma_h\,\partial_r\varphi\right)
++ \partial_z\!\left(\sigma_v\,\partial_z\varphi\right)
+= -\frac{I\,\delta}{2\pi r}
+\end{equation}
+biçimine iner. Homojen anizotropik yarı-uzayda, $x'=x/\sqrt{\sigma_h}$,
+$z'=z/\sqrt{\sigma_v}$ ölçeklemesi denklemi Laplace denklemine indirger ve
+yalıtkan yüzey için görüntü yöntemiyle kapalı çözüm verir:
+\begin{equation}
+\varphi(r,z) \;=\; \frac{I}{4\pi\sqrt{\sigma_h\sigma_v}}
+\left[\frac{1}{\sqrt{r^2+\Lambda^2 (z-z_s)^2}}
+    + \frac{1}{\sqrt{r^2+\Lambda^2 (z+z_s)^2}}\right].
+\label{eq:analytic}
+\end{equation}
+Bu ifade, izotropik limitte klasik $I/4\pi\sigma R$ çözümüne döner ve sayısal
+çözücünün doğrulanmasında kullanılmıştır.
+
+Ölçümün hangi derinliği gördüğü sorusu, direncin iletkenlik alanına göre
+Fréchet türeviyle yanıtlanır. Karşılıklılık teoremi (Geselowitz), akım
+çiftinin ürettiği $\varphi_A$ ile gerilim çiftinin birim akımla süründüğünde
+üreteceği $\varphi_B$ alanları cinsinden
+\begin{equation}
+\frac{\delta R}{\delta \ln\sigma(\mathbf{x})}
+\;=\; -\,\frac{\sigma(\mathbf{x})\,\nabla\varphi_A(\mathbf{x})\cdot
+\nabla\varphi_B(\mathbf{x})}{I_A I_B}
+\label{eq:sensitivity}
+\end{equation}
+verir. Bu çekirdeğin derinlik üzerine izdüşümü, elektrot diziliminin gerçek
+araştırma derinliğini belirler ve Bölüm~\ref{sec:kernel}'de hesaplanmıştır.
+Zaman serisi üretilirken her adımda tam potansiyel problemini çözmek yerine
+birinci mertebe (Born) yaklaşımı kullanılır; bu yaklaşımın hatası aynı bölümde
+tam çözümle karşılaştırılarak sayısallaştırılmıştır.
+
+\subsection{İyi konumlanmışlık ve kararlılık}
+
+Denklem~\eqref{eq:coupled} sisteminin parabolik olması, $D$ blokunun simetrik
+kısmının pozitif tanımlı olmasını gerektirir. Tipik bir çalışma noktasında
+($\theta = 0{,}15$, $T = 60\,^\circ$C) blok
+\[
+D \approx
+\begin{pmatrix}
+\dblkOO & \dblkOT\\[.2em]
+\dblkTO & \dblkTT
+\end{pmatrix}\ \mathrm{m^2 s^{-1}}
+\]
+değerini alır; simetrik kısmın en küçük özdeğeri $\coercivity$~m$^2$s$^{-1}$
+olarak pozitiftir, yani sistem düzgün paraboliktir ve $L^2$ anlamında iyi
+konumlanmıştır. Aynı blok, sistemin katılığını da açığa çıkarır: özdeğerler
+arasındaki yaklaşık \stiffRatio\ kat fark, ısıl ve nem alt sistemlerinin çok
+farklı zaman ölçeklerinde ilerlediğini gösterir.
+
+Açık bir şema için von Neumann çözümlemesi, büyütme matrisi
+$G(k) = \mathbf{I} - 4(\Delta t/\Delta z^2)\sin^2(k\Delta z/2)\,D$ üzerinden
+$\rho(G)\le 1$ koşulunu $\Delta t \le \Delta z^2/2\lambda_{\max}(D)$ biçiminde
+verir. Üretim ayarındaki $\Delta z = 2{,}5$~mm için bu sınır
+$\dtExplicit$~s'dir. Çözücü bunun yerine yarı-örtük bir şema kullanır: difüzyon
+terimleri örtük, katsayılar ve çapraz kaynaklar bir adım gecikmeli alınır. Bu,
+doğrusal kararlılığı koşulsuz kılar ve üretim koşumlarının $\Delta t = 5$--$20$~s
+ile ilerlemesine izin verir; bedeli zamanda birinci mertebe doğruluktur ve bu
+bedelin büyüklüğü Bölüm~\ref{sec:conv}'de ölçülmüştür.
+
+Bu tabloda gizli bir tuzak vardır ve çözümleme sırasında görülmüştür. Sağ üst
+terim $L\rho_w D_{\theta v}/C$, yukarıdaki çalışma noktasında köşegen terimin
+binde biridir; ancak $D_{\theta v}$ içindeki $\dd\psi/\dd\theta$ çarpanı, su
+içeriği artık değere yaklaştığında van Genuchten bağıntısı gereği sınırsız
+büyür. Kuru hücrelerde bu terim $10^{-4}$~m$^2$s$^{-1}$ mertebesine çıkar,
+yani köşegen ısıl yayınımı iki mertebe aşar. Açık ayrıklaştırıldığında sonuç,
+yüzey sıcaklığı sabitken bile adım başına onlarca kelvinlik salınımdır. Bu,
+modelin değil şemanın kusurudur; Bölüm~\ref{sec:latent} bunun nasıl
+kapatıldığını ve fiziksel bedelinin ne olduğunu verir.
+
+% =============================================================================
+\section{Ayrıklaştırma ve doğrulama}
+\label{sec:conv}
+
+\subsection{Şema}
+
+Her iki denklem de sonlu hacim biçiminde, hücre merkezli ve yüz akılı olarak
+ayrıklaştırılır. Yüz iletkenlikleri komşu hücre değerlerinin aritmetik
+ortalamasıdır; iki boyutlu tensör operatöründe çapraz terimler, yüzü paylaşan
+iki hücrenin merkezî farklarının ortalamasıyla kurulur, bu da düzgün ızgarada
+ikinci mertebe verir. Yüzeyde sıcaklık için Dirichlet, nem için buharlaşma
+akısı sınır koşulu uygulanır; tabanda sıcaklık sabit, nem serbest drenajlıdır.
+Eksenel simetrik elektriksel problemde dış sınırlarda Dirichlet koşulu,
+yarım hücre farkı yerine sınır yüzünde kurulan ikinci dereceden interpolant
+üzerinden, $\partial_n\varphi|_b = (8\varphi_b - 9\varphi_N + \varphi_{N-1})/3h$
+biçiminde kapatılır. Bu ayrıntı önemsiz değildir: yarım hücre kapanışı
+kullanıldığında bütün şema, iç ayrıklaştırma ikinci mertebe olmasına rağmen
+birinci mertebeye düşmektedir.
+
+\subsection{Üretilmiş çözümlerle doğrulama}
+
+İki uzaysal operatör de üretilmiş çözüm yöntemiyle (MMS) sınanmıştır. Isı
+operatörü için, konuma bağlı ve çapraz bileşenli bir $\bK(x,z)$ ile
+$T^\star = e^{-t/\tau}\cos(\pi x/L_x)\cos(\pi z/L_z)$ seçilmiş, karşılık gelen
+kaynak analitik olarak türetilmiştir. Elektriksel operatör için
+$\varphi^\star = \cos(ar)\cos(bz)$, $a=\pi/2r_{\max}$, $b=\pi/2z_{\max}$
+seçimi yüzeyde sıfır akı ve dış sınırlarda sıfır potansiyel koşullarını tam
+olarak sağlar ve tekillik içermez. Ölçülen yakınsama mertebeleri sırasıyla
+$\pThermal$ ve $\pErt$'dir; ikisi de beklenen ikinci mertebeyi doğrular
+(Şekil~\ref{fig:conv}a).
+
+Aynı elektriksel çözücü, nokta kaynakla ve denklem~\eqref{eq:analytic}
+analitik çözümüne karşı sınandığında mertebe $\pPoint$'e düşmektedir
+(Şekil~\ref{fig:conv}b). Bu bir hata değil, birincil potansiyel biçiminde
+$\delta$ kaynağının ayrıklaştırılmasının bilinen sonucudur; kaynak hücresindeki
+tekillik küresel yakınsamayı birinci mertebeye sınırlar. Sonuç raporlanırken
+ikinci mertebe varsayılmamış, doğrudan ölçülen mertebe kullanılmıştır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_convergence.tikz}
+\caption{Üretilmiş çözümlerle doğrulama. Solda iki uzaysal operatörün de
+ikinci mertebeden yakınsadığı; sağda nokta kaynağın aynı çözücüde mertebeyi
+birinciye düşürdüğü görülmektedir.}
+\label{fig:conv}
+\end{figure}
+
+\subsection{İlgi büyüklüğünün ızgara ve zaman adımı yakınsaması}
+
+Doğrulamanın operatör düzeyinde yapılması yeterli değildir; fizibilite kararı
+öncü süreye dayandığından, yakınsama doğrudan bu büyüklük üzerinde de
+ölçülmelidir. Öncü süre, eşik geçişlerinin örnekler arasında doğrusal ara
+değerle bulunmasıyla sürekli bir büyüklüğe dönüştürülmüş, ardından ızgara
+$\Delta z$ ve zaman adımı $\Delta t$ dört kademe inceltilmiştir
+(Şekil~\ref{fig:gridconv}). Kaba ızgarada \leadCoarse~dk olan değer, en ince
+ızgarada \leadFine~dk'ya oturur; gözlenen mertebe $\pGrid$ ve iki en ince
+seviye arasındaki Izgara Yakınsama İndeksi \gciGrid~\%'dir. Zaman adımında
+gözlenen mertebe $\pTime$'dir, yani beklendiği gibi birinci mertebeye yakındır.
+Toplam sayısal belirsizlik, öncü süre üzerinde yaklaşık $\pm\numUnc$~dk
+düzeyinde kalır; bu, aşağıdaki bölümlerde raporlanan fiziksel etkilerin çok
+altındadır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_gridconv.tikz}
+\caption{Öncü sürenin ızgara ve zaman adımına göre yakınsaması. Değer, en ince
+iki seviyede \gciGrid~\%'lik bir Izgara Yakınsama İndeksi bandına oturmaktadır.}
+\label{fig:gridconv}
+\end{figure}
+
+\subsection{İzotermal gizli ısı teriminin ihmali}
+\label{sec:latent}
+
+Bir önceki bölümde işaret edilen kararsızlık, terimi sınırlayarak değil,
+ihmalinin bedeli ölçülerek kapatılmıştır. Isı denklemindeki
+$L\rho_w \Div(D_{\theta v}\nabla\theta)$ kaynağı, nem gradyanının sürüklediği
+buharın taşıdığı gizli ısıdır ve sıcaklık gradyanının sürüklediği buharın
+taşıdığı gizli ısıyla, yani $\lambda_{\mathrm{ef}}$ içindeki
+$L\rho_w D_{Tv}$ terimiyle yarışır. Cephe civarında bu iki akının oranı
+hesaplandığında ısıl olanın yaklaşık otuz kat büyük olduğu görülür. Kararlılığın
+korunduğu bir zaman adımında ($\Delta t = 2$~s) model her iki biçimde de
+koşturulmuş, öncü süre terim kapalıyken \latentOff, açıkken \latentOn~dakika
+bulunmuştur; fark \latentDelta~\%'dir. Bu, aynı büyüklüğün ızgara ve zaman
+adımı belirsizliğiyle karşılaştırılabilir düzeydedir. Terim bu nedenle ısı
+denkleminden çıkarılmış, nem denkleminde ise örtük difüzyon katsayısı olarak
+korunmuştur; orada işareti pozitif olduğu için kararlılık sorunu yoktur ve kuru
+toprakta nem taşınımının baskın mekanizması zaten buhardır.
+
+\subsection{Düzenlileştirme parametrelerine duyarsızlık}
+\label{sec:reg}
+
+Kaynama cephesinin kinetik hız katsayısı $k_0$ ve sıcaklık ölçeği $\Delta T$,
+fiziksel sabitler değil sayısal düzenlileştirme parametreleridir. Dokuz
+kombinasyon ($k_0 \in \{5\times10^{-4}, 10^{-3}, 5\times10^{-3}\}$~s$^{-1}$,
+$\Delta T \in \{4,8,16\}$~K) için öncü süre \regLo\ ile \regHi~dk arasında,
+yani \regSpread~\%'lik bir bant içinde kalmaktadır. Cephe bu nedenle sayısal
+bir yapı değil, enerji dengesiyle belirlenen fiziksel bir yapı olarak kabul
+edilebilir.
+
+% =============================================================================
+\section{Tespit fizibilitesi}
+
+\subsection{Nominal senaryo}
+
+Referans senaryo, ölü örtüde alevsiz pirolizle ilerleyen bir ısınmadır: yüzey
+sıcaklığı bir buçuk saatte üç yüz dereceye yükselir, tutuşma yüzeyin bu eşiği
+geçtiği an olarak tanımlanır. Prob altı santimetre derinliktedir.
+Şekil~\ref{fig:nominal}, yüzey ve prob sıcaklıklarını, sıcaklık artış hızını
+ve direncin logaritmik türevini birlikte gösterir. Tutuşma $t=\tIgnite$~saatte,
+alarm $t=\tAlarm$~saatte gerçekleşir; öncü süre \leadNom~dakikadır.
+
+İki nicelik bu grafikte dikkat çekicidir. Prob derinliğindeki sıcaklık artış
+hızı en yüksek \maxdTdt~$^\circ$C/10~dk'ya ulaşır; oysa aynı derinlikte günlük
+ısı dalgasının ürettiği doğal hız, sönümlü dalga çözümü
+$T(z,t) = \bar T + A e^{-z/d}\sin(\omega t - z/d)$ ile
+$d = \sqrt{2\alpha/\omega} = \dampDepth$~cm alınarak yalnızca
+\diurnalRate~$^\circ$C/10~dk'dır. Belgelerdeki $\beta = 1{,}5$ eşiği bu doğal
+arka planın \betaMarginNat\ katıdır, yani günlük döngü tek başına eşiği
+tetikleyemez. İkinci nicelik direncin işaretidir ve bir sonraki alt bölümün
+konusudur.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_nominal.tikz}
+\caption{Nominal alev öncesi senaryo. Üstte yüzey ve prob sıcaklıkları; altta
+sıcaklık artış hızı (sol eksen, $\beta$ eşiğiyle birlikte) ve direncin
+logaritmik türevi (sağ eksen). Elektriksel imza, kuruma değil ısınma ve
+yoğuşma kaynaklı olduğu için negatif yönde gelişmektedir.}
+\label{fig:nominal}
+\end{figure}
+
+\subsection{Buharlaşma cephesi ve derinlik profilleri}
+
+Şekil~\ref{fig:profile}, sıcaklık ve su içeriği profillerinin zaman içindeki
+gelişimini verir. Sıcaklık profili yüz derece civarında belirgin bir düzlük
+gösterir; bu, kaynama cephesinin gizli ısıyı soğurduğu bölgedir ve cephe
+yavaşça derine ilerler. Su içeriği profili ise iki karşıt hareketi birlikte
+sergiler: cephenin üstünde toprak hava kurusu hâle gelirken, cephenin hemen
+altında su içeriği başlangıç değerinin üzerine çıkar. Bu yoğuşma bölgesi,
+denklem~\eqref{eq:Dblock}'teki $D_{Tv}$ teriminin doğrudan sonucudur ve
+ölçüm açısından belirleyicidir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_profile.tikz}
+\caption{Sıcaklık ve su içeriği profillerinin gelişimi. Yüz derecedeki düzlük
+buharlaşma cephesidir; cephenin altında su içeriğinin başlangıç değerinin
+üzerine çıkması, ısıl buhar sürüklenmesinin ürettiği yoğuşma bölgesidir.}
+\label{fig:profile}
+\end{figure}
+
+\subsection{Elektriksel kuralın işareti: belgelerdeki tanımın düzeltilmesi}
+\label{sec:sign}
+
+Proje belgelerinde füzyon kuralının ikinci koşulu
+$\dd(\ln R)/\dd t > \gamma$ biçimindedir, yani direncin \emph{artışını} arar.
+Bağlaşık model, alev öncesi senaryoda bu koşulun geç kaldığını göstermektedir.
+Isınma, gözenek suyunun iletkenliğini yüzde iki dereceye yakın bir katsayıyla
+artırır; yoğuşma su içeriğini yükseltir; her iki etki de direnci düşürür.
+Direnç ancak kuruma cephesi prob derinliğine ulaştığında hızla artar ve bu
+cephe, ısıl cephenin belirgin biçimde gerisinden ilerler.
+Nominal koşumda, altı santimetre derinlikte, tek yönlü kural tutuşmadan önce
+hiç tetiklenmemekte; iki yönlü $|\dd(\ln R)/\dd t| > \gamma$ kuralı ise
+\leadNom~dakika önce tetiklenmektedir. Aradaki fark, kuruma cephesinin prob
+derinliğine varışını beklemekle, ısınmanın ve yoğuşmanın ürettiği erken imzayı
+okumak arasındaki farktır.
+
+Şekil~\ref{fig:depth} bu farkın prob derinliğine bağımlılığını verir. Tek yönlü
+kural yalnızca prob \zOneMax~santimetreden sığ olduğunda alarm üretebilmekte,
+en iyi durumda \zOneBest~santimetrede \leadOneBest~dakika bırakmaktadır; oysa
+miselyumun yangın sırasında hayatta kaldığı bant on beş ile yirmi santimetre
+arasındadır. Yani belgelerdeki kural, biyolojik olarak sürdürülemeyen bir
+derinlik gerektirmektedir. İki yönlü kural ise altı santimetrede
+\leadSix~dakika, on sekiz santimetrede \leadEighteen~dakika öncü süre üretir. Buradan çıkan tasarım önerisi, donanım raporundaki ayrıştırma
+önerisiyle örtüşür ve onu güçlendirir: biyoelektrot miselyumun yaşadığı
+derinlikte kalmalı, sıcaklık ve direnç probu aynı kablo üzerinde daha sığa
+alınmalı, füzyon kuralının ikinci koşulu ise mutlak değer üzerinden
+yazılmalıdır. Bu değişikliğin donanım maliyeti yoktur; yalnızca gömülü
+yazılımdaki karşılaştırma işlecini ilgilendirir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_depth.tikz}
+\caption{Öncü sürenin prob derinliğine bağımlılığı, iki farklı $\gamma$ kuralı
+için. Belgelerdeki tek yönlü kural yalnızca çok sığ problarda zamanında
+çalışmakta, miselyumun yaşadığı bantta ise tutuşmadan sonra tetiklenmektedir.}
+\label{fig:depth}
+\end{figure}
+
+\subsection{Ölçüm gerçekte hangi derinliği görüyor}
+\label{sec:kernel}
+
+Denklem~\eqref{eq:sensitivity} çekirdeği, düşey dizilimli dört elektrot için
+(akım elektrotları üç ve dokuz, gerilim elektrotları beş ve yedi santimetrede)
+hesaplanmıştır. Şekil~\ref{fig:kernel}, duyarlılık yoğunluğunu ve derinliğe
+göre kümülatif dağılımını verir. Ölçümün medyan araştırma derinliği
+\zMedian~santimetre, onuncu ve doksanıncı yüzdelikleri \zPten\ ile
+\zPninety~santimetredir; yatayda duyarlılığın yüzde doksanı
+\rPninety~santimetrelik bir yarıçap içinde kalır. Bu, elektrot çiftinin nokta
+değil, belirli bir hacim üzerinde ağırlıklı ortalama ölçtüğünü ve bu hacmin
+dizilim açıklığıyla ölçeklendiğini gösterir; dolayısıyla prob derinliğinin
+değiştirilmesi, elektrot açıklığının da birlikte ölçeklenmesini gerektirir.
+
+Zaman serisi üretiminde kullanılan birinci mertebe yaklaşım, aynı profiller
+üzerinde tam eksenel simetrik çözümle karşılaştırılmıştır
+(Şekil~\ref{fig:born}). Direncin logaritmik değişiminde en büyük bağıl sapma
+\bornErr~\%'dir. Yaklaşımın Monte Carlo koşumlarında kullanılması, her adımda
+seyrek bir doğrusal sistem çözmeye göre üç mertebe hızlıdır ve bu sapma
+düzeyinde karar sınırını değiştirmemektedir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_kernel.tikz}
+\caption{Dört elektrotlu düşey dizilimin Geselowitz duyarlılık çekirdeği ve
+kümülatif araştırma derinliği. Ölçüm, medyanda \zMedian~cm derinliği
+görmektedir.}
+\label{fig:kernel}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_born.tikz}
+\caption{Birinci mertebe (Born) yaklaşımının tam eksenel simetrik çözümle
+karşılaştırılması. En büyük bağıl sapma \bornErr~\%'dir.}
+\label{fig:born}
+\end{figure}
+
+\subsection{Belirsizlik altında öncü süre}
+
+Tek bir nominal koşum fizibilite kanıtı değildir. Sekiz parametreli bir
+tasarım uzayında (başlangıç nem içeriği, ortam sıcaklığı, piroliz ramp süresi,
+yüzey plato sıcaklığı, doygun ısıl iletkenlik, Archie üssü, prob derinliği ve
+gözenek suyu iletkenliği) \mcPos\ örneklik bir Sobol dizisi çekilmiş ve tümü
+yığın hâlinde çözülmüştür. Olayların \detRate~\%'sinde alarm üretilmiştir;
+öncü sürenin medyanı \leadMed~dakika, beşinci ve doksan beşinci yüzdelikleri
+\leadPfive\ ile \leadPnf~dakikadır. Onbeş dakikalık asgari müdahale eşiğinin
+üzerinde kalma olasılığı \pLeadFifteen~\%, otuz dakikanın üzerinde kalma
+olasılığı \pLeadThirty~\%'dir (Şekil~\ref{fig:leadcdf}).
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_leadcdf.tikz}
+\caption{Öncü sürenin belirsizlik altındaki ampirik birikimli dağılımı.
+Kesikli çizgiler beşinci ve doksan beşinci yüzdelikleri işaretlemektedir.}
+\label{fig:leadcdf}
+\end{figure}
+
+\subsection{Ayırt edicilik ve eşik tasarım penceresi}
+
+Fizibilitenin ikinci sorusu, bu imzanın yangın olmadan da gerçekleşen
+olaylardan ayrılabilirliğidir. Aynı parametre uzayında kuraklık ve normal gün
+senaryoları için toplam \mcNeg\ örneklik olumsuz kümeler üretilmiş, karar
+istatistiği olarak normalleştirilmiş füzyon büyüklüğü
+$\Lambda = \max_t \min\!\left(\dot T/\beta_0,\;|\dd\ln R/\dd t|/\gamma_0\right)$
+tanımlanmıştır.
+
+Sonuç, beklenenden keskindir. Her iki fiziksel kanal da bu senaryo aileleri
+altında olumlu ve olumsuz kümeleri örtüşmesiz biçimde ayırmakta, eğri altı
+alanları \aucFusion, \aucBeta\ ve \aucGamma\ çıkmaktadır; belgelerdeki eşik
+çiftine karşılık gelen $\tau = 1$ çalışma noktasında doğru tespit oranı
+\tprOne~\%, yanlış alarm oranı \fprOne~\%'dir. Alıcı işletim eğrisi bu durumda
+köşeye yapıştığı için bilgi taşımaz; ayrışmanın gerçek ölçüsü, iki kümenin
+dağılımları arasındaki boşluktur (Şekil~\ref{fig:separation}).
+
+Bu boşluk, eşiklerin tasarım penceresini doğrudan verir. Isıl kanalda olumsuz
+kümenin üst kuyruğu ile alev öncesi kümenin alt kuyruğu arasında
+$\beta \in [\betaLo, \betaHi]$, elektriksel kanalda
+$\gamma \in [\gammaLo, \gammaHi]$ bandı kalmaktadır; belgelerdeki
+$\beta = 1{,}5$ ve $\gamma = 0{,}002$ değerleri her iki pencerenin de içindedir.
+
+Kuraklık senaryosunun ayrıntısı, mantıksal çarpımın neden yine de doğru tasarım
+olduğunu gösterir. Kuraklıkta elektriksel kanal en büyük \droughtdlnR~dk$^{-1}$,
+ısıl kanal \droughtdT~$^\circ$C/10~dk değerine ulaşır; alev öncesi senaryoda
+ısıl kanal \maxdTdt~$^\circ$C/10~dk'ya, yani kuraklıktakinin yaklaşık \sepBeta\
+katına çıkar. Modellenen senaryo ailesinde tek bir kanal da yeterlidir; ancak
+bu, kanalın kendisinin arızalanmadığı, sürüklenmediği ve yerel bir bozucudan
+etkilenmediği varsayımına dayanır. Çarpımın değeri, ölçülebilir bir eğri altı
+alanı kazancında değil, tek kanallı arıza kiplerine karşı sağladığı
+yedeklilikte aranmalıdır; bu da modelin içinden değil saha verisinden
+doğrulanabilecek bir iddiadır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_separation.tikz}
+\caption{İki kanalın olumlu ve olumsuz kümelerdeki birikimli dağılımları.
+Kesikli çizgiler belgelerdeki eşikleri işaretler; eşik ile her iki dağılımın
+kuyruğu arasındaki boşluk, tasarım marjını doğrudan görünür kılar.}
+\label{fig:separation}
+\end{figure}
+
+\subsection{Küresel duyarlılık}
+
+Hangi belirsizliğin sonucu belirlediği, Saltelli tasarımıyla \sobolRuns\
+koşumda hesaplanan Sobol indisleriyle yanıtlanır
+(Şekil~\ref{fig:sobol}). Toplam etki bakımından baskın parametre
+\sobolFirst\ ($S_T = \sobolFirstST$), ardından \sobolSecond\
+($S_T = \sobolSecondST$) ve \sobolThird\ ($S_T = \sobolThirdST$)
+gelmektedir. Birinci mertebe indislerin toplamı \sobolSum{}'dir; birden
+belirgin biçimde küçük olması, parametreler arasında etkileşimin önemli
+olduğunu, dolayısıyla tek tek duyarlılık taramalarının yanıltıcı olacağını
+gösterir.
+
+Çözümlemenin kendi doğruluğu için tasarıma bilinçli olarak etkisiz bir
+parametre eklenmiştir. Gözenek suyu iletkenliği $\sigma_w^{25}$,
+denklem~\eqref{eq:archie}'de çarpımsal bir sabit olduğundan direncin
+logaritmik türevinden düşer ve öncü süreyi etkileyemez. Hesaplanan toplam
+etki indisi \sobolNull{}'dur; tahmin edici, etkisiz parametreyi doğru biçimde
+sıfırda vermektedir.
+
+Aynı grafikte elektriksel kanalın diğer parametresi olan Archie üssünün de
+sıfır çıkması, sayısal bir tesadüf değil yapısal bir sonuçtur ve tasarım
+açısından önemlidir. İki yönlü kural altında elektriksel koşul, ısıl koşuldan
+\emph{daha erken} sağlanmaktadır; dolayısıyla alarm anını belirleyen, iki
+koşuldan geç olanı, yani sıcaklık kanalıdır. Elektriksel kanalın işlevi öncü
+süreyi uzatmak değil, kuraklığı yangından ayırmaktır. Bu iş bölümü, bir önceki
+bölümdeki ayırt edicilik sonuçlarıyla birlikte okunmalıdır: sıcaklık kanalı
+zamanlamayı, direnç kanalı özgüllüğü taşır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_sobol.tikz}
+\caption{Öncü süre üzerindeki birinci mertebe ve toplam etki Sobol indisleri.
+Sağdaki $\sigma_w$ sütunu, kuramsal olarak etkisiz olması gereken kontrol
+parametresidir.}
+\label{fig:sobol}
+\end{figure}
+
+% =============================================================================
+\section{Mekânsal fizibilite}
+\label{sec:lateral}
+
+\subsection{Yanal ısı yayılımı ve eğimin etkisi}
+
+Buraya kadarki çözümleme düşey bir sütun üzerindedir ve bir düğümün tam
+altında başlayan bir olayı varsayar. Gerçek soru, düğümden belirli bir yatay
+uzaklıkta başlayan bir sıcak noktanın ne zaman görüleceğidir. Tam tensörlü iki
+boyutlu çözücü, yüzeyde \latSpot~metre yarıçaplı bir sıcak nokta ile
+koşturulmuş ve altı santimetre derinlikte $\beta$ eşiğinin aşıldığı an, yatay
+uzaklığın fonksiyonu olarak çıkarılmıştır (Şekil~\ref{fig:lateral}).
+
+Sonuç, ısıl kanalın mekânsal erimi konusunda serinkanlı olmayı gerektirir.
+Yatay yatakta tespit yarıçapı \latRzero~metredir; ısı iletiminin difüzyon
+uzunluğu $\sqrt{4\alpha t}$ ile ölçeklendiği düşünülürse bu beklenen bir
+büyüklüktür. Yatak eğimli olduğunda ayak izi simetrisini yitirir: bir yönde
+\latRdown, karşı yönde \latRup~metre — küçük ama tutarlı bir fark. Bu asimetri,
+Şekil~\ref{fig:tensor}'deki akı sapmasının mekânsal karşılığıdır ve eğimli
+parsellerde düğüm yerleşiminin yamaç yönüne göre kaydırılabileceğini
+düşündürür. Pratik
+sonucu şudur: ısıl kanal tek başına metre mertebesinde bir erime sahiptir ve
+hektarlar ölçeğinde kapsama sağlayamaz. Sistemin mekânsal kapsama iddiası bu
+nedenle ısıl kanala değil, biyolojik kanala dayanmak zorundadır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_lateral.tikz}
+\caption{İki boyutlu tensörlü çözümde yanal tespit ayak izi. Eğimli yatakta
+ayak izi yamaç yönünde kayarak asimetrikleşmektedir.}
+\label{fig:lateral}
+\end{figure}
+
+\subsection{Miselyum ağının kablo denklemi}
+
+Miselyum ağı, elektriksel açıdan dağıtılmış bir iletken ortamdır ve zar
+üzerinden sızıntı ile eksen boyunca iletimin dengelendiği pasif kablo
+denklemiyle temsil edilebilir. Ağ toprakta yatay bir tabaka gibi yayıldığından
+iki boyutlu kararlı hâl biçimi uygundur:
+\begin{equation}
+\nabla^2 V - \frac{V}{\lambda^2} = 0,
+\qquad \lambda = \sqrt{\frac{r_m}{r_i}},
+\end{equation}
+burada $\lambda$ elektrotonik uzunluk sabitidir. Yarıçapı $a$ olan dairesel
+bir stres kaynağı için çözüm, sıfırıncı mertebe değiştirilmiş Bessel
+fonksiyonuyla verilir:
+\begin{equation}
+V(r) = V_0\,\frac{K_0(r/\lambda)}{K_0(a/\lambda)} .
+\label{eq:cable}
+\end{equation}
+Deney raporlarındaki genlikler kaynak için $V_0 = \cableVzero$~mV mertebesini,
+ölçüm zincirinin gürültü tabanı ve ortam değişkenliği ise
+$V_{\mathrm{det}} = \cableVdet$~mV'lik bir tespit eşiğini makul kılar.
+Şekil~\ref{fig:cable}, farklı $\lambda$ değerleri için sönümü ve karşılık gelen
+tespit yarıçapını verir. Elde edilen ilişki, katsayısı $\lambda$ büyüdükçe
+hafifçe düşen bir doğrusallıktır: $\lambda = 1$~m için \rdetOne~m,
+$\lambda = 10$~m için \rdetTen~m, $\lambda = 30$~m için \rdetThirty~m.
+
+Bu, fizibilitenin en kritik bilinmeyenidir. Ağın $\lambda$ değeri hiçbir proje
+belgesinde ölçülmemiştir ve literatürde de doğrudan bir değeri yoktur.
+Aşağıdaki alt bölüm, bu bilinmeyeni ekonomik bir eşiğe çevirerek ölçülebilir
+bir hedefe dönüştürür.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_cable.tikz}
+\caption{İki boyutlu kablo denkleminin çözümü ve tespit yarıçapının
+elektrotonik uzunluk sabitine bağımlılığı.}
+\label{fig:cable}
+\end{figure}
+
+\subsection{Düğüm aralığı, kapsama ve maliyet}
+
+Düğümler altıgen örgüde $S$ aralığıyla yerleştirilirse hektardaki düğüm sayısı
+$10^4/(0{,}866 S^2)$, herhangi bir noktanın en yakın düğüme uzaklığının en
+büyük değeri $S/\sqrt{3}$ olur. Bir tutuşma, düğümün tespit yarıçapı içinde
+başlarsa alev öncesi imza görülür; dışında başlarsa yangının yayılarak bu
+yarıçapa girmesi beklenir. İkinci durumda tespit anındaki yanmış alan yalnızca
+geometriye bağlıdır:
+\begin{equation}
+A_{\mathrm{tespit}} = \pi\left(\frac{S}{\sqrt3} - r_{\mathrm{det}}\right)^{\!2},
+\qquad
+t_{\mathrm{tespit}} = \frac{S/\sqrt3 - r_{\mathrm{det}}}{v},
+\end{equation}
+burada $v$ yüzey yangınının yayılma hızıdır. Alev öncesi tespit olasılığı ise
+$\pi r_{\mathrm{det}}^2/(0{,}866 S^2)$ oranıdır.
+
+Şekil~\ref{fig:coverage}, bu üç büyüklüğü düğüm aralığına göre verir. Yüz
+metrelik aralık, hektar başına \covNodes\ düğüm ve \covCapex~TL kurulum
+maliyeti demektir; bu yoğunlukta en kötü durumda tespit, yangın
+\covArea~hektara ulaştığında, tutuşmadan yaklaşık \covTime~dakika sonra
+gerçekleşir. Aynı yoğunlukta alev öncesi tespit olasılığı $\lambda$'ya
+kuvvetle bağlıdır; $\lambda$ bir metre mertebesindeyse yüzde birkaç, on metre
+mertebesindeyse yüzde yirmilere çıkar. Bu nedenle sistemin ayırt edici
+değer önerisi, düğüm başına maliyeti düşürmekten çok $\lambda$'yı ölçmek ve
+mümkünse elektrot yüzeyi ile inokülasyon protokolü üzerinden büyütmekle
+ilgilidir.
+
+Dürüst bir fizibilite ifadesi şudur: bu maliyet düzeyi, bir orman alanının
+tamamını battaniye gibi örtmek için uygun değildir; enerji ve maden sahaları,
+yangın emniyet şeritleri ve yerleşim--orman arayüzü gibi yüksek değerli ve
+sınırlı geometriler için uygundur. İş planındaki aşamalı pazar sıralaması
+zaten bu geometrileri hedeflemektedir ve bu çözümleme onu sayısal olarak
+desteklemektedir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_coverage.tikz}
+\caption{Alev öncesi tespit olasılığı (sol eksen, farklı elektrotonik uzunluk
+sabitleri için) ve hektar başına kurulum maliyeti (sağ eksen), düğüm aralığına
+göre.}
+\label{fig:coverage}
+\end{figure}
+
+% =============================================================================
+\section{Coğrafi fizibilite: İzmir Orman Bölge Müdürlüğü kapsama alanı}
+
+\subsection{Veri, izdüşüm ve türetilen alanlar}
+
+Modelin gerçek arazide ne ürettiğini görmek için çözümleme, 26,5--28,2 doğu
+boylamları ile 38,0--39,0 kuzey enlemleri arasındaki kutuya taşınmıştır. SRTM
+bir yay-saniyelik sayısal yükseklik modeli mozaiklenmiş, UTM 35K izdüşümüne
+\geoRes~metre çözünürlükte yeniden örneklenmiş, kara alanı \geoLandArea~km$^2$,
+en yüksek nokta \geoElevMax~metre olarak bulunmuştur. Eğim ve bakı Horn'un
+üç-üçlük operatörüyle, akış birikimi öncelikli-taşkın algoritmasıyla çukurları
+doldurulmuş yüzey üzerinde D8 yöntemiyle, topografik ıslaklık indisi
+$\mathrm{TWI} = \ln(a/\tan\beta)$ bağıntısıyla hesaplanmıştır. Eğimli yüzeye
+düşen potansiyel doğrudan güneş ışınımı, gün boyunca on dakikalık adımlarla
+gökyüzü geometrisi integre edilerek elde edilmiştir. İl sınırları, kıyı çizgisi
+ve yerleşim noktaları Natural Earth veri kümesinden okunmuş, aynı izdüşüme
+alınmış ve yerleşim--orman arayüzü mesafesi bir $k$-boyutlu ağaç sorgusuyla
+çıkarılmıştır. Kapsama alanının ortalama eğimi \geoSlopeMean\ derecedir.
+
+\subsection{Tutuşma duyarlılığı ve öncü sürenin mekânsal dağılımı}
+
+Çok ölçütlü duyarlılık indisi, Rothermel'in eğim çarpanıyla orantılı bir
+yayılma terimi, normalize potansiyel ışınım, ıslaklık indisinin tümleyeni ve
+yerleşime yakınlık teriminin ağırlıklı toplamıdır. İndisin altmış ikinci
+yüzdeliğin üzerinde kaldığı alan \geoHighArea~km$^2$'dir
+(Şekil~\ref{fig:georisk}a).
+
+Asıl bağ burada kurulur. Arazi eğimi $\psi$, denklem~\eqref{eq:Ktensor}
+tensöründe yatak normalini döndüren açının ta kendisidir; düşey iletim bileşeni
+$K_{zz} = k_\parallel\sin^2\psi + k_\perp\cos^2\psi$ olarak eğimle
+büyür. Islaklık indisi başlangıç su içeriğini, yükseklik ve ışınım ortam
+sıcaklığını belirler. Bu üç alan, arazi hücrelerinden örneklenen \geoCells\
+noktada bağlaşık sütun modeline girdi olarak verilmiş ve model yığın hâlinde
+çözülmüştür. Elde edilen öncü süre alanının medyanı \geoLeadMed~dakika,
+beşinci ve doksan beşinci yüzdelikleri \geoLeadPfive\ ile \geoLeadPnf~dakikadır
+(Şekil~\ref{fig:georisk}b). Dağılımın genişliği, tek bir nominal koşumun
+saha için yeterli olmadığını; ancak alt kuyruğun bile müdahale eşiğinin
+üzerinde kaldığını göstermektedir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_geomap.tikz}
+\caption{Kapsama alanının sayısal yükseklik modeli; üzerine kıyı çizgisi, il
+sınırları ve yarım derecelik enlem--boylam ağı bindirilmiştir. Ağ çizgilerinin
+düz değil hafifçe eğri olması, UTM izdüşümünün kendi geometrisidir. Turuncu
+noktalar, eğim, yükseklik ve yerleşim mesafesi kısıtları altında en yüksek
+duyarlılık indisine sahip pilot saha adaylarıdır.}
+\label{fig:geomap}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_georisk.tikz}
+\caption{Solda çok ölçütlü tutuşma duyarlılık indisi; sağda aynı arazi
+üzerinde bağlaşık modelin ürettiği öncü süre alanı.}
+\label{fig:georisk}
+\end{figure}
+
+\subsection{İl bazında dağılım ve pilot saha adayları}
+
+Aynı ızgara, il sınırlarıyla maskelenerek \geoNprov\ il için özetlenmiştir
+(Şekil~\ref{fig:geoprov}). Ortalama duyarlılık bakımından ilk sırada
+\geoTopProv\ (\geoTopRisk) yer almaktadır. Pilot saha seçimi, indis
+sıralamasına üç kısıt eklenerek yapılmıştır: eğim otuz iki dereceden küçük,
+yükseklik bin üç yüz metreden az ve yerleşime uzaklık sekiz yüz metre ile on
+iki kilometre arasında. Son kısıt, hem erişim lojistiği hem de arayüz
+yangınlarının fiilen gerçekleştiği bant içindir. Birbirinden en az üç
+kilometre uzak \geoSiteN\ aday elde edilmiştir; en yüksek puanlı adayın indisi
+\geoSiteRisk, yüksekliği \geoSiteElev~metre, eğimi \geoSiteSlope\ derecedir
+(Şekil~\ref{fig:geomap}).
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_geoprov.tikz}
+\caption{Kapsama alanındaki iller için ortalama ve doksanıncı yüzdelik
+duyarlılık indisi.}
+\label{fig:geoprov}
+\end{figure}
+
+\subsection{Kesit: arazi ve yeraltı birlikte}
+
+Şekil~\ref{fig:geosection}, 38,42 kuzey enlemi boyunca uzanan
+\geoTransLen~kilometrelik bir batı--doğu kesitini verir. Üstteki panel arazi
+profilini, alttaki panel aynı kesit boyunca bağlaşık modelin beşinci saatte
+ürettiği yeraltı sıcaklık alanını gösterir. Kesit boyunca öncü sürenin medyanı
+\geoTransLead\ dakikadır. Yüz derecelik buharlaşma cephesinin derinliği kesit
+boyunca değişmekte, kuru ve dik yamaçlarda daha derine inmektedir; bu, aynı
+donanımın farklı arazi birimlerinde farklı öncü süreler üreteceğinin ve pilot
+saha seçiminin yalnızca risk değil, model duyarlılığı açısından da anlamlı
+olduğunun görsel kanıtıdır.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_geosection.tikz}
+\caption{Batı--doğu kesiti. Üstte arazi profili, altta aynı kesit boyunca
+bağlaşık modelin ürettiği yeraltı sıcaklık alanı.}
+\label{fig:geosection}
+\end{figure}
+
+% =============================================================================
+\section{Enerji ve haberleşme fizibilitesi}
+
+\subsection{Güç bütçesi ve stokastik güneş}
+
+Donanım raporunun bileşen tablosundan yeniden hesaplanan ortalama akım, yüzde
+elli görev döngüsünde \iavgFifty~mA, yüzde onda \iavgTen~mA'dir. Güneş
+girdisi deterministik bir tepe güneş saati sayısıyla değil, stokastik olarak
+modellenmiştir: enleme bağlı dış-atmosfer günlük ışınımı analitik olarak
+hesaplanmış, açıklık indisi mevsimsel ortalamaya birinci mertebe
+özbağlanımlı bir sapma eklenerek üretilmiş ve üç yıllık bir seri boyunca şarj
+durumu izlenmiştir. Kış ve yaz için elde edilen eşdeğer tepe güneş saatleri
+\pshWinter\ ve \pshSummer\ saat/gündür.
+
+Çözümlemenin ilk sonucu, tasarım sorusunun yanlış eksende sorulduğunu
+göstermiştir. Beş vatlık panel, açık gökyüzü referans koşullarında kış
+ortasında bile yükün yaklaşık \energyMargin\ katını üretmektedir; panel gücü
+bu nedenle kısıtlayıcı değişken değildir. Kısıtlayıcı olan, kanopi altında
+panele ulaşan ışık payıdır. Şekil~\ref{fig:energy}a bu yüzden yük kaybı
+olasılığını görev döngüsü ile kanopi geçirgenliği düzleminde verir. Referans
+geçirgenlikte (yüzde elli beş) yük kaybı olasılığı yüzde elli görev döngüsünde
+\lolpFifty~\%, yüzde onda \lolpTen~\%'dir. Kapalı bir çam örtüsüne karşılık
+gelen yüzde on geçirgenlikte ise yüzde elli görev döngüsünde \lolpShade~\%'ye
+çıkar. Yüzde bir yük kaybı olasılığının altında kalmak için gereken en düşük
+geçirgenlik, yüzde elli görev döngüsünde \canopyCritFifty~\%, kesintisiz
+çalışmada \canopyCritFull~\%'dir.
+
+Bunun kurulum açısından karşılığı nettir: enerji fizibilitesi panel seçimine
+değil, yüzey düğümünün gölgelenme derecesine bağlıdır ve montaj yönergesi bu
+eşiği bir kabul ölçütü olarak içermelidir. Donanım raporunun kendi önerisi olan
+olay-tetikli uyarlamalı görev döngüsü, aynı grafikte sakin dönemde soldaki
+geniş güvenli bölgede, şüphe hâlinde kısa süreliğine sağda çalışmak anlamına
+gelir ve en yoğun gölgelenme koşullarında bile marjı korur.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_energy.tikz}
+\caption{Solda kanopi geçirgenliği--görev döngüsü düzleminde yük kaybı
+olasılığı; sağda referans koşulda bir yıllık şarj durumu izi.}
+\label{fig:energy}
+\end{figure}
+
+\subsection{LoRa bağlantı bütçesi}
+
+Haberleşme fizibilitesi iki katmanlı bir yol kaybı modeliyle değerlendirilmiştir
+(Şekil~\ref{fig:link}). Yüz metreye kadar serbest uzay kaybı, ötesinde engebeli
+ve örtülü arazi için $n = \pathExp$ üstelli logaritmik uzaklık modeli
+kullanılmış, buna Weissberger'in değiştirilmiş üstel sönüm bağıntısıyla bitki
+örtüsü sönümü eklenmiştir. Yirmi iki dBm çıkış gücü, iki dBi anten kazançları
+ve $-134$~dBm alıcı duyarlılığı ile bağlantı marjının sıfıra düştüğü mesafe
+\dMax~metre, on dB marj bırakıldığında \dMarginTen~metredir. Serbest uzay
+eğrisiyle arasındaki fark, menzilin neden yalnızca verici gücüyle
+hesaplanamayacağını göstermektedir.
+
+Ağ geçidi kapasitesi iki ayrı kısıttan gelir. Menzil kısıtı, yüz metrelik
+düğüm aralığında yaklaşık \nodesRange\ düğüme karşılık gelir; hava süresi
+kısıtı ise, düğüm başına on dakikada bir yüz milisaniyelik paket ve sekiz
+kanalda yüzde yirmi doluluk hedefiyle \nodesAirtime\ düğümdür. Bağlayıcı olan
+küçük olanıdır, yani \nodesPerGw\ düğüm. Her iki değer de bir ağ geçidinin tek
+başına yüzlerce hektarlık bir parseli taşıyabileceğini gösterir; haberleşme
+katmanı kapsama açısından kısıtlayıcı bileşen değildir.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_link.tikz}
+\caption{LoRa bağlantı bütçesi. Bitki örtüsü sönümü ve engebeli arazi yol
+kaybı üsteli birlikte, açık arazi menzilini bir mertebe kısaltmaktadır.}
+\label{fig:link}
+\end{figure}
+
+% =============================================================================
+\section{Ekonomik fizibilite}
+
+Ekonomik katman, fiziksel katmandan bağımsız değildir: düğüm yoğunluğu
+Bölüm~\ref{sec:lateral}'ten, düğüm maliyeti donanım raporunun malzeme
+listesinden, ağ geçidi başına düğüm sayısı bağlantı bütçesinden gelir. Yedi
+yıllık bir ufukta, \econRuns\ örneklik bir Monte Carlo tasarımıyla donanım
+maliyeti, kâr marjı, yazılım abonelik geliri, müşteri kaybı oranı, iskonto
+oranı, büyüme çarpanı, işletme gideri ve ilk yıl kurulum hacmi üçgen
+dağılımlarla örneklenmiştir.
+
+Net bugünkü değerin medyanı \npvMed\ milyon TL, onuncu ve doksanıncı
+yüzdelikleri \npvPten\ ile \npvPninety\ milyon TL'dir; pozitif çıkma olasılığı
+\pNpvPos~\%'dir. İç verim oranının medyanı yüzde \irrMed, onuncu yüzdeliği
+yüzde \irrPten'dir. Medyan senaryoda kümülatif iskontolu nakit akışı
+\paybackYear{}. yılda pozitife dönmektedir (Şekil~\ref{fig:econ}).
+
+Duyarlılık çözümlemesi (Şekil~\ref{fig:tornado}), sonucun en çok büyüme
+çarpanına ve yazılım abonelik gelirine, en az donanım birim maliyetine bağlı
+olduğunu göstermektedir. Bu, iş planındaki tekrarlayan gelir vurgusunu
+destekler ve donanım maliyetini düşürmeye yönelik erken optimizasyonun
+ekonomik getirisinin sınırlı olduğunu söyler.
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_econ.tikz}
+\caption{Net bugünkü değerin Monte Carlo dağılımı ve medyan senaryoda
+kümülatif iskontolu nakit akışı.}
+\label{fig:econ}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\input{figures/fig_tornado.tikz}
+\caption{Net bugünkü değerin girdi belirsizliklerine duyarlılığı. Her çubuk
+çifti, ilgili girdi onuncu ve doksanıncı yüzdeliğine sabitlenip diğerleri
+medyanda tutulduğunda elde edilen net bugünkü değeri gösterir.}
+\label{fig:tornado}
+\end{figure}
+
+% =============================================================================
+\section{Bütünleşik değerlendirme}
+
+Tablo~\ref{tab:verdict}, fizibilite ölçütlerini, her biri için önceden
+belirlenmiş eşiği ve bu çözümlemenin ürettiği değeri bir arada verir.
+
+\begin{table}[htbp]\centering\small
+\caption{Fizibilite ölçütleri ve sayısal sonuçlar.}
+\label{tab:verdict}
+\begin{tabular}{@{}p{5.1cm} p{3.1cm} p{3.4cm} p{3.3cm}@{}}
+\toprule
+Ölçüt & Eşik & Hesaplanan & Değerlendirme\\
+\midrule
+Alev öncesi öncü süre (medyan) & $\ge 15$ dk & \leadMed\ dk &
+karşılanıyor\\
+Öncü sürenin eşiğin üzerinde kalma olasılığı & $\ge \%80$ &
+\pLeadFifteen~\% & karşılanıyor\\
+Ayırt edicilik (eğri altı alan) & $\ge 0{,}90$ & \aucFusion &
+karşılanıyor\\
+$\beta$ eşiğinin tasarım bandı & $\ge 2\times$ genişlik & \betaLo--\betaHi\
+[$^\circ$C/10 dk] & karşılanıyor\\
+Yanlış alarm oranı ($\tau=1$) & $\le \%1$ & \fprOne~\% & karşılanıyor\\
+Sayısal belirsizlik & $\le \%5$ & \gciGrid~\% & karşılanıyor\\
+Enerji: kritik kanopi geçirgenliği & $\le \%15$ & \canopyCritFifty~\%
+(\%50 görev döngüsü) & montaj ölçütü olarak yazılmalı\\
+Haberleşme menzili & $\ge 500$ m & \dMarginTen\ m (10 dB marj) &
+karşılanıyor\\
+Net bugünkü değerin pozitif olma olasılığı & $\ge \%70$ & \pNpvPos~\% &
+karşılanıyor\\
+Alev öncesi mekânsal kapsama & --- & $\lambda$'ya bağlı &
+\textsc{ölçüm bekliyor}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tablodaki tek açık kalem, mekânsal kapsamadır ve bu bir eksiklik değil, doğru
+tanımlanmış bir araştırma sorusudur. Miselyum ağının elektrotonik uzunluk
+sabiti ölçülene kadar, sistemin alev öncesi tespit kapsaması bir aralık olarak
+kalır. Bu ölçüm, WP-2 iklim odası düzeneğinde ek donanım gerektirmeden
+yapılabilir: ağ üzerinde bilinen uzaklıklara yerleştirilen elektrot çiftlerinde
+aynı uyarana verilen yanıtın genliği kaydedilir ve denklem~\eqref{eq:cable}
+uydurulur. Aynı düzenek, $\gamma$ eşiğinin ve kuruma cephesi hızının
+kalibrasyonunu da sağlar.
+
+Bu çözümlemenin doğrudan tasarıma dönüşen üç çıktısı vardır. Birincisi, füzyon
+kuralının ikinci koşulu mutlak değer üzerinden yazılmalıdır; bu, yazılımda tek
+satırlık bir değişiklik olup altı santimetre derinlikte öncü süreyi
+altı santimetrede alarmsızlıktan \leadNom\ dakikaya taşımaktadır. İkincisi, sıcaklık ve direnç probu ile elektrot açıklığı
+birlikte ölçeklenerek beş ile sekiz santimetre bandına alınmalı, biyoelektrot
+miselyumun yaşadığı derinlikte bırakılmalıdır. Üçüncüsü, görev döngüsü sabit
+değil olay-tetikli olmalıdır; enerji fizibilitesi ancak bu koşulda sağlanır.
+
+% =============================================================================
+\section{Sınırlar}
+
+Bu çözümlemenin geçerlilik sınırları açıkça belirtilmelidir. Buhar taşınımı
+modeli, de Vries çerçevesinin geçerli olduğu kabul edilen sıcaklık bandının
+üzerinde, gaz fazı basınç gradyanlarını ve zorlanmış taşınımı ihmal eder;
+kaynama cephesinin ötesindeki bölgede model niceliksel değil niteliksel
+olarak doğrudur. Toprak parametreleri tek bir dokusal sınıfa aittir ve
+mekânsal değişkenlikleri yalnızca ıslaklık indisi üzerinden temsil edilir.
+Biyoelektrik kanal, spike istatistiği düzeyinde fenomenolojiktir ve bu
+belgede karar kuralının bir parçası olarak değil, üçüncü bir bağımsız kanal
+olarak ele alınmıştır; ayırt edicilik hesapları yalnızca iki fiziksel kanal
+üzerinden yapılmıştır, dolayısıyla raporlanan eğri altı alanı bir alt sınırdır.
+Yüzey sıcaklık senaryoları ölçülmüş yangın verisinden değil, literatürdeki
+piroliz sıcaklık aralıklarından kurulmuştur. Ekonomik katmandaki üçgen
+dağılımlar uzman görüşüne dayanır ve piyasa verisiyle güncellenmelidir.
+Coğrafi katmanda kullanılan duyarlılık indisi, yanmış alan istatistikleriyle
+kalibre edilmemiş fiziksel bir birleşimdir; risk haritası olarak değil, saha
+seçimi için sıralama aracı olarak yorumlanmalıdır. Aynı katmandaki yerleşim
+noktaları, yalnızca büyük merkezleri içeren küçük ölçekli bir veri kümesinden
+gelmektedir; yerleşim--orman arayüzü mesafesi bu nedenle üst sınır niteliğinde
+olup, saha kararı öncesinde büyük ölçekli bir yerleşim katmanıyla
+yenilenmelidir. Yamaç yönelimli anizotropi, coğrafi koşumlarda tam iki boyutlu
+tensör çözücüsüyle değil, tensörün düşey bileşeni üzerinden sütun modeline
+aktarılarak temsil edilmiştir; yanal akı bileşeninin etkisi
+Bölüm~
+ef{sec:lateral}'te ayrıca ölçülmüştür ve metre mertebesindedir.
+
+Bu sınırların hiçbiri sonucun işaretini değiştirecek nitelikte değildir. Alev
+öncesi imzanın varlığı, ayırt ediciliği ve enerji uygulanabilirliği modelin
+geniş bir parametre bandında korunmaktadır; belirsizliğin yoğunlaştığı yer,
+sistemin ne kadar erken uyardığı değil, ne kadar geniş bir alanı bu erkenlikle
+örtebildiğidir.
+
+% =============================================================================
+\section*{Kaynaklar}
+\addcontentsline{toc}{section}{Kaynaklar}
+\small
+\begin{enumerate}\setlength{\itemsep}{0pt}
+\item J.~R. Philip, D.~A. de Vries, ``Moisture movement in porous materials
+under temperature gradients,'' \emph{Trans. Am. Geophys. Union}, 38(2),
+222--232, 1957.
+\item M.~Th. van Genuchten, ``A closed-form equation for predicting the
+hydraulic conductivity of unsaturated soils,'' \emph{Soil Sci. Soc. Am. J.},
+44(5), 892--898, 1980.
+\item R.~F. Carsel, R.~S. Parrish, ``Developing joint probability
+distributions of soil water retention characteristics,'' \emph{Water Resour.
+Res.}, 24(5), 755--769, 1988.
+\item J.~Côté, J.-M. Konrad, ``A generalized thermal conductivity model for
+soils and construction materials,'' \emph{Can. Geotech. J.}, 42(2), 443--458,
+2005.
+\item A.~Cass, G.~S. Campbell, T.~L. Jones, ``Enhancement of thermal water
+vapor diffusion in soil,'' \emph{Soil Sci. Soc. Am. J.}, 48(1), 25--32, 1984.
+\item R.~J. Millington, J.~P. Quirk, ``Permeability of porous solids,''
+\emph{Trans. Faraday Soc.}, 57, 1200--1207, 1961.
+\item G.~E. Archie, ``The electrical resistivity log as an aid in determining
+some reservoir characteristics,'' \emph{Trans. AIME}, 146(1), 54--62, 1942.
+\item D.~B. Geselowitz, ``An application of electrocardiographic lead theory
+to impedance plethysmography,'' \emph{IEEE Trans. Biomed. Eng.}, BME-18(1),
+38--41, 1971.
+\item P.~J. Roache, ``Quantification of uncertainty in computational fluid
+dynamics,'' \emph{Annu. Rev. Fluid Mech.}, 29, 123--160, 1997.
+\item A.~Saltelli ve diğ., ``Variance based sensitivity analysis of model
+output,'' \emph{Comput. Phys. Commun.}, 181(2), 259--270, 2010.
+\item M.~J.~W. Jansen, ``Analysis of variance designs for model output,''
+\emph{Comput. Phys. Commun.}, 117(1--2), 35--43, 1999.
+\item R.~D. Barnes, C.~Lehman, D.~Mulla, ``Priority-flood: an optimal
+depression-filling and watershed-labeling algorithm,'' \emph{Comput. Geosci.},
+62, 117--127, 2014.
+\item B.~K.~P. Horn, ``Hill shading and the reflectance map,''
+\emph{Proc. IEEE}, 69(1), 14--47, 1981.
+\item L.~Kumar, A.~K. Skidmore, E.~Knowles, ``Modelling topographic variation
+in solar radiation in a GIS environment,'' \emph{Int. J. Geogr. Inf. Sci.},
+11(5), 475--497, 1997.
+\item J.~A. Duffie, W.~A. Beckman, \emph{Solar Engineering of Thermal
+Processes}, 4.~baskı, Wiley, 2013.
+\item M.~Weissberger, \emph{An initial critical summary of models for
+predicting the attenuation of radio waves by trees}, ESD-TR-81-101, 1982.
+\item R.~C. Rothermel, \emph{A mathematical model for predicting fire spread
+in wildland fuels}, USDA Forest Service INT-115, 1972.
+\item S.~H. Doerr ve diğ., ``Soil heating during wildfires and prescribed
+burns: a global evaluation,'' \emph{Int. J. Wildland Fire}, 34(12), WF25103,
+2025.
+\item N.~Phillips, A.~Gandia, A.~Adamatzky, ``Electrical response of fungi to
+changing moisture content,'' \emph{Fungal Biol. Biotechnol.}, 10(1):8, 2023.
+\item A.~Adamatzky, ``Towards fungal computer,'' \emph{Interface Focus},
+8(6):20180029, 2018.
+\end{enumerate}
+
+\end{document}

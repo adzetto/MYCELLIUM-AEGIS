@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=2.8cm},
+  aegismap, width=5.0cm, height=4.4cm, unbounded coords=jump]
+\nextgroupplot[colorbar, colormap/hot, point meta min=-0.06, point meta max=0.85,
+  colorbar style={ylabel={indis}}, title={(a) Tutuşma duyarlılığı}]
+\addplot[matrix plot*, point meta=explicit, mesh/cols=139]
+  table[x=x,y=y,meta=risk] {\dataroot/geo_dem.dat};
+\addplot[aegisink, line width=.4pt] table[x=x,y=y] {\dataroot/geo_coast.dat};
+\nextgroupplot[colorbar, colormap/viridis,
+  colorbar style={ylabel={öncü süre [dk]}}, title={(b) Modellenen öncü süre}]
+\addplot[scatter, only marks, mark=square*, mark size=.55,
+  scatter src=explicit, draw opacity=0]
+  table[x=x,y=y,meta=lead] {\dataroot/geo_lead_pts.dat};
+\addplot[aegisink, line width=.4pt] table[x=x,y=y] {\dataroot/geo_coast.dat};
+\end{groupplot}
+\end{tikzpicture}

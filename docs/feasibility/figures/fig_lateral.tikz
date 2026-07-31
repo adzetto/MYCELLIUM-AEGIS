@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Sıcak nokta merkezine yatay uzaklık [m]},
+  ylabel={$\beta$ eşiğinin aşıldığı an [dk]}, xmin=-2.5, xmax=2.5,
+  width=9.6cm, height=5.0cm, legend pos=north east,
+  restrict y to domain=150:360]
+\addplot[aegisteal, thick] table[x=x,y=t_dip0] {\dataroot/lateral.dat};
+\addlegendentry{yatay yatak ($\psi=0^\circ$)}
+\addplot[aegisember, thick, dashed] table[x=x,y=t_dip25] {\dataroot/lateral.dat};
+\addlegendentry{eğimli yatak ($\psi=25^\circ$)}
+\end{axis}
+\end{tikzpicture}

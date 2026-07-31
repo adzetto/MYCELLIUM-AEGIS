@@ -1,0 +1,28 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, name=top, width=11.2cm, height=4.3cm, xmin=2.6, xmax=7,
+  ylabel={Sıcaklık [$^\circ$C]}, legend pos=north west,
+  xticklabels={}, ymin=0, ymax=460]
+\addplot[aegisember, thick] table[x=t,y=Tsurf] {\dataroot/nominal_ts.dat};
+\addlegendentry{yüzey $T(0,t)$}
+\addplot[aegisteal, thick] table[x=t,y=Tprobe] {\dataroot/nominal_ts.dat};
+\addlegendentry{prob $T(6\,\mathrm{cm},t)$}
+\draw[aegisink, dashed, thin] (axis cs:4.5,0) -- (axis cs:4.5,460);
+\node[font=\scriptsize, anchor=south east] at (axis cs:4.48,300) {tutuşma};
+\end{axis}
+\begin{axis}[aegis, at={(top.below south west)}, anchor=north west,
+  width=11.2cm, height=4.3cm, xmin=2.6, xmax=7,
+  xlabel={Zaman [saat]}, ylabel={$\mathrm{d}T/\mathrm{d}t$ [$^\circ$C/10\,dk]},
+  legend pos=north east, ymin=-4, ymax=42]
+\addplot[aegisteal, thick] table[x=t,y=dTdt] {\dataroot/nominal_ts.dat};
+\addlegendentry{$\mathrm{d}T/\mathrm{d}t$}
+\addplot[aegismuted, dashed, domain=2.6:7] {1.5}; \addlegendentry{$\beta=1{,}5$}
+\end{axis}
+\begin{axis}[aegis, grid=none, at={(top.below south west)}, anchor=north west,
+  width=11.2cm, height=4.3cm, axis y line*=right, axis x line=none,
+  xmin=2.6, xmax=7, ymin=-0.055, ymax=0.015, scaled y ticks=false,
+  yticklabel style={aegisember, /pgf/number format/.cd, fixed, precision=3},
+  ylabel={$\mathrm{d}(\ln R)/\mathrm{d}t$ [dk$^{-1}$]},
+  ylabel style={aegisember}]
+\addplot[aegisember, thick] table[x=t,y=dlnR] {\dataroot/nominal_ts.dat};
+\end{axis}
+\end{tikzpicture}

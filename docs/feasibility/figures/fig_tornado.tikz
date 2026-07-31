@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xbar, y dir=reverse, width=8.4cm, height=5.6cm,
+  xlabel={NBD [milyon TL]}, ytick=data,
+  yticklabels={donanım maliyeti, kâr marjı, SaaS geliri, kayıp oranı,
+               iskonto oranı, büyüme, işletme gideri, ilk yıl kurulum},
+  y tick label style={font=\scriptsize}, bar width=6pt, enlarge y limits=0.09,
+  legend pos=south east]
+\addplot[fill=aegisember!60, draw=aegisember] table[x=low,y=idx] {\dataroot/tornado.dat};
+\addlegendentry{p10}
+\addplot[fill=aegisteal!60, draw=aegisdeep] table[x=high,y=idx] {\dataroot/tornado.dat};
+\addlegendentry{p90}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Mesafe [m]}, ylabel={Alınan güç [dBm]},
+  xmode=log, xmin=5, xmax=4000, ymin=-165, ymax=-20,
+  width=9.6cm, height=5.0cm, legend pos=north east]
+\addplot[aegisblue, thick] table[x=d,y=prx_open] {\dataroot/link.dat};
+\addlegendentry{açık arazi (serbest uzay)}
+\addplot[aegisteal, thick] table[x=d,y=prx_forest] {\dataroot/link.dat};
+\addlegendentry{orman örtüsü (Weissberger)}
+\addplot[aegisember, dashed, domain=5:4000] {-134};
+\addlegendentry{alıcı duyarlılığı $-134$ dBm}
+\end{axis}
+\end{tikzpicture}

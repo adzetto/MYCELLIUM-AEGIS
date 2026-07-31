@@ -1,0 +1,77 @@
+% =============================================================================
+% MYCELLIUM-AEGIS · FİZİBİLİTE ANALİZİ
+% preamble.tex — pgfplots ortak biçemi
+% Hem ana rapor hem de bağımsız (standalone) şekil derlemeleri bunu yükler.
+% =============================================================================
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepgfplotslibrary{groupplots,fillbetween,colorbrewer,statistics}
+\usetikzlibrary{patterns,arrows.meta,calc,decorations.pathreplacing}
+\pgfplotsset{compat=1.18}
+
+% ---- proje renk dizgesi (sunumla aynı) --------------------------------------
+\definecolor{aegisteal}{HTML}{0E8F76}
+\definecolor{aegisdeep}{HTML}{0A6B58}
+\definecolor{aegisember}{HTML}{C1670E}
+\definecolor{aegisink}{HTML}{1E2622}
+\definecolor{aegismuted}{HTML}{6B7A72}
+\definecolor{aegisline}{HTML}{D6DBD6}
+\definecolor{aegispaper}{HTML}{FBFBF9}
+\definecolor{aegisblue}{HTML}{2C5F8A}
+\definecolor{aegisplum}{HTML}{7A4A78}
+
+% arazi yüksekliği için sessiz, projeye uyumlu bir renk skalası
+\pgfplotsset{
+  colormap={aegisterrain}{
+    rgb255=(232,238,232) rgb255=(200,214,198) rgb255=(178,190,160)
+    rgb255=(196,182,140) rgb255=(190,158,116) rgb255=(168,128,96)
+    rgb255=(142,104,84)  rgb255=(120,88,74)
+  },
+}
+
+\pgfplotscreateplotcyclelist{aegis}{%
+  {aegisteal, thick},
+  {aegisember, thick, dashed},
+  {aegisblue, thick, dotted},
+  {aegisplum, thick, dashdotted},
+  {aegismuted, thick, densely dashed},
+}
+
+% ---- taban eksen biçemi -----------------------------------------------------
+\pgfplotsset{
+  aegis/.style={
+    width=\figwidth, height=\figheight,
+    scale only axis,
+    axis line style={aegisink, line width=.5pt},
+    tick style={aegisink, line width=.4pt},
+    label style={font=\small, color=aegisink},
+    tick label style={font=\footnotesize, color=aegisink},
+    title style={font=\small\bfseries, color=aegisink},
+    legend style={font=\footnotesize, draw=aegisline, fill=aegispaper,
+                  fill opacity=.92, text opacity=1, rounded corners=1pt,
+                  inner sep=3pt, row sep=1pt},
+    grid=major,
+    grid style={aegisline, line width=.3pt},
+    cycle list name=aegis,
+    every axis plot/.append style={line join=round},
+    clip mode=individual,
+  },
+  aegismap/.style={
+    aegis, grid=none, axis equal image,
+    xlabel={Doğu [km]}, ylabel={Kuzey [km]},
+    scaled ticks=false,
+    xticklabel style={/pgf/number format/.cd, fixed, precision=0, 1000 sep={\,}},
+    yticklabel style={/pgf/number format/.cd, fixed, precision=0, 1000 sep={\,}},
+    colorbar style={font=\scriptsize, width=6pt, tick style={line width=.3pt}},
+  },
+  /pgf/number format/.cd, use comma, 1000 sep={\,},
+}
+
+% Türkçe ondalık ayırıcı için sayı biçimi
+\pgfkeys{/pgf/number format/precision=3}
+
+\newcommand{\figwidth}{12.2cm}
+\newcommand{\figheight}{6.4cm}
+
+% veri kökü — ana rapor ve standalone derlemede aynı olsun diye
+\providecommand{\dataroot}{data}

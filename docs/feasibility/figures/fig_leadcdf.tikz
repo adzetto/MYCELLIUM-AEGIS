@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Öncü süre [dk]}, ylabel={Birikimli olasılık},
+  xmin=0, xmax=150, ymin=0, ymax=1.02, width=9.6cm, height=5.2cm,
+  legend pos=south east]
+\addplot[aegisteal, very thick] table[x=lead,y=cdf] {\dataroot/lead_cdf.dat};
+\addlegendentry{Monte Carlo ampirik dağılım}
+\addplot[aegismuted, dashed, domain=0:150] {0.05};
+\addplot[aegismuted, dashed, domain=0:150] {0.95};
+\draw[aegisember, thin, dash dot] (axis cs:15,0) -- (axis cs:15,1);
+\node[font=\scriptsize, aegisember, anchor=south west] at (axis cs:16,0.04)
+  {müdahale eşiği};
+\end{axis}
+\end{tikzpicture}

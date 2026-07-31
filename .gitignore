@@ -12,3 +12,7 @@ __pycache__/
 *.vrb
 *.fls
 *.fdb_latexmk
+
+# fizibilite: indirilen ham cografi veri (surumlenmez)
+docs/feasibility/numeric/.cache/
+.build/

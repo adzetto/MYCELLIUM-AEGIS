@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Düğüm aralığı $S$ [m]},
+  ylabel={Alev öncesi tespit olasılığı}, xmin=20, xmax=200, ymin=0, ymax=1,
+  width=9.4cm, height=5.2cm, legend pos=north east]
+\addplot table[x=S,y=p1]  {\dataroot/coverage.dat}; \addlegendentry{$\lambda=1$ m}
+\addplot table[x=S,y=p3]  {\dataroot/coverage.dat}; \addlegendentry{$\lambda=3$ m}
+\addplot table[x=S,y=p10] {\dataroot/coverage.dat}; \addlegendentry{$\lambda=10$ m}
+\addplot table[x=S,y=p30] {\dataroot/coverage.dat}; \addlegendentry{$\lambda=30$ m}
+\end{axis}
+\begin{axis}[aegis, grid=none, width=9.4cm, height=5.2cm,
+  axis y line*=right, axis x line=none, xmin=20, xmax=200,
+  ymode=log, ymin=3e3, ymax=2e6, ylabel={Kurulum maliyeti [TL/ha]},
+  ylabel style={aegisember}, y tick label style={aegisember}]
+\addplot[aegisember, very thick] table[x=S,y=capex] {\dataroot/coverage.dat};
+\end{axis}
+\end{tikzpicture}

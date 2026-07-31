@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
+  aegis, width=6.0cm, height=5.2cm, xmode=log, ymode=log]
+\nextgroupplot[xlabel={Ağ adımı $h$}, ylabel={Bağıl $L_2$ hatası},
+  legend pos=south east, title={(a) Üretilmiş çözümle doğrulama}]
+\addplot[aegisteal, thick, mark=*, mark size=1.6] table[x=h,y=l2] {\dataroot/conv_mms_thermal.dat};
+\addlegendentry{tensörlü ısı operatörü}
+\addplot[aegisblue, thick, mark=square*, mark size=1.6] table[x=h,y=smooth] {\dataroot/conv_mms_ert.dat};
+\addlegendentry{$\nabla\!\cdot\!(\sigma\nabla\phi)$}
+\addplot[aegismuted, dashed, domain=0.004:0.06] {6e2*x^2};
+\addlegendentry{$\mathcal{O}(h^2)$}
+\nextgroupplot[xlabel={Ağ adımı $h$}, ylabel={Bağıl $L_2$ hatası},
+  legend pos=south east, title={(b) Nokta kaynağın etkisi}]
+\addplot[aegisember, thick, mark=triangle*, mark size=2] table[x=h,y=point] {\dataroot/conv_mms_ert.dat};
+\addlegendentry{$\delta$ kaynaklı tam çözüm}
+\addplot[aegismuted, dashed, domain=0.004:0.02] {0.32*x};
+\addlegendentry{$\mathcal{O}(h)$}
+\end{groupplot}
+\end{tikzpicture}

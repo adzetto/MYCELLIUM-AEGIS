@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, ybar, bar width=9pt, width=9.4cm, height=4.6cm,
+  ylabel={Ortalama duyarlılık indisi}, xtick=data,
+  xticklabel style={font=\scriptsize, rotate=30, anchor=north east},
+  ymin=0, enlarge x limits=0.12, legend pos=north east]
+\addplot[fill=aegisember!55, draw=aegisember] table[x=idx,y=risk_mean] {\dataroot/geo_prov.dat};
+\addlegendentry{ortalama}
+\addplot[fill=aegisteal!45, draw=aegisdeep] table[x=idx,y=risk_p90] {\dataroot/geo_prov.dat};
+\addlegendentry{90. yüzdelik}
+\end{axis}
+\end{tikzpicture}

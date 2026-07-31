@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
+  aegis, width=5.6cm, height=5.2cm, xmode=log, ymin=0, ymax=1.02,
+  ylabel={Birikimli olasılık}]
+\nextgroupplot[xlabel={$\max_t \mathrm{d}T/\mathrm{d}t$ [$^\circ$C/10\,dk]},
+  legend pos=north west, title={(a) Isıl kanal}, xmin=0.05, xmax=200]
+\addplot[aegisblue, thick] table[x=beta_neg, y expr=\coordindex/1023] {\dataroot/threshold_box.dat};
+\addlegendentry{olumsuz küme}
+\addplot[aegisteal, thick] table[x=beta_pos, y expr=\coordindex/1023] {\dataroot/threshold_box.dat};
+\addlegendentry{alev öncesi}
+\draw[aegisember, thick, dashed] (axis cs:1.5,0) -- (axis cs:1.5,1.02);
+\node[font=\scriptsize, aegisember, anchor=south west, rotate=90]
+  at (axis cs:1.6,0.06) {$\beta = 1{,}5$};
+\nextgroupplot[xlabel={$\max_t |\mathrm{d}\ln R/\mathrm{d}t|$ [dk$^{-1}$]},
+  legend pos=north west, title={(b) Elektriksel kanal}, xmin=1e-4, xmax=1]
+\addplot[aegisblue, thick] table[x=gamma_neg, y expr=\coordindex/1023] {\dataroot/threshold_box.dat};
+\addlegendentry{olumsuz küme}
+\addplot[aegisteal, thick] table[x=gamma_pos, y expr=\coordindex/1023] {\dataroot/threshold_box.dat};
+\addlegendentry{alev öncesi}
+\draw[aegisember, thick, dashed] (axis cs:0.002,0) -- (axis cs:0.002,1.02);
+\node[font=\scriptsize, aegisember, anchor=south west, rotate=90]
+  at (axis cs:0.0022,0.06) {$\gamma = 0{,}002$};
+\end{groupplot}
+\end{tikzpicture}

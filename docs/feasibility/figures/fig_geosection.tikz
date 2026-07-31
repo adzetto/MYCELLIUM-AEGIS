@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, name=prof, width=10.6cm, height=3.0cm, xmin=0, xmax=126,
+  ylabel={Yükseklik [m]}, xticklabels={}, ymin=0]
+\addplot[aegisteal, thick, fill=aegisteal!18] table[x=s,y=z] {\dataroot/geo_transect.dat}
+  \closedcycle;
+\end{axis}
+\begin{axis}[aegis, at={(prof.below south west)}, anchor=north west,
+  width=10.6cm, height=4.0cm, xmin=0, xmax=126,
+  xlabel={Kesit boyunca uzaklık [km]}, ylabel={Derinlik [cm]},
+  y dir=reverse, ymin=0, ymax=40, grid=none,
+  colorbar, colormap/hot, point meta min=20, point meta max=220,
+  colorbar style={ylabel={$T$ [$^\circ$C]}}]
+\addplot[matrix plot*, point meta=explicit, mesh/cols=120]
+  table[x=s,y=z,meta=T] {\dataroot/geo_section.dat};
+\end{axis}
+\end{tikzpicture}

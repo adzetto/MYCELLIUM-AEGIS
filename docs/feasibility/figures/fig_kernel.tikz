@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.8cm},
+  aegis, width=5.4cm, height=5.2cm, xmin=0, xmax=30]
+\nextgroupplot[xlabel={Derinlik [cm]}, ylabel={Duyarlılık yoğunluğu},
+  title={(a) Geselowitz çekirdeği}]
+\addplot[aegisteal, thick, fill=aegisteal, fill opacity=.18]
+  table[x=z,y=w] {\dataroot/ert_kernel.dat} \closedcycle;
+\nextgroupplot[xlabel={Derinlik [cm]}, ylabel={Kümülatif duyarlılık},
+  ymin=0, ymax=1.02, title={(b) Araştırma derinliği}]
+\addplot[aegisblue, thick] table[x=z,y=cum] {\dataroot/ert_kernel.dat};
+\addplot[aegismuted, dashed, domain=0:30] {0.5};
+\addplot[aegismuted, dotted, domain=0:30] {0.9};
+\end{groupplot}
+\end{tikzpicture}

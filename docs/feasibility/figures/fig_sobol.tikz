@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, ybar, bar width=7pt, width=10.4cm, height=5.0cm,
+  ylabel={Sobol indisi},
+  xtick=data, xticklabels={$\theta_0$,$T_\infty$,$t_r$,$T_{\max}$,$\lambda_{\mathrm{sat}}$,$n_A$,$z_p$,$\sigma_w$},
+  x tick label style={font=\small}, ymin=0, legend pos=north east,
+  enlarge x limits=0.07]
+\addplot[fill=aegisteal, draw=aegisdeep] table[x=idx,y=S1] {\dataroot/sobol.dat};
+\addlegendentry{birinci mertebe $S_i$}
+\addplot[fill=aegisember!70, draw=aegisember] table[x=idx,y=ST] {\dataroot/sobol.dat};
+\addlegendentry{toplam etki $S_{T_i}$}
+\end{axis}
+\end{tikzpicture}

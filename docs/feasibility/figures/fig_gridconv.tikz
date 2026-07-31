@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.8cm},
+  aegis, width=5.6cm, height=4.9cm]
+\nextgroupplot[xlabel={Hücre yüksekliği $\Delta z$ [mm]}, ylabel={Öncü süre [dk]},
+  xmode=log, title={(a) Uzaysal ağ}]
+\addplot[aegisteal, thick, mark=*, mark size=1.8] table[x=dz_mm,y=lead] {\dataroot/conv_grid.dat};
+\nextgroupplot[xlabel={Zaman adımı $\Delta t$ [s]}, ylabel={Öncü süre [dk]},
+  xmode=log, title={(b) Zaman adımı}]
+\addplot[aegisember, thick, mark=square*, mark size=1.8] table[x=dt,y=lead] {\dataroot/conv_dt.dat};
+\end{groupplot}
+\end{tikzpicture}

@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Yatak eğimi $\psi$ [derece]},
+  ylabel={Tensör bileşeni [W\,m$^{-1}$K$^{-1}$]},
+  legend pos=south west, legend columns=3, xmin=0, xmax=45, ymin=-0.55, ymax=1.85]
+\addplot[aegisteal, thick] table[x=dip,y=Kxx] {\dataroot/tensor_dip.dat};
+\addlegendentry{$K_{xx}$}
+\addplot[aegisblue, thick, dashed] table[x=dip,y=Kzz] {\dataroot/tensor_dip.dat};
+\addlegendentry{$K_{zz}$}
+\addplot[aegisplum, thick, densely dotted] table[x=dip,y=Kxz] {\dataroot/tensor_dip.dat};
+\addlegendentry{$K_{xz}$}
+\addplot[aegisline, thin, forget plot] coordinates {(0,0) (45,0)};
+\end{axis}
+\begin{axis}[aegis, grid=none, axis y line*=right, axis x line=none,
+  xmin=0, xmax=45, ymin=0, ymax=26,
+  ylabel={$-\nabla T$ ile $\mathbf{q}$ arasındaki açı [derece]},
+  ylabel style={aegisember}, y tick label style={aegisember}]
+\addplot[aegisember, very thick] table[x=dip,y=misalign] {\dataroot/tensor_dip.dat};
+\end{axis}
+\end{tikzpicture}

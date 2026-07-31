@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
+  aegis, width=5.4cm, height=5.0cm]
+\nextgroupplot[xlabel={NBD [milyon TL]}, ylabel={Frekans}, ybar interval,
+  title={(a) Net bugünkü değer}, ymin=0]
+\addplot[fill=aegisteal!35, draw=aegisdeep] table[x=npv,y=count] {\dataroot/npv_hist.dat};
+\nextgroupplot[xlabel={Yıl}, ylabel={Kümülatif iskontolu nakit [milyon TL]},
+  title={(b) Başabaş noktası}]
+\addplot[aegisteal, thick, mark=*, mark size=1.6] table[x=year,y=cum] {\dataroot/cashflow.dat};
+\addplot[aegismuted, dashed, domain=1:7] {0};
+\end{groupplot}
+\end{tikzpicture}

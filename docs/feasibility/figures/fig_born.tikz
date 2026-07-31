@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+\begin{axis}[aegis, xlabel={Zaman [saat]}, ylabel={$\ln\!\big(R(t)/R(t_0)\big)$},
+  legend pos=south west, width=9.6cm, height=5.0cm]
+\addplot[aegisteal, thick, mark=*, mark size=1.3] table[x=t,y=lnfull] {\dataroot/born_check.dat};
+\addlegendentry{tam eksenel simetrik çözüm}
+\addplot[aegisember, dashed, thick, mark=o, mark size=1.6] table[x=t,y=lnborn] {\dataroot/born_check.dat};
+\addlegendentry{birinci mertebe (Born) yaklaşımı}
+\end{axis}
+\end{tikzpicture}

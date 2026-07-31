@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
+  aegis, width=5.4cm, height=5.2cm]
+\nextgroupplot[xlabel={Ağ boyunca uzaklık $r$ [m]}, ylabel={Genlik [mV]},
+  xmode=log, ymode=log, xmin=0.05, xmax=60, ymin=1e-3, ymax=60,
+  legend pos=south west, title={(a) $V(r)=V_0K_0(r/\lambda)/K_0(a/\lambda)$}]
+\addplot table[x=r,y=V0p5] {\dataroot/cable.dat}; \addlegendentry{$\lambda=0{,}5$ m}
+\addplot table[x=r,y=V1]   {\dataroot/cable.dat}; \addlegendentry{$\lambda=1$ m}
+\addplot table[x=r,y=V10]  {\dataroot/cable.dat}; \addlegendentry{$\lambda=10$ m}
+\addplot table[x=r,y=V30]  {\dataroot/cable.dat}; \addlegendentry{$\lambda=30$ m}
+\addplot[aegisink, dashed, domain=0.05:60] {0.5};
+\nextgroupplot[xlabel={Elektrotonik uzunluk $\lambda$ [m]},
+  ylabel={Tespit yarıçapı $r_{\mathrm{det}}$ [m]},
+  xmode=log, ymode=log, title={(b) Kapsama yarıçapı}]
+\addplot[aegisteal, thick, mark=*, mark size=1.8] table[x=lam,y=rdet] {\dataroot/cable_rdet.dat};
+\end{groupplot}
+\end{tikzpicture}
