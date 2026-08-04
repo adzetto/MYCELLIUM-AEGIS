@@ -20,34 +20,6 @@ Detecting a wildfire **before the first flame** — by listening to the electric
 
 ---
 
-<!-- toc -->
-
-## Contents
-
-  - [Living mycelium biosensors for **pre‑ignition** forest‑fire early warning](#living-mycelium-biosensors-for-pre-ignition-forest-fire-early-warning)
-- [Table of Contents](#table-of-contents)
-- [The one‑paragraph pitch](#the-one-paragraph-pitch)
-- [Why the current early‑warning stack is too late](#why-the-current-early-warning-stack-is-too-late)
-- [The core idea](#the-core-idea)
-- [️ How the system works](#how-the-system-works)
-- [The detection algorithm (sensor fusion)](#the-detection-algorithm-sensor-fusion)
-- [Hardware & measurement chain](#hardware-measurement-chain)
-- [️ Interactive digital twin](#interactive-digital-twin)
-- [Laboratory validation](#laboratory-validation)
-  - [Experiment 1 — Single *Pleurotus ostreatus* (oyster mushroom)](#experiment-1-single-pleurotus-ostreatus-oyster-mushroom)
-  - [Experiment 2 — Mycelium network in a terrarium (soil, rock, organics)](#experiment-2-mycelium-network-in-a-terrarium-soil-rock-organics)
-- [Pyrophilic fungi & biodegradable housing](#pyrophilic-fungi-biodegradable-housing)
-- [Communication & power](#communication-power)
-- [️ R&D roadmap (18 months)](#rd-roadmap-18-months)
-- [️ Risk assessment](#risk-assessment)
-- [Commercialization (TÜBİTAK 1812 BİGG)](#commercialization-tübitak-1812-bigg)
-- [Team](#team)
-- [Repository contents](#repository-contents)
-- [Intro video (Higgsfield)](#intro-video-higgsfield)
-- [Scientific references](#scientific-references)
-
----
-
 ## 📖 Table of Contents
 
 - [The one‑paragraph pitch](#-the-one-paragraph-pitch)
